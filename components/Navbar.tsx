@@ -5,6 +5,8 @@ import { ShoppingBag, Menu, X } from 'lucide-react';
 import { useCartStore, useAdminStore } from '../store';
 import { AnimatePresence, motion } from 'framer-motion';
 
+const basePath = import.meta.env.BASE_URL || '/';
+
 export const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -44,7 +46,7 @@ export const Navbar = () => {
           {/* Ambient Background with Clip Path to prevent blurring in "empty" wave areas */}
           <div className="absolute inset-0 z-0" style={{ clipPath: 'url(#waveClip)' }}>
              <img 
-               src={siteConfig.navbarBackground || '/images/nav-photo.png'}
+               src={siteConfig.navbarBackground || `${basePath}images/nav-photo.png`}
                alt="Navbar Ambient Background" 
                className="w-full h-full object-cover opacity-30"
              />

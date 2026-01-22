@@ -11,6 +11,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 gsap.registerPlugin(ScrollTrigger);
 
+const basePath = import.meta.env.BASE_URL || '/';
+
 const reviews = [
   {
     id: 1,
@@ -331,7 +333,7 @@ export const Home = () => {
                   <div className="relative p-[3px] md:p-[4px] rounded-2xl" style={{ background: 'linear-gradient(135deg, rgba(74,144,164,0.4), rgba(74,144,164,0.2), rgba(74,144,164,0.3))' }}>
                       <div className="aspect-video w-full max-w-xl md:max-w-2xl overflow-hidden rounded-2xl shadow-xl">
                           <video
-                            src="/video/candle-video.mp4"
+                            src={`${basePath}video/candle-video.mp4`}
                             autoPlay
                             loop
                             muted

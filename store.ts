@@ -4,13 +4,18 @@ import { persist } from 'zustand/middleware';
 import { CartState, Product, AdminState, Order, SiteConfig } from './types';
 import { products as initialProducts } from './data';
 
+const getBasePath = () => {
+  // Use import.meta.env.BASE_URL if available, otherwise default to '/'
+  return (typeof import.meta !== 'undefined' && import.meta.env?.BASE_URL) || '/';
+};
+
 const defaultSiteConfig: SiteConfig = {
-  heroBackground: "/images/backround-image.png",
-  heroForeground: "/images/collage-prodcut.png",
-  storyImage: "/images/web-image.png",
+  heroBackground: `${getBasePath()}images/backround-image.png`,
+  heroForeground: `${getBasePath()}images/collage-prodcut.png`,
+  storyImage: `${getBasePath()}images/web-image.png`,
   aboutImage: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=800&auto=format&fit=crop",
   reviewsBackground: "https://images.unsplash.com/photo-1596436066266-932f995a9478?q=80&w=2000&auto=format&fit=crop",
-  navbarBackground: "/images/nav-photo.png"
+  navbarBackground: `${getBasePath()}images/nav-photo.png`
 };
 
 // --- Cart Store ---
