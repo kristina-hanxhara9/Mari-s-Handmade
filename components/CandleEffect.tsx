@@ -219,7 +219,7 @@ const MagicFlame = () => {
  */
 export const CandleEffect = () => {
   return (
-    <div className="w-full h-full bg-gradient-to-b from-mari-cream to-[#f0f0f0]">
+    <div className="w-full h-full bg-transparent">
       <Canvas 
         shadows 
         camera={{ position: [0, 0, 8], fov: 40 }}

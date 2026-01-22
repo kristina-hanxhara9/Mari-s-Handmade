@@ -329,7 +329,7 @@ export const Home = () => {
               </div>
               <div className="relative flex justify-center md:justify-end">
                   <div className="relative p-[3px] md:p-[4px] rounded-2xl" style={{ background: 'linear-gradient(135deg, rgba(74,144,164,0.4), rgba(74,144,164,0.2), rgba(74,144,164,0.3))' }}>
-                      <div className="aspect-video w-full max-w-lg overflow-hidden rounded-2xl shadow-xl">
+                      <div className="aspect-video w-full max-w-xl md:max-w-2xl overflow-hidden rounded-2xl shadow-xl">
                           <video
                             src="/video/candle-video.mp4"
                             autoPlay
@@ -360,53 +360,33 @@ export const Home = () => {
 
             <div ref={reviewRef} className="w-full max-w-4xl mx-auto relative px-6">
               <div className="relative group mx-auto w-full max-w-3xl">
-                {/* Wave frame - Top */}
-                <div className="absolute -top-16 -left-8 -right-8 h-24 pointer-events-none">
-                  <svg viewBox="0 0 1440 200" className="w-full h-full" preserveAspectRatio="none">
-                    <defs>
-                      <linearGradient id="reviewWaveTop" x1="0%" y1="0%" x2="0%" y2="100%">
-                        <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.3" />
-                        <stop offset="100%" stopColor="#FFFFFF" stopOpacity="0.15" />
-                      </linearGradient>
-                    </defs>
-                    <path
-                      fill="url(#reviewWaveTop)"
-                      d="M0,200 L1440,200 L1440,40 C1360,80 1280,20 1200,50 C1120,80 1040,120 960,90 C880,60 800,20 720,40 C640,60 560,100 480,80 C400,60 320,20 240,50 C160,80 80,120 0,80 Z"
-                    />
-                    <path
-                      fill="none"
-                      stroke="#4A90A4"
-                      strokeWidth="2"
-                      strokeOpacity="0.25"
-                      d="M0,82 C80,122 160,82 240,52 C320,22 400,62 480,82 C560,102 640,62 720,42 C800,22 880,62 960,92 C1040,122 1120,82 1200,52 C1280,22 1360,82 1440,42"
-                    />
-                  </svg>
-                </div>
-                {/* Wave frame - Bottom */}
-                <div className="absolute -bottom-16 -left-8 -right-8 h-24 pointer-events-none">
-                  <svg viewBox="0 0 1440 200" className="w-full h-full rotate-180" preserveAspectRatio="none">
-                    <defs>
-                      <linearGradient id="reviewWaveBottom" x1="0%" y1="0%" x2="0%" y2="100%">
-                        <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.3" />
-                        <stop offset="100%" stopColor="#FFFFFF" stopOpacity="0.15" />
-                      </linearGradient>
-                    </defs>
-                    <path
-                      fill="url(#reviewWaveBottom)"
-                      d="M0,200 L1440,200 L1440,40 C1360,80 1280,20 1200,50 C1120,80 1040,120 960,90 C880,60 800,20 720,40 C640,60 560,100 480,80 C400,60 320,20 240,50 C160,80 80,120 0,80 Z"
-                    />
-                    <path
-                      fill="none"
-                      stroke="#4A90A4"
-                      strokeWidth="2"
-                      strokeOpacity="0.25"
-                      d="M0,82 C80,122 160,82 240,52 C320,22 400,62 480,82 C560,102 640,62 720,42 C800,22 880,62 960,92 C1040,122 1120,82 1200,52 C1280,22 1360,82 1440,42"
-                    />
-                  </svg>
-                </div>
+                {/* Wavy white container using SVG with curved edges */}
+                <svg className="absolute -inset-6 w-[calc(100%+48px)] h-[calc(100%+48px)]" viewBox="0 0 200 100" preserveAspectRatio="none">
+                  <defs>
+                    <linearGradient id="wavyContainerGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                      <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.15" />
+                      <stop offset="50%" stopColor="#FFFFFF" stopOpacity="0.1" />
+                      <stop offset="100%" stopColor="#FFFFFF" stopOpacity="0.15" />
+                    </linearGradient>
+                  </defs>
+                  <path
+                    fill="url(#wavyContainerGradient)"
+                    d="M0,12
+                       C15,5 30,18 50,8
+                       C70,0 90,15 110,6
+                       C130,0 150,12 170,5
+                       C185,0 195,8 200,12
+                       L200,88
+                       C195,92 185,100 170,95
+                       C150,88 130,100 110,94
+                       C90,85 70,100 50,92
+                       C30,82 15,95 0,88
+                       Z"
+                  />
+                </svg>
 
-                {/* Card - More transparent and wavy background */}
-                <div className="relative min-h-[350px] md:min-h-[400px] flex flex-col justify-center items-center overflow-visible bg-white/20 backdrop-blur-sm rounded-[2rem]" style={{ clipPath: 'polygon(0% 8%, 5% 3%, 15% 6%, 25% 2%, 35% 5%, 45% 1%, 55% 4%, 65% 0%, 75% 5%, 85% 2%, 95% 6%, 100% 3%, 100% 92%, 95% 97%, 85% 94%, 75% 98%, 65% 95%, 55% 99%, 45% 96%, 35% 100%, 25% 95%, 15% 98%, 5% 94%, 0% 97%)' }}>
+                {/* Card content */}
+                <div className="relative min-h-[350px] md:min-h-[400px] flex flex-col justify-center items-center overflow-visible">
                   <div className="relative z-10 p-8 md:p-20 text-center w-full">
                     <AnimatePresence mode="wait">
                       <motion.div
