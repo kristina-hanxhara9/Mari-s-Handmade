@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+
+  <!-- Homepage -->
+  <url>
+    <loc>https://marishandmade.co.uk/</loc>
+    <lastmod>2024-01-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://marishandmade.co.uk/images/hero-candles.jpg</image:loc>
+      <image:title>Mari's Handmade Luxury Candles</image:title>
+      <image:caption>Handcrafted sculptural candles from Mari's Handmade</image:caption>
+    </image:image>
+  </url>
+
+  <!-- Shop Page -->
+  <url>
+    <loc>https://marishandmade.co.uk/shop</loc>
+    <lastmod>2024-01-23</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://marishandmade.co.uk/images/shop-collection.jpg</image:loc>
+      <image:title>Shop Our Candle Collection</image:title>
+      <image:caption>Browse our full collection of luxury handmade candles</image:caption>
+    </image:image>
+  </url>
+
+  <!-- Checkout Page -->
+  <url>
+    <loc>https://marishandmade.co.uk/checkout</loc>
+    <lastmod>2024-01-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Category Pages -->
+  <url>
+    <loc>https://marishandmade.co.uk/shop?category=arrangements</loc>
+    <lastmod>2024-01-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://marishandmade.co.uk/shop?category=pillars</loc>
+    <lastmod>2024-01-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://marishandmade.co.uk/shop?category=jars</loc>
+    <lastmod>2024-01-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://marishandmade.co.uk/shop?category=novelty</loc>
+    <lastmod>2024-01-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Seasonal Collections -->
+  <url>
+    <loc>https://marishandmade.co.uk/shop?category=christmas</loc>
+    <lastmod>2024-01-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://marishandmade.co.uk/shop?category=valentines</loc>
+    <lastmod>2024-01-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://marishandmade.co.uk/shop?category=easter</loc>
+    <lastmod>2024-01-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://marishandmade.co.uk/shop?category=birthday</loc>
+    <lastmod>2024-01-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://marishandmade.co.uk/shop?category=mothers-day</loc>
+    <lastmod>2024-01-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://marishandmade.co.uk/shop?category=autumn</loc>
+    <lastmod>2024-01-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+</urlset>

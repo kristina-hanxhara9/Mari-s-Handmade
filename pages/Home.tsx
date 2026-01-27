@@ -11,6 +11,17 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 gsap.registerPlugin(ScrollTrigger);
 
+// SEO: Reset page title on home page mount
+const useHomeSEO = () => {
+  useEffect(() => {
+    document.title = "Mari's Handmade Candles | Luxury Sculptural Candles UK | Handcrafted Artisan Wax Art";
+    const metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) {
+      metaDesc.setAttribute('content', "Discover exquisite handcrafted sculptural candles from Mari's Handmade. Luxury artisan candles hand-poured in the UK. Perfect for gifts, weddings, and home decor.");
+    }
+  }, []);
+};
+
 const basePath = import.meta.env.BASE_URL || '/';
 
 const reviews = [
@@ -87,13 +98,16 @@ const seasonalCollections = [
 ];
 
 export const Home = () => {
+  // SEO hook for home page
+  useHomeSEO();
+
   const { addItem } = useCartStore();
   const { products, siteConfig } = useAdminStore();
   const titleRef = useRef<HTMLHeadingElement>(null);
   const storyRef = useRef<HTMLDivElement>(null);
   const featuredRef = useRef<HTMLDivElement>(null);
   const reviewRef = useRef<HTMLDivElement>(null);
-  
+
   const [currentReview, setCurrentReview] = useState(0);
 
   useEffect(() => {
@@ -252,26 +266,35 @@ export const Home = () => {
                 Full Collection <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
-            <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-12 lg:gap-20">
+            <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-12 lg:gap-20" role="list" aria-label="Featured candle products">
               {featuredProducts.map((product) => (
-                <div key={product.id} className="featured-card group cursor-pointer text-center">
+                <article key={product.id} className="featured-card group cursor-pointer text-center" role="listitem" itemScope itemType="https://schema.org/Product">
                   <div className="relative aspect-[3/4.5] arch-top overflow-hidden bg-white/40 backdrop-blur-sm shadow-xl transition-all duration-700 group-hover:-translate-y-3">
                     <img
                       src={product.image}
-                      alt={product.name}
+                      alt={`${product.name} - Handcrafted luxury candle by Mari's Handmade, ${product.scentNotes}`}
                       className="w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-110"
+                      loading="lazy"
+                      itemProp="image"
                     />
                     <div className="absolute inset-0 bg-black/5 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                        <button onClick={() => addItem(product)} className="bg-white text-mari-dark p-4 rounded-full shadow-2xl">
-                            <ShoppingBag className="w-6 h-6" />
+                        <button
+                          onClick={() => addItem(product)}
+                          className="bg-white text-mari-dark p-4 rounded-full shadow-2xl"
+                          aria-label={`Add ${product.name} to basket`}
+                        >
+                            <ShoppingBag className="w-6 h-6" aria-hidden="true" />
                         </button>
                     </div>
                   </div>
                   <div className="mt-8">
-                      <h3 className="text-xl md:text-2xl font-serif text-mari-dark mb-2">{product.name}</h3>
-                      <p className="text-[10px] text-gray-400 uppercase tracking-[0.3em] font-bold">£{product.price.toFixed(2)}</p>
+                      <h3 className="text-xl md:text-2xl font-serif text-mari-dark mb-2" itemProp="name">{product.name}</h3>
+                      <p className="text-[10px] text-gray-400 uppercase tracking-[0.3em] font-bold" itemProp="offers" itemScope itemType="https://schema.org/Offer">
+                        <span itemProp="priceCurrency" content="GBP">£</span>
+                        <span itemProp="price" content={product.price.toString()}>{product.price.toFixed(2)}</span>
+                      </p>
                   </div>
-                </div>
+                </article>
               ))}
             </div>
           </div>
@@ -338,7 +361,14 @@ export const Home = () => {
                             loop
                             muted
                             playsInline
-                            className="w-full h-full object-cover"
+                            preload="auto"
+                            disablePictureInPicture
+                            className="w-full h-full object-cover pointer-events-none"
+                            ref={(el) => {
+                              if (el) {
+                                el.play().catch(() => {});
+                              }
+                            }}
                           />
                       </div>
                   </div>
