@@ -10,6 +10,7 @@ import { Checkout } from './pages/Checkout';
 import { Admin } from './pages/Admin';
 import { LightCursor } from './components/LightCursor';
 import { BackgroundLayout } from './layouts/BackgroundLayout';
+import { WhatsAppButton } from './components/WhatsAppButton';
 
 // Scroll to top helper
 const ScrollToTop = () => {
@@ -172,12 +173,15 @@ function App() {
           
           <Footer onOpenModal={(type) => setActiveModal(type as keyof typeof modalContent)} />
 
-          <InfoModal 
+          <InfoModal
             isOpen={!!activeModal}
             onClose={() => setActiveModal(null)}
             title={getModalTitle(activeModal)}
             content={activeModal ? modalContent[activeModal] : null}
           />
+
+          {/* WhatsApp Floating Button */}
+          <WhatsAppButton />
         </div>
       </BackgroundLayout>
     </Router>
