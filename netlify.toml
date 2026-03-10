@@ -24,4 +24,4 @@
   status = 200
 
 [context.production.environment]
-  NODE_VERSION = "18"
+  NODE_VERSION = "20"
