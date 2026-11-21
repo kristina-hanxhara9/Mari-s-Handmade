@@ -230,7 +230,7 @@ export const Home = () => {
         </div>
         
         <div className="w-full md:w-1/2 relative p-6 lg:p-20 z-10 flex justify-center">
-          <div className="marble-halo w-full max-w-2xl">
+          <div className="marble-halo w-full max-w-[310px] sm:max-w-md md:max-w-2xl">
             <motion.div 
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -253,7 +253,7 @@ export const Home = () => {
         <Section id="story" variant="transparent" className="overflow-hidden">
           <div ref={storyRef} className="grid md:grid-cols-2 gap-12 md:gap-24 items-center">
             <div className="relative order-2 md:order-1 flex justify-center md:justify-start">
-              <FramedPicture frame="ornate" className="max-w-sm md:max-w-md w-full aspect-[3/4]" pictureClassName="bg-[#F6EEEA]">
+              <FramedPicture frame="ornate" className="max-w-[310px] sm:max-w-sm md:max-w-md w-full aspect-[3/4]" pictureClassName="bg-[#F6EEEA]">
                 <img
                   src={siteConfig.storyImage}
                   alt="Artistic candle"
@@ -299,9 +299,10 @@ export const Home = () => {
                 View the full collection <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
-            <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-12 lg:gap-20" role="list" aria-label="Featured candle products">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-10 sm:gap-x-8 sm:gap-y-12 lg:gap-20" role="list" aria-label="Featured candle products">
               {featuredProducts.map((product) => (
                 <article key={product.id} className="featured-card group cursor-pointer text-center" role="listitem" itemScope itemType="https://schema.org/Product">
+                  <div className="w-full">
                   <ProductImage
                     src={product.image}
                     alt={`${product.name}: handcrafted candle by Mari's Handmade`}
@@ -316,10 +317,11 @@ export const Home = () => {
                       </button>
                     </div>
                   </ProductImage>
-                  <div className="mt-8">
-                      <h3 className="text-2xl md:text-3xl font-display font-normal text-mari-ink leading-tight line-clamp-2 min-h-[2.5em] flex items-center justify-center mb-1" itemProp="name">{product.name}</h3>
+                  </div>
+                  <div className="mt-4 sm:mt-8">
+                      <h3 className="text-lg sm:text-2xl md:text-3xl font-display font-normal text-mari-ink leading-tight line-clamp-2 min-h-[2.5em] flex items-center justify-center mb-1" itemProp="name">{product.name}</h3>
                       {product.scentNotes && (
-                        <p className="text-sm text-gray-500 font-light italic mb-3">{product.scentNotes}</p>
+                        <p className="text-[11px] sm:text-sm text-gray-500 font-light italic mb-2 sm:mb-3 line-clamp-2">{product.scentNotes}</p>
                       )}
                       <p className="text-sm font-serif text-mari-gold tracking-wider" itemProp="offers" itemScope itemType="https://schema.org/Offer">
                         <span itemProp="priceCurrency" content="GBP">£</span>

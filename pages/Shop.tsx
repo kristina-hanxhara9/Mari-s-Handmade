@@ -72,7 +72,7 @@ export const Shop = () => {
         {/* Grid */}
         <motion.div 
           layout
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 md:gap-x-12 gap-y-16 md:gap-y-20"
+          className="grid grid-cols-2 lg:grid-cols-3 gap-x-4 sm:gap-x-8 md:gap-x-12 gap-y-12 md:gap-y-20"
         >
           <AnimatePresence mode='popLayout'>
             {filteredProducts.map((product) => (
@@ -85,6 +85,7 @@ export const Shop = () => {
                 key={product.id}
                 className="group relative flex flex-col"
               >
+                <div className="w-full">
                 <ProductImage frame="ogee" src={product.image} alt={product.name} label={product.category}>
                   <div className="absolute inset-0 z-20 hidden md:flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-mari-dark/10 backdrop-blur-[2px]">
                     <button
@@ -95,22 +96,23 @@ export const Shop = () => {
                     </button>
                   </div>
                 </ProductImage>
+                </div>
 
                 {/* Fixed-height text block so names, prices and notes line up across a row */}
-                <div className="mt-6 md:mt-8 text-center px-2 flex flex-col items-center">
-                  <h3 className="text-2xl md:text-3xl font-display font-normal text-mari-ink leading-tight line-clamp-2 min-h-[2.5em] flex items-center justify-center group-hover:text-mari-gold transition-colors duration-500">
+                <div className="mt-4 sm:mt-6 md:mt-8 text-center sm:px-2 flex flex-col items-center">
+                  <h3 className="text-lg sm:text-2xl md:text-3xl font-display font-normal text-mari-ink leading-tight line-clamp-2 min-h-[2.5em] flex items-center justify-center group-hover:text-mari-gold transition-colors duration-500">
                     {product.name}
                   </h3>
                   <div className="w-8 h-[1px] bg-mari-gold/30 my-3" />
                   <p className="font-serif text-mari-gold tracking-wider text-sm md:text-base">
                     £{product.price.toFixed(2)}
                   </p>
-                  <p className="text-gray-500 text-xs md:text-sm font-light italic line-clamp-1 mt-2 min-h-[1.5em]">
+                  <p className="text-gray-500 text-[11px] sm:text-xs md:text-sm font-light italic line-clamp-1 mt-2 min-h-[1.5em]">
                     {product.scentNotes ? `Notes of ${product.scentNotes}` : '\u00a0'}
                   </p>
                   <button
                     onClick={() => addItem(product)}
-                    className="mt-4 md:hidden inline-flex items-center gap-2 border border-mari-teal/40 text-mari-ink px-6 py-2.5 rounded-full text-[10px] font-bold tracking-widest uppercase active:bg-mari-teal active:text-white transition-colors"
+                    className="mt-3 md:hidden inline-flex items-center gap-1.5 border border-mari-teal/40 text-mari-ink px-3 sm:px-6 py-2 sm:py-2.5 rounded-full text-[9px] sm:text-[10px] font-bold tracking-wider sm:tracking-widest uppercase whitespace-nowrap active:bg-mari-teal active:text-white transition-colors"
                   >
                     <ShoppingBag className="w-3.5 h-3.5" /> Add to Basket
                   </button>

@@ -41,15 +41,15 @@ export const ProductImage = ({
               <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-black/10 via-transparent to-white/10" aria-hidden="true" />
             </>
           ) : (
-            <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 text-center px-6" role="img" aria-label={`${alt}: photo coming soon`}>
-              <div className="w-16 h-16 rounded-full border border-mari-gold/40 bg-white/60 flex items-center justify-center">
-                <Flame className="w-7 h-7 text-mari-gold/80" strokeWidth={1.25} aria-hidden="true" />
+            <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 sm:gap-4 text-center px-3 sm:px-6" role="img" aria-label={`${alt}: photo coming soon`}>
+              <div className="w-10 h-10 sm:w-16 sm:h-16 rounded-full border border-mari-gold/40 bg-white/60 flex items-center justify-center">
+                <Flame className="w-5 h-5 sm:w-7 sm:h-7 text-mari-gold/80" strokeWidth={1.25} aria-hidden="true" />
               </div>
-              <p className="font-display italic text-lg text-mari-ink/70">Photo coming soon</p>
+              <p className="font-display italic text-sm sm:text-lg leading-snug text-mari-ink/70">Photo coming soon</p>
             </div>
           )}
           {label && (
-            <span className={`absolute top-6 md:top-8 inset-x-0 text-center text-[8px] md:text-[9px] font-bold uppercase tracking-[0.4em] ${showPhoto ? 'text-white/85 drop-shadow-md' : 'text-mari-gold/80'}`}>
+            <span className={`absolute top-4 sm:top-6 md:top-8 inset-x-0 text-center text-[7px] sm:text-[8px] md:text-[9px] font-bold uppercase tracking-[0.3em] sm:tracking-[0.4em] ${showPhoto ? 'text-white/85 drop-shadow-md' : 'text-mari-gold/80'}`}>
               {label}
             </span>
           )}
