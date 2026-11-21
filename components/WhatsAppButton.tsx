@@ -1,5 +1,6 @@
 
 const WHATSAPP_NUMBER = '447827804920'; // +44 7827 804920
+const PEARLS = 30;
 
 export const WhatsAppButton = () => {
   const message = encodeURIComponent("Hi! I'm interested in Mari's Handmade candles.");
@@ -10,11 +11,32 @@ export const WhatsAppButton = () => {
       href={whatsappUrl}
       target="_blank"
       rel="noopener noreferrer"
-      className="fixed bottom-6 right-6 z-50 group"
+      className="fixed bottom-7 right-7 z-50 group"
       aria-label="Chat on WhatsApp"
     >
       {/* Pulse animation ring */}
       <span className="absolute inset-0 rounded-full bg-green-500 animate-ping opacity-25" />
+
+      {/* Ring of pearls around the button, matching the site's pearl frames */}
+      <svg
+        viewBox="0 0 76 76"
+        className="absolute -inset-[10px] w-[76px] h-[76px] pointer-events-none drop-shadow-[0_3px_6px_rgba(62,86,97,0.25)] transition-transform duration-300 group-hover:scale-110"
+        aria-hidden="true"
+      >
+        <defs>
+          <linearGradient id="wa-ivory" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stopColor="#FFFFFF" />
+            <stop offset="45%" stopColor="#F7F1EA" />
+            <stop offset="100%" stopColor="#E6DACB" />
+          </linearGradient>
+        </defs>
+        <circle cx="38" cy="38" r="33" fill="none" stroke="url(#wa-ivory)" strokeWidth="8" />
+        <g fill="none" strokeLinecap="round" strokeDasharray={`0 ${(2 * Math.PI * 33) / PEARLS}`}>
+          <circle cx="38" cy="38" r="33" stroke="rgba(140,105,75,0.45)" strokeWidth="5.4" transform="translate(0.4 0.7)" />
+          <circle cx="38" cy="38" r="33" stroke="#EADBC8" strokeWidth="4.6" />
+          <circle cx="38" cy="38" r="33" stroke="#FFFFFF" strokeWidth="1.9" transform="translate(-0.8 -0.9)" />
+        </g>
+      </svg>
 
       {/* Button */}
       <div className="relative flex items-center justify-center w-14 h-14 bg-green-500 rounded-full shadow-lg hover:bg-green-600 transition-all duration-300 hover:scale-110">

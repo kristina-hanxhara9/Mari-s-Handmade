@@ -149,12 +149,12 @@ const Footer = ({ onOpenModal }: { onOpenModal: (type: string) => void }) => (
                target="_blank"
                rel="noopener noreferrer"
                aria-label="Follow Mari's Handmade on Instagram"
-               className="inline-flex items-center gap-3 text-white/70 hover:text-mari-gold transition-colors group"
+               className="inline-flex items-center gap-3 group"
              >
-               <span className="w-9 h-9 md:w-10 md:h-10 border border-white/15 rounded-full flex items-center justify-center group-hover:border-mari-gold transition-colors">
-                 <Instagram className="w-4 h-4" />
+               <span className="w-9 h-9 md:w-10 md:h-10 rounded-full flex items-center justify-center bg-gradient-to-br from-[#3F8FB0] via-[#8FB8E0] to-[#E8799F] shadow-[0_4px_14px_-4px_rgba(232,160,184,0.6)] transition-all duration-300 group-hover:scale-110 group-hover:shadow-[0_6px_18px_-4px_rgba(74,144,164,0.7)]">
+                 <Instagram className="w-4 h-4 text-white" />
                </span>
-               <span className="text-xs md:text-sm tracking-wide">@maris_handmade25</span>
+               <span className="text-xs md:text-sm tracking-wide font-semibold bg-gradient-to-r from-[#8CC4EA] to-[#F291B4] bg-clip-text text-transparent transition-all duration-300 group-hover:from-[#B5DCF5] group-hover:to-[#F8B4CC]">@maris_handmade25</span>
              </a>
           </div>
         </div>
