@@ -5,9 +5,10 @@ import { useEffect, useId, useRef, useState, type ReactNode } from 'react';
  *  - "pearl":  rounded arch lined with a row of pearls
  *  - "ogee":   curved, bell-shaped top with a thin gold inner line
  *  - "ornate": the ogee frame with a carved ornament at the top
+ *  - "cameo":  wide rounded panel with a raised, wavy top edge and a pearl row
  * The frame is an SVG drawn over the picture; the picture is clipped to the frame's opening.
  */
-export type FrameStyle = 'pearl' | 'ogee' | 'ornate';
+export type FrameStyle = 'pearl' | 'ogee' | 'ornate' | 'cameo';
 
 type Box = { x: number; y: number; w: number; h: number };
 
@@ -50,6 +51,28 @@ function ogeePath({ x, y, w, h }: Box, bottomRadius: number) {
   ].join(' ');
 }
 
+/** Cameo: rounded panel whose top edge rises into a gentle raised middle. */
+function cameoPath({ x, y, w, h }: Box, radius: number) {
+  const bump = Math.min(h * 0.07, w * 0.045);
+  const r = Math.min(radius, h / 4, w / 6);
+  const X = (u: number) => f(x + u * w);
+  return [
+    `M${f(x)},${f(y + bump + r)}`,
+    `Q${f(x)},${f(y + bump)} ${f(x + r)},${f(y + bump)}`,
+    `L${X(0.2)},${f(y + bump)}`,
+    `C${X(0.27)},${f(y + bump)} ${X(0.27)},${f(y)} ${X(0.34)},${f(y)}`,
+    `L${X(0.66)},${f(y)}`,
+    `C${X(0.73)},${f(y)} ${X(0.73)},${f(y + bump)} ${X(0.8)},${f(y + bump)}`,
+    `L${f(x + w - r)},${f(y + bump)}`,
+    `Q${f(x + w)},${f(y + bump)} ${f(x + w)},${f(y + bump + r)}`,
+    `L${f(x + w)},${f(y + h - r)}`,
+    `Q${f(x + w)},${f(y + h)} ${f(x + w - r)},${f(y + h)}`,
+    `L${f(x + r)},${f(y + h)}`,
+    `Q${f(x)},${f(y + h)} ${f(x)},${f(y + h - r)}`,
+    'Z',
+  ].join(' ');
+}
+
 const inset = (b: Box, d: number): Box => ({ x: b.x + d, y: b.y + d, w: b.w - 2 * d, h: b.h - 2 * d });
 
 export const FramedPicture = ({
@@ -81,17 +104,22 @@ export const FramedPicture = ({
 
   const { w, h } = size;
   const ready = w > 0 && h > 0;
-  const isPearl = frame === 'pearl';
-  const thickness = Math.max(11, Math.min(isPearl ? 22 : 16, w * (isPearl ? 0.062 : 0.045)));
-  const shape = isPearl ? archPath : ogeePath;
+  const isCameo = frame === 'cameo';
+  const isPearl = frame === 'pearl' || isCameo; // frames lined with pearls
+  const thickness = isCameo
+    ? Math.max(11, Math.min(15, w * 0.035))
+    : Math.max(11, Math.min(isPearl ? 22 : 16, w * (isPearl ? 0.062 : 0.045)));
+  const shape = isCameo ? cameoPath : frame === 'pearl' ? archPath : ogeePath;
+  const outerR = isCameo ? thickness * 2.6 : thickness * 1.6;
+  const innerR = isCameo ? thickness * 1.8 : thickness * 0.8;
   const outerBox: Box = { x: 0, y: 0, w, h };
   const innerBox = inset(outerBox, thickness);
-  const outer = ready ? shape(outerBox, thickness * 1.6) : '';
-  const inner = ready ? shape(innerBox, thickness * 0.8) : '';
-  const innerClip = ready ? shape({ ...innerBox, x: 0, y: 0 }, thickness * 0.8) : '';
-  const pearlLine = ready && isPearl ? shape(inset(outerBox, thickness / 2), thickness * 1.2) : '';
+  const outer = ready ? shape(outerBox, outerR) : '';
+  const inner = ready ? shape(innerBox, innerR) : '';
+  const innerClip = ready ? shape({ ...innerBox, x: 0, y: 0 }, innerR) : '';
+  const pearlLine = ready && isPearl ? shape(inset(outerBox, thickness / 2), (outerR + innerR) / 2) : '';
   const goldLine = ready && !isPearl ? shape(inset(outerBox, thickness + 4), thickness * 0.6) : '';
-  const pearl = Math.max(5.5, Math.min(8.5, w * 0.024));
+  const pearl = isCameo ? Math.max(4, Math.min(5.5, w * 0.013)) : Math.max(5.5, Math.min(8.5, w * 0.024));
 
   return (
     <div ref={ref} className={`relative ${frame === 'ornate' ? 'mt-6' : ''} ${className}`}>

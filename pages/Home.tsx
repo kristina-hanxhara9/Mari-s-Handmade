@@ -6,10 +6,9 @@ import { useAdminStore, useCartStore } from '../store';
 import { Section } from '../components/Section/Section';
 import { ProductImage } from '../components/ProductImage';
 import { FramedPicture } from '../components/FramedPicture';
-import { FestiveCandle } from '../components/FestiveCandle';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { ArrowRight, ShoppingBag, TreePine, Heart, Egg, Cake, Flower2, Leaf } from 'lucide-react';
+import { ArrowRight, ShoppingBag, TreePine, Heart, Egg, Cake, Gift, Leaf } from 'lucide-react';
 
 // The 3D glow uses three.js (large), so it is only downloaded when the reviews section is near.
 const CandleEffect = lazy(() => import('../components/CandleEffect').then((m) => ({ default: m.CandleEffect })));
@@ -57,77 +56,43 @@ const reviews = [
   }
 ];
 
-// Small repeating motif drawn behind each festive card.
-const motif = (svg: string) => `url("data:image/svg+xml,${encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' width='64' height='64'>${svg}</svg>`)}")`;
-const HEART = 'M12 21s-7-4.5-9.5-9A5 5 0 0 1 12 6a5 5 0 0 1 9.5 6C19 16.5 12 21 12 21z';
-
 type SeasonalCollection = {
   title: string;
   tag: string;
   blurb: string;
   icon: LucideIcon;
-  accent: string;
-  background: string;
-  pattern: string;
+  /** Candle scene photo (cut from the seasonal collection artwork). */
+  image: string;
+  /** Wall colours of the photo (middle, bottom), so the photo fades into the card. */
+  wall: [string, string];
+  /** Which part of the photo to keep in view on narrow cards. */
+  focus: string;
+  bow: string;
 };
 
 // Blurbs are kept to a similar length so every card lines up.
 const seasonalCollections: SeasonalCollection[] = [
-  {
-    title: 'Christmas Atelier',
-    tag: 'Christmas',
-    blurb: 'Fir, clove and gold leaf for long fireside evenings.',
-    icon: TreePine,
-    accent: '#2F6B4F',
-    background: 'linear-gradient(160deg, #EEF4EF 0%, #DCE9E0 55%, #F3ECDD 100%)',
-    pattern: motif("<path d='M16 8l1.6 5.4L23 15l-5.4 1.6L16 22l-1.6-5.4L9 15l5.4-1.6z' fill='#C5A059' fill-opacity='.45'/><circle cx='46' cy='44' r='1.8' fill='#2F6B4F' fill-opacity='.3'/><circle cx='44' cy='14' r='1.2' fill='#C5A059' fill-opacity='.5'/><circle cx='12' cy='50' r='1' fill='#2F6B4F' fill-opacity='.3'/>"),
-  },
-  {
-    title: "Valentine's Salon",
-    tag: "Valentine's",
-    blurb: 'Rose-blush hearts tied in silk, made for evenings in love.',
-    icon: Heart,
-    accent: '#C45B6E',
-    background: 'linear-gradient(160deg, #FCF1F3 0%, #F8DFE4 60%, #F6E6E0 100%)',
-    pattern: motif(`<path d='${HEART}' transform='translate(6 6) scale(.6)' fill='#C45B6E' fill-opacity='.22'/><path d='${HEART}' transform='translate(38 36) scale(.45)' fill='#C45B6E' fill-opacity='.16'/>`),
-  },
-  {
-    title: 'Easter Brunch',
-    tag: 'Easter',
-    blurb: 'Speckled egg candles in soft pastels for the spring table.',
-    icon: Egg,
-    accent: '#5E9475',
-    background: 'linear-gradient(160deg, #FBF8E8 0%, #EAF4EC 60%, #F1F0FA 100%)',
-    pattern: motif("<ellipse cx='16' cy='18' rx='5' ry='7' fill='#E9C46A' fill-opacity='.35'/><ellipse cx='46' cy='44' rx='4' ry='5.5' fill='#5E9475' fill-opacity='.25'/><circle cx='44' cy='14' r='1.4' fill='#A08BC9' fill-opacity='.4'/><circle cx='14' cy='48' r='1.4' fill='#E9C46A' fill-opacity='.45'/>"),
-  },
-  {
-    title: 'Birthday Parlour',
-    tag: 'Birthday',
-    blurb: 'Confetti-drip keepsakes with sparkling citrus for big nights.',
-    icon: Cake,
-    accent: '#5F73B8',
-    background: 'linear-gradient(160deg, #EFF3FB 0%, #F6EEF8 55%, #FCEDE2 100%)',
-    pattern: motif("<rect x='10' y='10' width='7' height='3' rx='1.5' transform='rotate(30 13 11)' fill='#5F73B8' fill-opacity='.35'/><rect x='40' y='20' width='7' height='3' rx='1.5' transform='rotate(-25 43 21)' fill='#F4A261' fill-opacity='.45'/><rect x='22' y='42' width='7' height='3' rx='1.5' transform='rotate(60 25 43)' fill='#E76F8A' fill-opacity='.35'/><circle cx='50' cy='50' r='1.8' fill='#C5A059' fill-opacity='.5'/>"),
-  },
-  {
-    title: "Mother's Day Tea",
-    tag: "Mother's Day",
-    blurb: "Floral pieces with garden tea notes, a gift she'll treasure.",
-    icon: Flower2,
-    accent: '#A8607F',
-    background: 'linear-gradient(160deg, #F8F1F8 0%, #F6E6EE 55%, #FBEADF 100%)',
-    pattern: motif("<g fill='#A8607F' fill-opacity='.2'><circle cx='16' cy='11' r='3'/><circle cx='21' cy='15' r='3'/><circle cx='19' cy='21' r='3'/><circle cx='13' cy='21' r='3'/><circle cx='11' cy='15' r='3'/></g><circle cx='16' cy='16' r='2' fill='#C5A059' fill-opacity='.5'/><circle cx='46' cy='46' r='1.6' fill='#A8607F' fill-opacity='.3'/>"),
-  },
-  {
-    title: 'Autumn Harvest',
-    tag: 'Autumn',
-    blurb: 'Amber lanterns and smoky vanilla for candle-lit dinners.',
-    icon: Leaf,
-    accent: '#B0672F',
-    background: 'linear-gradient(160deg, #FBF2E4 0%, #F4E2CC 60%, #EFE6D8 100%)',
-    pattern: motif("<path d='M10 24C10 14 18 8 26 8c0 10-6 16-16 16z' fill='#B0672F' fill-opacity='.22'/><path d='M40 52c0-7 5-12 12-12 0 7-5 12-12 12z' fill='#C5A059' fill-opacity='.3'/><circle cx='48' cy='16' r='1.4' fill='#B0672F' fill-opacity='.35'/>"),
-  },
+  { title: 'Christmas Atelier', tag: 'Christmas', blurb: 'Fir, clove and gold leaf for long fireside evenings.', icon: TreePine, image: '/images/seasonal/christmas.webp', wall: ['#E9CDBC', '#EFDBCB'], focus: '70% 60%', bow: '#F7EFE6' },
+  { title: "Valentine's Salon", tag: "Valentine's", blurb: 'Rose-blush hearts tied in silk, made for evenings in love.', icon: Heart, image: '/images/seasonal/valentines.webp', wall: ['#F1CEC5', '#F4D5CA'], focus: '62% 60%', bow: '#F6C9CF' },
+  { title: 'Easter Brunch', tag: 'Easter', blurb: 'Speckled egg candles in soft pastels for the spring table.', icon: Egg, image: '/images/seasonal/easter.webp', wall: ['#F3DFCE', '#F5E2D2'], focus: '58% 60%', bow: '#F7EFE6' },
+  { title: 'Birthday Parlour', tag: 'Birthday', blurb: 'Confetti-drip keepsakes with sparkling citrus for big nights.', icon: Cake, image: '/images/seasonal/birthday.webp', wall: ['#EEDBD1', '#ECD4CD'], focus: '50% 60%', bow: '#F7EFE6' },
+  { title: "Mother's Day Tea", tag: "Mother's Day", blurb: "Floral pieces with garden tea notes, a gift she'll treasure.", icon: Gift, image: '/images/seasonal/mothers.webp', wall: ['#F2D5C8', '#F6DDD1'], focus: '58% 60%', bow: '#F6C9CF' },
+  { title: 'Autumn Harvest', tag: 'Autumn', blurb: 'Amber lanterns and smoky vanilla for candle-lit dinners.', icon: Leaf, image: '/images/seasonal/autumn.webp', wall: ['#F6D9C4', '#F8DECB'], focus: '55% 60%', bow: '#F7EFE6' },
 ];
+
+/** Small satin bow that sits on top of each seasonal card's frame. */
+const Bow = ({ color }: { color: string }) => (
+  <svg viewBox="-26 -16 52 38" className="w-11 h-8 md:w-12 md:h-9 drop-shadow-[0_2px_3px_rgba(120,90,70,0.25)]" aria-hidden="true">
+    <g fill={color} stroke="rgba(140,100,80,0.35)" strokeWidth="0.8">
+      <path d="M-2,2 L-11,19 L-7,17.5 L-5,21 L2,3Z" />
+      <path d="M2,2 L11,19 L7,17.5 L5,21 L-2,3Z" />
+      <path d="M0,0 C-6,-11 -23,-15 -23,-4 C-23,5 -9,5 0,0Z" />
+      <path d="M0,0 C6,-11 23,-15 23,-4 C23,5 9,5 0,0Z" />
+      <ellipse cx="0" cy="0.5" rx="4" ry="3.6" />
+    </g>
+    <path d="M-4,-2 C-9,-6 -16,-8 -18,-4 M4,-2 C9,-6 16,-8 18,-4" fill="none" stroke="rgba(140,100,80,0.25)" strokeWidth="0.7" />
+  </svg>
+);
 
 export const Home = () => {
   // SEO hook for home page
@@ -367,47 +332,54 @@ export const Home = () => {
           </div>
         </Section>
 
-        {/* FESTIVE COLLECTIONS */}
+        {/* SEASONAL COLLECTIONS */}
         <Section variant="transparent" className="overflow-hidden">
-          <div className="max-w-7xl mx-auto px-6 sm:px-12 lg:px-8 space-y-12">
-            <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 text-center md:text-left">
-              <div>
-                <span className="text-mari-gold font-bold tracking-[0.4em] text-[10px] uppercase block mb-3">Festive Collections</span>
-                <h2 className="text-4xl md:text-7xl font-display font-normal text-mari-ink leading-tight">For every season <span className="italic font-light text-mari-teal">worth celebrating.</span></h2>
+          <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
+            <div className="text-center mb-12 md:mb-16">
+              <div className="flex items-center justify-center gap-4 mb-4">
+                <span className="w-10 md:w-16 h-px bg-mari-gold/50" />
+                <span className="text-[10px] md:text-xs font-bold uppercase tracking-[0.45em] text-mari-gold">Candle Collection</span>
+                <span className="w-10 md:w-16 h-px bg-mari-gold/50" />
               </div>
-              <Link to="/shop" className="inline-flex items-center justify-center gap-3 text-[10px] md:text-xs font-bold tracking-[0.3em] uppercase text-mari-dark border border-mari-dark/30 px-6 py-3 rounded-full hover:bg-mari-dark hover:text-white transition-all shadow-md backdrop-blur-sm">
-                Shop All Seasons <ArrowRight className="w-4 h-4" />
-              </Link>
+              <h2 className="text-4xl md:text-6xl font-display italic font-light text-mari-ink">Seasonal Candle Collection</h2>
+              <p className="mt-4 text-[10px] md:text-xs uppercase tracking-[0.35em] text-mari-ink/60">Handcrafted candles for life's special moments</p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
-              {seasonalCollections.map(({ title, tag, blurb, icon: Icon, accent, background, pattern }) => (
-                <Link
-                  key={tag}
-                  to="/shop"
-                  className="relative overflow-hidden rounded-[28px] border border-white/60 shadow-[0_20px_50px_-20px_rgba(0,0,0,0.25)] group h-[250px] md:h-[270px] block transition-transform duration-500 hover:-translate-y-1"
-                  style={{ background }}
-                >
-                  <div className="absolute inset-0" style={{ backgroundImage: pattern }} aria-hidden="true" />
-                  <div className="absolute inset-0 bg-gradient-to-br from-white/60 via-white/25 to-transparent" aria-hidden="true" />
-                  <FestiveCandle
-                    accent={accent}
-                    className="absolute right-5 md:right-7 bottom-0 w-[66px] md:w-[76px] h-auto transition-transform duration-700 group-hover:-translate-y-1"
-                  />
-                  <div className="relative h-full p-8 md:p-9 flex flex-col">
-                    <div className="flex items-center gap-3">
-                      <span className="w-9 h-9 rounded-full bg-white/80 flex items-center justify-center shadow-sm">
-                        <Icon className="w-4 h-4" style={{ color: accent }} aria-hidden="true" />
-                      </span>
-                      <span className="text-[9px] md:text-[10px] font-bold uppercase tracking-[0.35em]" style={{ color: accent }}>{tag}</span>
-                    </div>
-                    <h3 className="mt-5 text-3xl md:text-[2.1rem] font-display font-normal text-mari-ink whitespace-nowrap overflow-hidden text-ellipsis">{title}</h3>
-                    <p className="mt-2 pr-16 md:pr-20 text-gray-600 font-light leading-relaxed text-sm md:text-base line-clamp-2 min-h-[3.25em]">{blurb}</p>
-                    <span className="mt-auto inline-flex items-center gap-2 text-[10px] md:text-xs font-bold uppercase tracking-[0.25em] text-mari-dark group-hover:gap-3 transition-all">
-                      Shop now
-                      <ArrowRight className="w-4 h-4" />
-                    </span>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-10 md:gap-y-12">
+              {seasonalCollections.map(({ title, tag, blurb, icon: Icon, image, wall, focus, bow }) => (
+                <Link key={tag} to="/shop" className="group relative block pt-3" aria-label={`Shop the ${title} collection`}>
+                  <div className="absolute top-0 left-1/2 -translate-x-1/2 z-10 transition-transform duration-500 group-hover:-translate-y-0.5">
+                    <Bow color={bow} />
                   </div>
+                  <FramedPicture
+                    frame="cameo"
+                    className="w-full h-[235px] sm:h-[260px] transition-transform duration-500 group-hover:-translate-y-1"
+                    pictureClassName="!overflow-hidden"
+                  >
+                    <div className="absolute inset-0" style={{ background: `linear-gradient(180deg, ${wall[0]} 0%, ${wall[0]} 45%, ${wall[1]} 100%)` }} />
+                    <img
+                      src={image}
+                      alt=""
+                      loading="lazy"
+                      className="absolute right-0 top-0 h-full w-[50%] sm:w-[58%] object-cover transition-transform duration-[1.5s] group-hover:scale-105"
+                      style={{
+                        objectPosition: focus,
+                        WebkitMaskImage: 'linear-gradient(to right, transparent 0%, #000 28%)',
+                        maskImage: 'linear-gradient(to right, transparent 0%, #000 28%)',
+                      }}
+                    />
+                    <div className="relative h-full w-[56%] sm:w-[54%] pl-5 sm:pl-6 pt-7 pb-5 flex flex-col items-start">
+                      <span className="flex items-center gap-2 text-[#9A6E5E]">
+                        <Icon className="w-3.5 h-3.5" strokeWidth={1.5} aria-hidden="true" />
+                        <span className="text-[9px] font-bold uppercase tracking-[0.35em]">{tag}</span>
+                      </span>
+                      <h3 className="mt-2 text-[1.3rem] sm:text-[1.45rem] leading-tight font-display font-normal text-mari-ink whitespace-nowrap">{title}</h3>
+                      <p className="mt-1.5 text-[12.5px] leading-snug italic font-light text-mari-ink/75 line-clamp-3">{blurb}</p>
+                      <span className="mt-auto inline-flex items-center gap-2 rounded-full border border-[#9A6E5E]/50 bg-white/40 px-4 py-1.5 text-[9px] font-bold uppercase tracking-[0.3em] text-mari-ink transition-colors group-hover:bg-mari-ink group-hover:text-white group-hover:border-mari-ink">
+                        Shop now <ArrowRight className="w-3 h-3" aria-hidden="true" />
+                      </span>
+                    </div>
+                  </FramedPicture>
                 </Link>
               ))}
             </div>
