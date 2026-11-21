@@ -236,7 +236,7 @@ export const Home = () => {
                 <div className="h-[1px] w-12 bg-mari-gold"></div>
                 <h2 className="text-[10px] font-bold tracking-[0.4em] text-mari-gold uppercase">The Craft</h2>
               </div>
-              <h3 className="text-4xl md:text-6xl font-serif text-mari-dark leading-[1.1]">
+              <h3 className="text-5xl md:text-7xl font-display font-normal text-mari-ink leading-[1.05]">
                 Sculptures <br/><span className="italic font-light text-mari-gold">of</span> Light.
               </h3>
               <p className="text-gray-500 leading-relaxed font-sans text-base md:text-xl font-light italic">
@@ -255,7 +255,7 @@ export const Home = () => {
             <div className="flex flex-col md:flex-row justify-between items-center md:items-end mb-16 gap-4 text-center md:text-left">
               <div className="w-full md:w-auto">
                 <span className="font-serif italic text-mari-gold text-base md:text-lg tracking-wide block mb-3">Editor's Choice</span>
-                <h2 className="text-3xl md:text-6xl font-serif font-normal text-mari-dark">
+                <h2 className="text-4xl md:text-7xl font-display font-normal text-mari-ink">
                   Signature <span className="italic font-light text-mari-teal">Pieces</span>
                 </h2>
                 <div className="mt-5 flex items-center justify-center md:justify-start gap-3" aria-hidden="true">
@@ -271,10 +271,13 @@ export const Home = () => {
             <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-12 lg:gap-20" role="list" aria-label="Featured candle products">
               {featuredProducts.map((product) => (
                 <article key={product.id} className="featured-card group cursor-pointer text-center" role="listitem" itemScope itemType="https://schema.org/Product">
-                  {/* Gilded arch frame: ivory mount, gold hairlines and a soft halo */}
-                  <div className="relative arch-top p-2.5 md:p-3 bg-gradient-to-b from-[#FFFDF8] via-[#F8F1E4] to-[#EFE2C8] shadow-[0_30px_60px_-25px_rgba(120,90,40,0.35),0_0_0_1px_rgba(201,169,110,0.45)] transition-all duration-700 group-hover:-translate-y-3 group-hover:shadow-[0_40px_70px_-25px_rgba(120,90,40,0.45),0_0_0_1px_rgba(201,169,110,0.7)]">
-                  <div className="absolute inset-[5px] md:inset-[6px] arch-top border border-mari-gold/40 pointer-events-none" aria-hidden="true" />
-                  <div className="relative aspect-[3/4.5] arch-top overflow-hidden bg-white/40 ring-1 ring-mari-gold/50">
+                  {/* Arch frame in the same soft teal-blue gradient as the video frame */}
+                  <div
+                    className="relative arch-top p-[4px] md:p-[5px] shadow-[0_30px_60px_-28px_rgba(74,144,164,0.55)] transition-all duration-700 group-hover:-translate-y-3 group-hover:shadow-[0_40px_70px_-28px_rgba(74,144,164,0.7)]"
+                    style={{ background: 'linear-gradient(135deg, rgba(74,144,164,0.55), rgba(168,208,219,0.45), rgba(74,144,164,0.45))' }}
+                  >
+                  <div className="arch-top p-[6px] md:p-[8px] bg-[#FCFBF9]/85">
+                  <div className="relative aspect-[3/4.5] arch-top overflow-hidden bg-white/40 ring-1 ring-mari-teal/30">
                     <img
                       src={product.image}
                       alt={`${product.name} - Handcrafted luxury candle by Mari's Handmade, ${product.scentNotes}`}
@@ -294,8 +297,9 @@ export const Home = () => {
                     </div>
                   </div>
                   </div>
+                  </div>
                   <div className="mt-8">
-                      <h3 className="text-xl md:text-2xl font-serif font-normal text-mari-dark mb-2" itemProp="name">{product.name}</h3>
+                      <h3 className="text-2xl md:text-3xl font-display font-normal text-mari-ink mb-1" itemProp="name">{product.name}</h3>
                       {product.scentNotes && (
                         <p className="text-sm text-gray-500 font-light italic mb-3">{product.scentNotes}</p>
                       )}
@@ -316,7 +320,7 @@ export const Home = () => {
             <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 text-center md:text-left">
               <div>
                 <span className="text-mari-gold font-bold tracking-[0.4em] text-[10px] uppercase block mb-3">Festive Collections</span>
-                <h2 className="text-3xl md:text-6xl font-serif text-mari-dark leading-tight">For every season worth celebrating.</h2>
+                <h2 className="text-4xl md:text-7xl font-display font-normal text-mari-ink leading-tight">For every season <span className="italic font-light text-mari-teal">worth celebrating.</span></h2>
               </div>
               <Link to="/shop" className="inline-flex items-center justify-center gap-3 text-[10px] md:text-xs font-bold tracking-[0.3em] uppercase text-mari-dark border border-mari-dark/30 px-6 py-3 rounded-full hover:bg-mari-dark hover:text-white transition-all shadow-md backdrop-blur-sm">
                 Shop All Seasons <ArrowRight className="w-4 h-4" />
@@ -336,7 +340,7 @@ export const Home = () => {
                       <span className="text-[9px] md:text-[10px] font-bold uppercase tracking-[0.35em] text-mari-gold">{collection.tag}</span>
                       <div className="w-8 h-[1px] bg-mari-gold/60" />
                     </div>
-                    <h3 className="text-2xl md:text-3xl font-serif text-mari-dark">{collection.title}</h3>
+                    <h3 className="text-3xl md:text-4xl font-display font-normal text-mari-ink">{collection.title}</h3>
                     <p className="text-gray-600 font-light leading-relaxed text-sm md:text-base flex-1">{collection.blurb}</p>
                     <Link 
                       to="/shop" 
@@ -357,7 +361,7 @@ export const Home = () => {
           <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-center">
               <div className="space-y-6 md:space-y-8 text-center md:text-left">
                   <span className="text-mari-gold font-bold tracking-[0.4em] text-[10px] uppercase">Behind the Flame</span>
-                  <h2 className="text-4xl md:text-7xl font-serif text-mari-dark">Hi, I'm Mari.</h2>
+                  <h2 className="text-5xl md:text-8xl font-display font-normal text-mari-ink">Hi, I'm <span className="italic font-light text-mari-teal">Mari.</span></h2>
                   <p className="text-lg md:text-xl text-gray-600 font-light italic leading-relaxed">
                       "I believe that a candle shouldn't just smell good—it should be an object of beauty that commands a room."
                   </p>
@@ -397,7 +401,7 @@ export const Home = () => {
           <div className="relative z-10 w-full">
             <div className="mb-12 md:mb-16 text-center px-4">
               <span className="text-mari-gold font-bold tracking-[0.5em] text-[10px] md:text-[12px] uppercase block mb-4">Kind Words</span>
-              <h2 className="text-3xl md:text-7xl font-serif text-mari-dark">Reviews</h2>
+              <h2 className="text-4xl md:text-8xl font-display font-normal text-mari-ink italic font-light">Reviews</h2>
             </div>
 
             <div ref={reviewRef} className="w-full max-w-4xl mx-auto relative px-6">

@@ -39,7 +39,7 @@ export const Shop = () => {
           >
             The Archive
           </motion.span>
-          <h1 className="text-4xl md:text-7xl font-serif text-mari-dark mb-4 md:mb-6">Our Collection</h1>
+          <h1 className="text-5xl md:text-8xl font-display font-normal text-mari-ink mb-4 md:mb-6">Our <span className="italic font-light text-mari-teal">Collection</span></h1>
           <p className="text-gray-500 max-w-xl mx-auto font-light leading-relaxed italic text-sm md:text-base">
             "Every light is a sculpture, every scent a memory."
           </p>
@@ -110,7 +110,7 @@ export const Shop = () => {
                 </div>
                 
                 <div className="mt-6 md:mt-8 text-center px-2">
-                  <h3 className="text-xl md:text-2xl font-serif text-mari-dark mb-1 group-hover:text-mari-gold transition-colors duration-500">
+                  <h3 className="text-2xl md:text-3xl font-display font-normal text-mari-ink mb-1 group-hover:text-mari-gold transition-colors duration-500">
                     {product.name}
                   </h3>
                   <div className="w-6 md:w-8 h-[1px] bg-mari-gold/30 mx-auto mb-3 md:mb-4" />

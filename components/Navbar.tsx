@@ -8,8 +8,8 @@ import { AnimatePresence, motion } from 'framer-motion';
 const basePath = import.meta.env.BASE_URL || '/';
 
 // Bottom edges of the navbar wave. Keep in sync with the masks in index.html (.nav-wave).
-const WAVE_MOBILE_EDGE = 'M0,32 C110,2 270,40 400,8';
-const WAVE_DESKTOP_EDGE = 'M0,22 C240,4 480,38 720,20 C960,4 1200,36 1440,16';
+const WAVE_MOBILE_EDGE = 'M0,30 C70,2 130,2 200,20 C270,38 330,38 400,10';
+const WAVE_DESKTOP_EDGE = 'M0,28 C120,4 240,4 360,20 C480,36 600,36 720,20 C840,4 960,4 1080,20 C1200,36 1320,36 1440,14';
 
 export const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
