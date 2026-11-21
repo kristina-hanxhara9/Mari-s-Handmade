@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { useCartStore, useAdminStore } from '../store';
-import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useCartStore } from '../store';
+import { Link } from 'react-router-dom';
 import { ArrowLeft, CheckCircle, Gift, CreditCard, Lock, AlertCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import { stripePromise, createPaymentIntent, type CheckoutData } from '../lib/stripe';
-import { sendOrderEmails } from '../lib/email';
 
 // Stripe card element styling
 const cardElementOptions = {
@@ -26,101 +25,82 @@ const cardElementOptions = {
   },
 };
 
-// Payment form component (used inside Elements provider)
+const SHIPPING_COST = 4.99;
+const GIFT_WRAP_COST = 5.0;
+
+type CustomerDetails = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  address: string;
+  city: string;
+  postcode: string;
+};
+
+// Payment form component (used inside Elements provider).
+// The PaymentIntent is created on submit, so the server prices the basket exactly once.
 const PaymentForm = ({
   formData,
+  amount,
   onSuccess,
-  onError,
   loading,
   setLoading,
 }: {
-  formData: {
-    firstName: string;
-    lastName: string;
-    email: string;
-    address: string;
-    city: string;
-    postcode: string;
-  };
-  onSuccess: (paymentIntentId: string) => void;
-  onError: (error: string) => void;
+  formData: CustomerDetails;
+  amount: number;
+  onSuccess: () => void;
   loading: boolean;
   setLoading: (loading: boolean) => void;
 }) => {
   const stripe = useStripe();
   const elements = useElements();
-  const { items, total, isGift, giftNote } = useCartStore();
+  const { items, isGift, giftNote } = useCartStore();
   const [cardError, setCardError] = useState<string | null>(null);
-  const [clientSecret, setClientSecret] = useState<string | null>(null);
-  const [paymentIntentId, setPaymentIntentId] = useState<string | null>(null);
-
-  const SHIPPING_COST = 4.99;
-  const GIFT_WRAP_COST = 5.00;
-
-  // Create payment intent when form data is complete
-  useEffect(() => {
-    const createIntent = async () => {
-      if (!formData.email || !formData.firstName || !formData.address) return;
-
-      try {
-        const checkoutData: CheckoutData = {
-          items: items.map((item) => ({
-            id: item.id,
-            name: item.name,
-            price: item.price,
-            quantity: item.quantity,
-            image: item.image,
-          })),
-          customerEmail: formData.email,
-          customerName: `${formData.firstName} ${formData.lastName}`,
-          shippingAddress: {
-            address: formData.address,
-            city: formData.city,
-            postcode: formData.postcode,
-            country: 'United Kingdom',
-          },
-          isGift,
-          giftNote: giftNote || undefined,
-          shippingCost: SHIPPING_COST,
-          giftWrapCost: GIFT_WRAP_COST,
-        };
-
-        const { clientSecret: secret, paymentIntentId: intentId } = await createPaymentIntent(checkoutData);
-        setClientSecret(secret);
-        setPaymentIntentId(intentId);
-      } catch (error: any) {
-        console.error('Failed to create payment intent:', error);
-        // Don't show error yet, will show when user tries to pay
-      }
-    };
-
-    createIntent();
-  }, [formData.email, formData.firstName, formData.address, items, isGift, giftNote]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setCardError(null);
 
-    if (!stripe || !elements || !clientSecret) {
+    const missing = (['firstName', 'lastName', 'email', 'address', 'city', 'postcode'] as const).filter(
+      (k) => !formData[k].trim()
+    );
+    if (missing.length) {
+      setCardError('Please fill in all shipping details first.');
+      return;
+    }
+    if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
+      setCardError('Please enter a valid email address.');
+      return;
+    }
+
+    const cardElement = elements?.getElement(CardElement);
+    if (!stripe || !cardElement) {
       setCardError('Payment system not ready. Please try again.');
       return;
     }
 
-    const cardElement = elements.getElement(CardElement);
-    if (!cardElement) {
-      setCardError('Card element not found.');
-      return;
-    }
-
     setLoading(true);
-
     try {
+      const checkoutData: CheckoutData = {
+        items: items.map((item) => ({ id: item.id, quantity: item.quantity })),
+        customerEmail: formData.email.trim(),
+        customerName: `${formData.firstName} ${formData.lastName}`.trim(),
+        shippingAddress: {
+          address: formData.address,
+          city: formData.city,
+          postcode: formData.postcode,
+        },
+        isGift,
+        giftNote: isGift ? giftNote || undefined : undefined,
+      };
+      const { clientSecret } = await createPaymentIntent(checkoutData);
+
       const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
         payment_method: {
           card: cardElement,
           billing_details: {
-            name: `${formData.firstName} ${formData.lastName}`,
-            email: formData.email,
+            name: checkoutData.customerName,
+            email: checkoutData.customerEmail,
             address: {
               line1: formData.address,
               city: formData.city,
@@ -133,20 +113,16 @@ const PaymentForm = ({
 
       if (error) {
         setCardError(error.message || 'Payment failed. Please try again.');
-        setLoading(false);
+      } else if (paymentIntent?.status === 'succeeded') {
+        onSuccess();
         return;
-      }
-
-      if (paymentIntent?.status === 'succeeded') {
-        onSuccess(paymentIntent.id);
       } else {
         setCardError('Payment was not completed. Please try again.');
-        setLoading(false);
       }
     } catch (error: any) {
       setCardError(error.message || 'An unexpected error occurred.');
-      setLoading(false);
     }
+    setLoading(false);
   };
 
   return (
@@ -164,12 +140,12 @@ const PaymentForm = ({
 
       <div className="flex items-center gap-2 text-xs text-gray-500">
         <Lock className="w-3 h-3" />
-        <span>Your payment is secured with 256-bit SSL encryption</span>
+        <span>Payments are processed securely by Stripe</span>
       </div>
 
       <button
         type="submit"
-        disabled={loading || !stripe || !clientSecret}
+        disabled={loading || !stripe}
         className="w-full bg-mari-coral text-white py-4 rounded-full font-medium hover:bg-mari-dark transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
       >
         {loading ? (
@@ -183,7 +159,7 @@ const PaymentForm = ({
         ) : (
           <>
             <CreditCard className="w-5 h-5" />
-            Pay £{(total() + SHIPPING_COST).toFixed(2)}
+            Pay £{amount.toFixed(2)}
           </>
         )}
       </button>
@@ -194,17 +170,12 @@ const PaymentForm = ({
 // Main Checkout component
 export const Checkout = () => {
   const { items, total, subtotal, isGift, giftNote, clearCart } = useCartStore();
-  const { addOrder } = useAdminStore();
-  const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
   const [step, setStep] = useState<'form' | 'success'>('form');
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  // Remember the gift note for the confirmation screen (the cart is cleared on success).
+  const [confirmedGiftNote, setConfirmedGiftNote] = useState<string | null>(null);
 
-  const SHIPPING_COST = 4.99;
-  const GIFT_WRAP_COST = 5.00;
-
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<CustomerDetails>({
     firstName: '',
     lastName: '',
     email: '',
@@ -213,58 +184,19 @@ export const Checkout = () => {
     postcode: '',
   });
 
-  // Check for success redirect from Stripe hosted checkout
-  useEffect(() => {
-    const sessionId = searchParams.get('session_id');
-    if (sessionId) {
-      setStep('success');
-      clearCart();
-    }
-  }, [searchParams, clearCart]);
+  const orderTotal = total() + SHIPPING_COST;
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handlePaymentSuccess = async (paymentIntentId: string) => {
-    // Create order
-    const order = {
-      id: paymentIntentId || Date.now().toString(),
-      customerName: `${formData.firstName} ${formData.lastName}`,
-      email: formData.email,
-      address: formData.address,
-      city: formData.city,
-      postcode: formData.postcode,
-      items: [...items],
-      total: total() + SHIPPING_COST,
-      date: new Date().toISOString(),
-      status: 'pending' as const,
-      isGift,
-      giftNote: giftNote || undefined,
-    };
-
-    addOrder(order);
-
-    // Send emails
-    try {
-      const emailResults = await sendOrderEmails(order);
-      console.log('Email results:', emailResults);
-    } catch (emailError) {
-      console.error('Failed to send emails:', emailError);
-      // Don't block the success flow if emails fail
-    }
-
+  // The order itself is saved by the Stripe webhook on the server.
+  const handlePaymentSuccess = () => {
+    setConfirmedGiftNote(isGift && giftNote ? giftNote : null);
     setLoading(false);
     setStep('success');
     clearCart();
-  };
-
-  const handlePaymentError = (errorMessage: string) => {
-    setError(errorMessage);
-    setLoading(false);
+    window.scrollTo(0, 0);
   };
 
   // Success screen
@@ -281,14 +213,14 @@ export const Checkout = () => {
           </div>
           <h2 className="text-3xl font-serif text-mari-dark mb-4">Order Confirmed!</h2>
           <p className="text-gray-600 mb-8">
-            Thank you for shopping with Mari's Handmade. We've sent a confirmation email with your order details. Your candles will be on their way soon!
+            Thank you for shopping with Mari's Handmade. A receipt is on its way to your inbox. Your candles will be on their way soon!
           </p>
-          {isGift && giftNote && (
+          {confirmedGiftNote && (
             <div className="bg-mari-gold/10 p-4 rounded-lg mb-6 text-left">
               <p className="text-sm font-medium text-mari-gold flex items-center gap-2 mb-2">
                 <Gift className="w-4 h-4" /> Gift Message Included
               </p>
-              <p className="text-sm text-gray-600 italic">"{giftNote}"</p>
+              <p className="text-sm text-gray-600 italic">"{confirmedGiftNote}"</p>
             </div>
           )}
           <Link
@@ -414,22 +346,22 @@ export const Checkout = () => {
                 <CreditCard className="w-6 h-6" /> Payment
               </h2>
 
-              {error && (
-                <div className="mb-4 flex items-center gap-2 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+              {stripePromise ? (
+                <Elements stripe={stripePromise}>
+                  <PaymentForm
+                    formData={formData}
+                    amount={orderTotal}
+                    onSuccess={handlePaymentSuccess}
+                    loading={loading}
+                    setLoading={setLoading}
+                  />
+                </Elements>
+              ) : (
+                <div className="flex items-center gap-2 p-3 bg-amber-50 border border-amber-200 rounded-lg text-amber-800 text-sm">
                   <AlertCircle className="w-4 h-4 flex-shrink-0" />
-                  <span>{error}</span>
+                  <span>Online payments are being set up. Please message us on WhatsApp to order in the meantime.</span>
                 </div>
               )}
-
-              <Elements stripe={stripePromise}>
-                <PaymentForm
-                  formData={formData}
-                  onSuccess={handlePaymentSuccess}
-                  onError={handlePaymentError}
-                  loading={loading}
-                  setLoading={setLoading}
-                />
-              </Elements>
 
               <div className="mt-4 flex items-center justify-center gap-4 text-xs text-gray-400">
                 <span>Powered by</span>
@@ -486,7 +418,7 @@ export const Checkout = () => {
                 </div>
                 <div className="flex justify-between text-xl font-serif font-bold text-mari-dark pt-4">
                   <span>Total</span>
-                  <span>£{(total() + SHIPPING_COST).toFixed(2)}</span>
+                  <span>£{orderTotal.toFixed(2)}</span>
                 </div>
               </div>
             </div>

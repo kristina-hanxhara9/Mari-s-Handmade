@@ -1,72 +1,34 @@
 import { loadStripe } from '@stripe/stripe-js';
 
-// Initialize Stripe with your publishable key
-// IMPORTANT: Replace with your actual Stripe publishable key
-const stripePublishableKey = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || 'pk_test_your_publishable_key_here';
+const stripePublishableKey = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || '';
 
-export const stripePromise = loadStripe(stripePublishableKey);
+/** Null until a Stripe publishable key is configured. */
+export const stripePromise = stripePublishableKey ? loadStripe(stripePublishableKey) : null;
 
-// Types for Stripe checkout
-export interface CheckoutItem {
-  id: string;
-  name: string;
-  price: number;
-  quantity: number;
-  image: string;
-}
-
+/** Only ids and quantities are sent; the server looks up prices itself. */
 export interface CheckoutData {
-  items: CheckoutItem[];
+  items: { id: string; quantity: number }[];
   customerEmail: string;
   customerName: string;
   shippingAddress: {
     address: string;
     city: string;
     postcode: string;
-    country: string;
   };
   isGift: boolean;
   giftNote?: string;
-  shippingCost: number;
-  giftWrapCost: number;
 }
 
-// Create a Stripe Checkout Session
-export async function createCheckoutSession(data: CheckoutData): Promise<{ sessionId: string; url: string }> {
-  const apiUrl = import.meta.env.VITE_API_URL || '/.netlify/functions';
-
-  const response = await fetch(`${apiUrl}/create-checkout-session`, {
+export async function createPaymentIntent(data: CheckoutData): Promise<{ clientSecret: string; paymentIntentId: string; total: number }> {
+  const response = await fetch('/.netlify/functions/create-payment-intent', {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
   });
 
+  const body = await response.json().catch(() => ({}));
   if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.message || 'Failed to create checkout session');
+    throw new Error(body.error || 'Could not start the payment. Please try again.');
   }
-
-  return response.json();
-}
-
-// Alternative: Create Payment Intent for embedded checkout
-export async function createPaymentIntent(data: CheckoutData): Promise<{ clientSecret: string; paymentIntentId: string }> {
-  const apiUrl = import.meta.env.VITE_API_URL || '/.netlify/functions';
-
-  const response = await fetch(`${apiUrl}/create-payment-intent`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(data),
-  });
-
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.message || 'Failed to create payment intent');
-  }
-
-  return response.json();
+  return body;
 }

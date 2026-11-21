@@ -1,4 +1,3 @@
-import React from 'react';
 import { useCartStore } from '../store';
 import { X, Plus, Minus, Trash2, Gift } from 'lucide-react';
 import { Link } from 'react-router-dom';

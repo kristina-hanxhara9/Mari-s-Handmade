@@ -1,5 +1,5 @@
 
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAdminStore, useCartStore } from '../store';
 import { CandleEffect } from '../components/CandleEffect';
@@ -49,13 +49,6 @@ const reviews = [
     author: "Jessica M.",
     location: "Edinburgh"
   }
-];
-
-const galleryImages = [
-  "https://images.unsplash.com/photo-1602523774026-c23f5b72e022?q=80&w=800&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1596436066266-932f995a9478?q=80&w=800&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1617112836230-664448557d19?q=80&w=800&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1608649826315-998f4803b9f4?q=80&w=800&auto=format&fit=crop"
 ];
 
 const seasonalCollections = [
@@ -314,7 +307,7 @@ export const Home = () => {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
-              {seasonalCollections.map((collection, idx) => (
+              {seasonalCollections.map((collection) => (
                 <div 
                   key={collection.tag} 
                   className="relative overflow-hidden rounded-[28px] border border-white/30 shadow-[0_20px_50px_-20px_rgba(0,0,0,0.25)] group"

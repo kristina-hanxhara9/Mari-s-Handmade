@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { HashRouter as Router, Routes, Route, useLocation, Link } from 'react-router-dom';
 import { Navbar } from './components/Navbar';
 import { CartSidebar } from './components/CartSidebar';
@@ -15,7 +15,7 @@ import { WhatsAppButton } from './components/WhatsAppButton';
 // Scroll to top helper
 const ScrollToTop = () => {
   const { pathname } = useLocation();
-  React.useEffect(() => {
+  useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
   return null;
@@ -64,6 +64,18 @@ const modalContent = {
   )
 };
 
+type ModalType = keyof typeof modalContent;
+
+const getModalTitle = (type: ModalType | null) => {
+  switch (type) {
+    case 'shipping': return 'Shipping Policy';
+    case 'returns': return 'Returns & Refunds';
+    case 'contact': return 'Contact Us';
+    case 'terms': return 'Terms & Conditions';
+    default: return '';
+  }
+};
+
 const Footer = ({ onOpenModal }: { onOpenModal: (type: string) => void }) => (
   <footer className="relative pt-12 md:pt-16 pb-8 bg-transparent overflow-hidden">
     <div className="absolute top-0 left-0 right-0 h-16 md:h-20 z-10 pointer-events-none">
@@ -105,7 +117,7 @@ const Footer = ({ onOpenModal }: { onOpenModal: (type: string) => void }) => (
                     className="text-white/60 hover:text-white transition-all text-xs font-medium tracking-wide flex items-center gap-2 justify-center md:justify-start mx-auto md:mx-0"
                   >
                     <span className="w-3 h-[1px] bg-mari-gold/30 hidden md:block"></span>
-                    {type.charAt(0).toUpperCase() + type.slice(1).replace('shipping', 'Shipping Policy').replace('returns', 'Returns & Refunds').replace('terms', 'Terms & Conditions').replace('contact', 'Contact Us')}
+                    {getModalTitle(type as ModalType)}
                   </button>
                 </li>
               ))}
@@ -143,17 +155,7 @@ const Footer = ({ onOpenModal }: { onOpenModal: (type: string) => void }) => (
 );
 
 function App() {
-  const [activeModal, setActiveModal] = useState<keyof typeof modalContent | null>(null);
-
-  const getModalTitle = (type: keyof typeof modalContent | null) => {
-    switch(type) {
-      case 'shipping': return 'Shipping Policy';
-      case 'returns': return 'Returns & Refunds';
-      case 'contact': return 'Contact Us';
-      case 'terms': return 'Terms & Conditions';
-      default: return '';
-    }
-  };
+  const [activeModal, setActiveModal] = useState<ModalType | null>(null);
 
   return (
     <Router>
@@ -171,7 +173,7 @@ function App() {
             <Route path="/admin" element={<Admin />} />
           </Routes>
           
-          <Footer onOpenModal={(type) => setActiveModal(type as keyof typeof modalContent)} />
+          <Footer onOpenModal={(type) => setActiveModal(type as ModalType)} />
 
           <InfoModal
             isOpen={!!activeModal}

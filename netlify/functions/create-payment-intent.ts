@@ -1,110 +1,87 @@
-import type { Handler } from '@netlify/functions';
-
-// Note: You need to install stripe: npm install stripe
-// And set STRIPE_SECRET_KEY in your Netlify environment variables
-
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
-
-interface CheckoutItem {
-  id: string;
-  name: string;
-  price: number;
-  quantity: number;
-  image: string;
-}
+import Stripe from 'stripe';
+import { GIFT_WRAP_COST, SHIPPING_COST, json, lookupProducts, money } from './_lib/shop';
 
 interface CheckoutRequest {
-  items: CheckoutItem[];
+  items: { id: string; quantity: number }[];
   customerEmail: string;
   customerName: string;
-  shippingAddress: {
-    address: string;
-    city: string;
-    postcode: string;
-    country: string;
-  };
+  shippingAddress: { address: string; city: string; postcode: string };
   isGift: boolean;
   giftNote?: string;
-  shippingCost: number;
-  giftWrapCost: number;
 }
 
-const handler: Handler = async (event) => {
-  // CORS headers
-  const headers = {
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Headers': 'Content-Type',
-    'Access-Control-Allow-Methods': 'POST, OPTIONS',
-  };
+export default async (req: Request) => {
+  if (req.method !== 'POST') return json(405, { error: 'Method not allowed' });
 
-  // Handle preflight request
-  if (event.httpMethod === 'OPTIONS') {
-    return { statusCode: 200, headers, body: '' };
+  const secretKey = process.env.STRIPE_SECRET_KEY;
+  if (!secretKey) return json(503, { error: 'Payments are not set up yet. Please try again later.' });
+  const stripe = new Stripe(secretKey);
+
+  let data: CheckoutRequest;
+  try {
+    data = await req.json();
+  } catch {
+    return json(400, { error: 'Invalid request' });
   }
 
-  if (event.httpMethod !== 'POST') {
-    return {
-      statusCode: 405,
-      headers,
-      body: JSON.stringify({ error: 'Method not allowed' }),
-    };
+  const requested = (data.items || []).filter(
+    (i) => typeof i.id === 'string' && Number.isInteger(i.quantity) && i.quantity > 0 && i.quantity <= 50
+  );
+  if (requested.length === 0) return json(400, { error: 'Your basket is empty.' });
+  if (!data.customerEmail || !data.customerName || !data.shippingAddress?.address) {
+    return json(400, { error: 'Please fill in your name, email and address.' });
   }
 
   try {
-    const data: CheckoutRequest = JSON.parse(event.body || '{}');
+    const catalog = await lookupProducts(requested.map((i) => i.id));
+    const missing = requested.filter((i) => !catalog.has(i.id));
+    if (missing.length) {
+      return json(409, { error: 'Some items in your basket are no longer available. Please refresh and try again.' });
+    }
 
-    // Calculate total amount
-    const itemsTotal = data.items.reduce(
-      (sum, item) => sum + item.price * item.quantity,
-      0
-    );
-    const giftCost = data.isGift ? data.giftWrapCost : 0;
-    const totalAmount = itemsTotal + data.shippingCost + giftCost;
+    const lines = requested.map((i) => {
+      const p = catalog.get(i.id)!;
+      return { id: p.id, name: p.name, price: p.price, quantity: i.quantity };
+    });
+    const subtotal = money(lines.reduce((s, l) => s + l.price * l.quantity, 0));
+    const giftWrap = data.isGift ? GIFT_WRAP_COST : 0;
+    const total = money(subtotal + SHIPPING_COST + giftWrap);
 
-    // Create items description for metadata
-    const itemsDescription = data.items
-      .map((item) => `${item.name} x${item.quantity}`)
-      .join(', ');
+    // Stripe metadata values are limited to 500 chars, so split the item list across keys.
+    const itemsJson = JSON.stringify(lines.map((l) => [l.id, l.quantity, l.price]));
+    const itemChunks: Record<string, string> = {};
+    for (let i = 0; i * 450 < itemsJson.length && i < 20; i++) {
+      itemChunks[`items_${i}`] = itemsJson.slice(i * 450, (i + 1) * 450);
+    }
 
-    // Create Payment Intent
     const paymentIntent = await stripe.paymentIntents.create({
-      amount: Math.round(totalAmount * 100), // Stripe uses cents/pence
+      amount: Math.round(total * 100),
       currency: 'gbp',
-      automatic_payment_methods: {
-        enabled: true,
-      },
+      automatic_payment_methods: { enabled: true },
       receipt_email: data.customerEmail,
       metadata: {
-        customerName: data.customerName,
-        customerEmail: data.customerEmail,
-        shippingAddress: data.shippingAddress.address,
-        shippingCity: data.shippingAddress.city,
-        shippingPostcode: data.shippingAddress.postcode,
+        customerName: data.customerName.slice(0, 200),
+        customerEmail: data.customerEmail.slice(0, 200),
+        shippingAddress: data.shippingAddress.address.slice(0, 450),
+        shippingCity: (data.shippingAddress.city || '').slice(0, 100),
+        shippingPostcode: (data.shippingAddress.postcode || '').slice(0, 20),
         isGift: data.isGift ? 'true' : 'false',
-        giftNote: data.giftNote || '',
-        items: itemsDescription.substring(0, 500), // Stripe metadata limit
+        giftNote: (data.giftNote || '').slice(0, 450),
+        subtotal: subtotal.toFixed(2),
+        shipping: SHIPPING_COST.toFixed(2),
+        giftWrap: giftWrap.toFixed(2),
+        ...itemChunks,
       },
-      description: `Mari's Handmade Order - ${itemsDescription}`.substring(0, 1000),
+      description: `Mari's Handmade order: ${lines.map((l) => `${l.name} x${l.quantity}`).join(', ')}`.slice(0, 1000),
     });
 
-    return {
-      statusCode: 200,
-      headers,
-      body: JSON.stringify({
-        clientSecret: paymentIntent.client_secret,
-        paymentIntentId: paymentIntent.id,
-      }),
-    };
+    return json(200, {
+      clientSecret: paymentIntent.client_secret,
+      paymentIntentId: paymentIntent.id,
+      total,
+    });
   } catch (error: any) {
-    console.error('Stripe error:', error);
-    return {
-      statusCode: 500,
-      headers,
-      body: JSON.stringify({
-        error: error.message || 'Failed to create payment intent',
-      }),
-    };
+    console.error('create-payment-intent error:', error);
+    return json(500, { error: 'Could not start the payment. Please try again.' });
   }
 };
-
-export { handler };

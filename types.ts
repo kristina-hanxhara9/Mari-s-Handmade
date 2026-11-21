@@ -1,4 +1,3 @@
-
 export interface Product {
   id: string;
   name: string;
@@ -7,9 +6,19 @@ export interface Product {
   category: string;
   image: string;
   scentNotes: string;
+  burnTime?: string;
+  featured?: boolean;
+  inStock?: boolean;
 }
 
 export interface CartItem extends Product {
+  quantity: number;
+}
+
+export interface OrderItem {
+  id: string;
+  name: string;
+  price: number;
   quantity: number;
 }
 
@@ -20,10 +29,12 @@ export interface Order {
   address: string;
   city: string;
   postcode: string;
-  items: CartItem[];
+  items: OrderItem[];
+  subtotal: number;
+  shipping: number;
   total: number;
   date: string;
-  status: 'pending' | 'shipped' | 'delivered';
+  status: 'pending' | 'paid' | 'shipped' | 'delivered' | 'cancelled';
   isGift: boolean;
   giftNote?: string;
 }
@@ -51,16 +62,4 @@ export interface CartState {
   clearCart: () => void;
   subtotal: () => number;
   total: () => number;
-}
-
-export interface AdminState {
-  products: Product[];
-  orders: Order[];
-  siteConfig: SiteConfig;
-  addProduct: (product: Product) => void;
-  updateProduct: (id: string, updates: Partial<Product>) => void;
-  removeProduct: (id: string) => void;
-  addOrder: (order: Order) => void;
-  updateOrderStatus: (id: string, status: Order['status']) => void;
-  updateSiteConfig: (updates: Partial<SiteConfig>) => void;
 }

@@ -9,11 +9,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@emailjs/browser": "^4.3.3",
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.4.2",
-    "@stripe/react-stripe-js": "^2.4.0",
-    "@stripe/stripe-js": "^2.4.0",
+    "@stripe/react-stripe-js": "^3.11.0",
+    "@stripe/stripe-js": "^5.10.0",
     "@supabase/supabase-js": "^2.93.1",
     "framer-motion": "^12.23.24",
     "gsap": "^3.13.0",
@@ -21,10 +20,12 @@
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-router-dom": "^7.9.6",
+    "stripe": "^17.7.0",
     "three": "^0.181.2",
     "zustand": "^5.0.9"
   },
   "devDependencies": {
+    "@netlify/functions": "^6.1.1",
     "@types/node": "^22.14.0",
     "@vitejs/plugin-react": "^5.0.0",
     "typescript": "~5.8.2",

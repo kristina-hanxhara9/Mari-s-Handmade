@@ -1,5 +1,3 @@
-import React from 'react';
-import { MessageCircle } from 'lucide-react';
 
 const WHATSAPP_NUMBER = '447827804920'; // +44 7827 804920
 

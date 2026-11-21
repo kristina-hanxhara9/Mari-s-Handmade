@@ -1,9 +1,8 @@
 
-import React, { useMemo, useState, useEffect } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { useAdminStore, useCartStore } from '../store';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ShoppingBag } from 'lucide-react';
-import { SEOHead } from '../components/SEOHead';
 
 export const Shop = () => {
   // Update page title and meta for SEO

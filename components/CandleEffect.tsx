@@ -1,5 +1,5 @@
 
-import React, { useRef, useMemo, Suspense } from 'react';
+import { useRef, useMemo, Suspense } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { MeshDistortMaterial, Sparkles, Float } from '@react-three/drei';
 import * as THREE from 'three';
@@ -14,7 +14,7 @@ const MouseTrail = () => {
   const ref = useRef<THREE.Group>(null);
   const lightRef = useRef<THREE.PointLight>(null);
 
-  useFrame((state) => {
+  useFrame(() => {
     if (ref.current) {
       // Map mouse (-1 to 1) to viewport coordinates
       const x = (mouse.x * viewport.width) / 2;
@@ -76,7 +76,7 @@ const MagicFlame = () => {
   const colorPink = useMemo(() => new THREE.Color('#F4C2C2'), []);
   const colorGold = useMemo(() => new THREE.Color('#ffcf70'), []);
   
-  useFrame((state) => {
+  useFrame(() => {
     const time = clock.elapsedTime;
     const x = (mouse.x * viewport.width) / 2;
     const y = (mouse.y * viewport.height) / 2;
