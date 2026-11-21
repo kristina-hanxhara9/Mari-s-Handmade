@@ -4,6 +4,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { ShoppingBag, Menu, X } from 'lucide-react';
 import { useCartStore, useAdminStore } from '../store';
 import { AnimatePresence, motion } from 'framer-motion';
+import { CandleApostrophe } from './CandleApostrophe';
 
 const basePath = import.meta.env.BASE_URL || '/';
 
@@ -79,7 +80,7 @@ export const Navbar = () => {
                 scale: shouldShowBackground ? 0.85 : 1,
             }}
           >
-            Mari's
+            Mari<CandleApostrophe />s
           </motion.span>
           <motion.span 
             className="font-sans text-[7px] md:text-[10px] tracking-[0.4em] md:tracking-[0.5em] uppercase mt-0.5 md:mt-1 text-mari-teal font-bold drop-shadow-[0_1px_2px_rgba(255,255,255,0.8)]"

@@ -6,7 +6,7 @@ export const products: Product[] = [
   {
     id: '1',
     name: 'Blossom Box with Gold Chain',
-    description: 'Our signature arrangement featuring hand-poured peony, rose, and heart-shaped candles in soft pinks and creams. Presented in a luxury white box with an elegant gold chain handle.',
+    description: 'Our signature arrangement featuring hand poured peony, rose and heart shaped candles in soft pinks and creams. Presented in a luxury white box with an elegant gold chain handle.',
     price: 48.00,
     category: 'Arrangements',
     image: `/images/produkt1.webp`,
@@ -15,7 +15,7 @@ export const products: Product[] = [
   {
     id: '2',
     name: 'Celestial Blue & Gold Pillar',
-    description: 'A masterpiece of wax art. This tall pillar features a mesmerising mottled blue and white texture, hand-gilded with 24k gold leaf accents. Each piece is completely unique.',
+    description: 'A masterpiece of wax art. This tall pillar features a mesmerising mottled blue and white texture, hand gilded with 24k gold leaf accents. Each piece is completely unique.',
     price: 35.00,
     category: 'Pillars',
     image: `/images/produkt2.webp`,
@@ -51,7 +51,7 @@ export const products: Product[] = [
   {
     id: '6',
     name: 'Midnight Gold',
-    description: 'A deep blue version of our signature gold-leaf pillar, bringing a moody elegance to your evening.',
+    description: 'A deep blue version of our signature gold leaf pillar, bringing a moody elegance to your evening.',
     price: 35.00,
     category: 'Pillars',
     image: '',
@@ -60,7 +60,7 @@ export const products: Product[] = [
   {
     id: '7',
     name: 'Frosted Fir Luminary',
-    description: 'Winter white pillar with hand-painted evergreen branches and a dusting of pearl shimmer—perfect for Christmas mantels.',
+    description: 'Winter white pillar with hand painted evergreen branches and a dusting of pearl shimmer, perfect for Christmas mantels.',
     price: 38.00,
     category: 'Christmas',
     image: '',
@@ -69,7 +69,7 @@ export const products: Product[] = [
   {
     id: '8',
     name: 'Blush Peony Heart',
-    description: 'Romantic sculpted heart with layered petals and a satin bow—made for Valentines surprises.',
+    description: 'Romantic sculpted heart with layered petals and a satin bow, made for Valentine’s surprises.',
     price: 24.00,
     category: 'Valentines',
     image: '',
@@ -78,7 +78,7 @@ export const products: Product[] = [
   {
     id: '9',
     name: 'Golden Yolk Egg Duo',
-    description: 'Playful speckled egg candles nested in straw cups—sweet Easter brunch accents.',
+    description: 'Playful speckled egg candles nested in straw cups, sweet accents for Easter brunch.',
     price: 18.00,
     category: 'Easter',
     image: '',
@@ -87,7 +87,7 @@ export const products: Product[] = [
   {
     id: '10',
     name: 'Confetti Drip Celebration Pillar',
-    description: 'Tall ivory pillar with hand-poured candy-color drips and gold foil—built to crown a birthday table.',
+    description: 'Tall ivory pillar with hand poured candy colour drips and gold foil, made to crown a birthday table.',
     price: 32.00,
     category: 'Birthday',
     image: '',
@@ -105,7 +105,7 @@ export const products: Product[] = [
   {
     id: '12',
     name: 'Harvest Amber Lantern',
-    description: 'Amber-toned carved lantern with leaf reliefs, ready for autumn gatherings and cozy dinners.',
+    description: 'Amber toned carved lantern with leaf reliefs, ready for autumn gatherings and cozy dinners.',
     price: 34.00,
     category: 'Autumn',
     image: '',

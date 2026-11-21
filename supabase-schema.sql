@@ -137,17 +137,17 @@ CREATE TRIGGER update_products_updated_at
 -- ============================================
 INSERT INTO products (name, price, image, description, scent_notes, category, featured, in_stock)
 SELECT * FROM (VALUES
-  ('Blossom Box with Gold Chain', 48.00, '/images/produkt1.webp', 'Our signature arrangement featuring hand-poured peony, rose, and heart-shaped candles in soft pinks and creams. Presented in a luxury white box with an elegant gold chain handle.', 'Peony, Rose Petals, Sweet Pea', 'Arrangements', true, true),
-  ('Celestial Blue & Gold Pillar', 35.00, '/images/produkt2.webp', 'A masterpiece of wax art. This tall pillar features a mesmerising mottled blue and white texture, hand-gilded with 24k gold leaf accents. Each piece is completely unique.', 'Ocean Mist, Driftwood, Amber', 'Pillars', true, true),
+  ('Blossom Box with Gold Chain', 48.00, '/images/produkt1.webp', 'Our signature arrangement featuring hand poured peony, rose and heart shaped candles in soft pinks and creams. Presented in a luxury white box with an elegant gold chain handle.', 'Peony, Rose Petals, Sweet Pea', 'Arrangements', true, true),
+  ('Celestial Blue & Gold Pillar', 35.00, '/images/produkt2.webp', 'A masterpiece of wax art. This tall pillar features a mesmerising mottled blue and white texture, hand gilded with 24k gold leaf accents. Each piece is completely unique.', 'Ocean Mist, Driftwood, Amber', 'Pillars', true, true),
   ('Carousel Dreams Jar', 42.00, '/images/produkt3.webp', 'A whimsical white ceramic vessel adorned with intricate carousel horse reliefs. Filled with our creamy soy wax blend.', 'Vanilla Bean, Cashmere, Sandalwood', 'Jars', true, true),
   ('Pastel Tulip Bundle', 22.00, '', 'A delicate collection of individual tulip candles in spring pastel shades. Perfect for table settings.', 'Fresh Cut Grass, Lemon Zest', 'Novelty', false, true),
   ('Textured Love Heart', 16.00, '', 'Intricately textured heart candle in a vibrant berry pink. A perfect small gift for someone special.', 'Raspberry, Champagne, Sugar', 'Novelty', false, true),
-  ('Midnight Gold', 35.00, '', 'A deep blue version of our signature gold-leaf pillar, bringing a moody elegance to your evening.', 'Oud, Black Pepper, Bergamot', 'Pillars', false, true),
-  ('Frosted Fir Luminary', 38.00, '', 'Winter white pillar with hand-painted evergreen branches and a dusting of pearl shimmer—perfect for Christmas mantels.', 'Pine Resin, Clove, Winter Citrus', 'Christmas', false, true),
-  ('Blush Peony Heart', 24.00, '', 'Romantic sculpted heart with layered petals and a satin bow—made for Valentines surprises.', 'Rosewater, Peony, Vanilla Sugar', 'Valentines', false, true),
-  ('Golden Yolk Egg Duo', 18.00, '', 'Playful speckled egg candles nested in straw cups—sweet Easter brunch accents.', 'Lemon Curd, Neroli, Vanilla Pod', 'Easter', false, true),
-  ('Confetti Drip Celebration Pillar', 32.00, '', 'Tall ivory pillar with hand-poured candy-color drips and gold foil—built to crown a birthday table.', 'Sparkling Citrus, Buttercream, Tonka', 'Birthday', false, true),
+  ('Midnight Gold', 35.00, '', 'A deep blue version of our signature gold leaf pillar, bringing a moody elegance to your evening.', 'Oud, Black Pepper, Bergamot', 'Pillars', false, true),
+  ('Frosted Fir Luminary', 38.00, '', 'Winter white pillar with hand painted evergreen branches and a dusting of pearl shimmer, perfect for Christmas mantels.', 'Pine Resin, Clove, Winter Citrus', 'Christmas', false, true),
+  ('Blush Peony Heart', 24.00, '', 'Romantic sculpted heart with layered petals and a satin bow, made for Valentine’s surprises.', 'Rosewater, Peony, Vanilla Sugar', 'Valentines', false, true),
+  ('Golden Yolk Egg Duo', 18.00, '', 'Playful speckled egg candles nested in straw cups, sweet accents for Easter brunch.', 'Lemon Curd, Neroli, Vanilla Pod', 'Easter', false, true),
+  ('Confetti Drip Celebration Pillar', 32.00, '', 'Tall ivory pillar with hand poured candy colour drips and gold foil, made to crown a birthday table.', 'Sparkling Citrus, Buttercream, Tonka', 'Birthday', false, true),
   ('Mother’s Garden Bouquet', 36.00, '', 'Cluster of sculpted floral tapers wrapped in silk ribbon, a tender nod to Mother’s Day brunches.', 'Magnolia, White Tea, Honeycomb', 'Mother''s Day', false, true),
-  ('Harvest Amber Lantern', 34.00, '', 'Amber-toned carved lantern with leaf reliefs, ready for autumn gatherings and cozy dinners.', 'Maple Wood, Smoked Vanilla, Spiced Pear', 'Autumn', false, true)
+  ('Harvest Amber Lantern', 34.00, '', 'Amber toned carved lantern with leaf reliefs, ready for autumn gatherings and cozy dinners.', 'Maple Wood, Smoked Vanilla, Spiced Pear', 'Autumn', false, true)
 ) AS seed(name, price, image, description, scent_notes, category, featured, in_stock)
 WHERE NOT EXISTS (SELECT 1 FROM products);

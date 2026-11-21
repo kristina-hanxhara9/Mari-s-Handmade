@@ -22,7 +22,7 @@ const useHomeSEO = () => {
     document.title = "Mari's Handmade Candles | Luxury Sculptural Candles UK | Handcrafted Artisan Wax Art";
     const metaDesc = document.querySelector('meta[name="description"]');
     if (metaDesc) {
-      metaDesc.setAttribute('content', "Discover exquisite handcrafted sculptural candles from Mari's Handmade. Luxury artisan candles hand-poured in London, UK. Perfect for gifts, weddings, and home decor.");
+      metaDesc.setAttribute('content', "Discover exquisite handcrafted sculptural candles from Mari's Handmade. Luxury artisan candles hand poured in London, UK. Perfect for gifts, weddings, and home decor.");
     }
   }, []);
 };
@@ -44,7 +44,7 @@ const reviews = [
   },
   {
     id: 3,
-    text: "The packaging was plastic-free and so elegant. The 'Blossom Box' smells divine even without lighting it. Highly recommend as a gift.",
+    text: "The packaging was plastic free and so elegant. The 'Blossom Box' smells divine even without lighting it. Highly recommend as a gift.",
     author: "Michael T.",
     location: "Bristol"
   },
@@ -73,11 +73,11 @@ type SeasonalCollection = {
 // Blurbs are kept to a similar length so every card lines up.
 const seasonalCollections: SeasonalCollection[] = [
   { title: 'Christmas Atelier', tag: 'Christmas', blurb: 'Fir, clove and gold leaf for long fireside evenings.', icon: TreePine, image: '/images/seasonal/christmas.webp', wall: ['#E9CDBC', '#EFDBCB'], focus: '70% 60%', bow: '#F7EFE6' },
-  { title: "Valentine's Salon", tag: "Valentine's", blurb: 'Rose-blush hearts tied in silk, made for evenings in love.', icon: Heart, image: '/images/seasonal/valentines.webp', wall: ['#F1CEC5', '#F4D5CA'], focus: '62% 60%', bow: '#F6C9CF' },
+  { title: "Valentine's Salon", tag: "Valentine's", blurb: 'Rose blush hearts tied in silk, made for evenings in love.', icon: Heart, image: '/images/seasonal/valentines.webp', wall: ['#F1CEC5', '#F4D5CA'], focus: '62% 60%', bow: '#F6C9CF' },
   { title: 'Easter Brunch', tag: 'Easter', blurb: 'Speckled egg candles in soft pastels for the spring table.', icon: Egg, image: '/images/seasonal/easter.webp', wall: ['#F3DFCE', '#F5E2D2'], focus: '58% 60%', bow: '#F7EFE6' },
-  { title: 'Birthday Parlour', tag: 'Birthday', blurb: 'Confetti-drip keepsakes with sparkling citrus for big nights.', icon: Cake, image: '/images/seasonal/birthday.webp', wall: ['#EEDBD1', '#ECD4CD'], focus: '50% 60%', bow: '#F7EFE6' },
+  { title: 'Birthday Parlour', tag: 'Birthday', blurb: 'Confetti drip keepsakes with sparkling citrus for big nights.', icon: Cake, image: '/images/seasonal/birthday.webp', wall: ['#EEDBD1', '#ECD4CD'], focus: '50% 60%', bow: '#F7EFE6' },
   { title: "Mother's Day Tea", tag: "Mother's Day", blurb: "Floral pieces with garden tea notes, a gift she'll treasure.", icon: Gift, image: '/images/seasonal/mothers.webp', wall: ['#F2D5C8', '#F6DDD1'], focus: '58% 60%', bow: '#F6C9CF' },
-  { title: 'Autumn Harvest', tag: 'Autumn', blurb: 'Amber lanterns and smoky vanilla for candle-lit dinners.', icon: Leaf, image: '/images/seasonal/autumn.webp', wall: ['#F6D9C4', '#F8DECB'], focus: '55% 60%', bow: '#F7EFE6' },
+  { title: 'Autumn Harvest', tag: 'Autumn', blurb: 'Amber lanterns and smoky vanilla for candlelit dinners.', icon: Leaf, image: '/images/seasonal/autumn.webp', wall: ['#F6D9C4', '#F8DECB'], focus: '55% 60%', bow: '#F7EFE6' },
 ];
 
 /** Small satin bow that sits on top of each seasonal card's frame. */
@@ -203,7 +203,7 @@ export const Home = () => {
               transition={{ delay: 1, duration: 1 }}
               className="text-sm sm:text-base md:text-lg xl:text-xl text-gray-700 font-sans tracking-widest font-light italic leading-relaxed text-center md:text-left max-w-md mx-auto md:mx-0"
             >
-              Sculptural candles, hand-poured in London, UK. Designed to be a masterpiece.
+              Sculptural candles, hand poured in London, UK. Designed to be a masterpiece.
             </motion.p>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -393,7 +393,7 @@ export const Home = () => {
                   <span className="text-mari-gold font-bold tracking-[0.4em] text-[10px] uppercase">Behind the Flame</span>
                   <h2 className="text-5xl md:text-8xl font-display font-normal text-mari-ink">Hi, I'm <span className="italic font-light text-mari-teal">Mari.</span></h2>
                   <p className="text-lg md:text-xl text-gray-600 font-light italic leading-relaxed">
-                      "I believe that a candle shouldn't just smell good—it should be an object of beauty that commands a room."
+                      "I believe that a candle shouldn't just smell good. It should be an object of beauty that commands a room."
                   </p>
               </div>
               <div className="relative flex justify-center md:justify-end">

@@ -2,7 +2,7 @@ import { useEffect, useId, useRef, useState, type ReactNode } from 'react';
 
 /**
  * Ivory picture frames drawn to the exact size of the picture:
- *  - "pearl":  rounded arch lined with a row of pearls
+ *  - "pearl":  slim warm-cream arch with a close row of pearls set into it
  *  - "ogee":   curved, bell-shaped top with a thin gold inner line
  *  - "ornate": the ogee frame with a carved ornament at the top
  *  - "cameo":  wide rounded panel with a raised, wavy top edge and a pearl row
@@ -17,7 +17,7 @@ const f = (n: number) => n.toFixed(1);
 /** Arch: half-ellipse top, straight sides, softly rounded bottom corners. */
 function archPath({ x, y, w, h }: Box, bottomRadius: number) {
   const rx = w / 2;
-  const ry = Math.min(w * 0.46, h * 0.4);
+  const ry = Math.min(w * 0.5, h * 0.45);
   const rb = Math.min(bottomRadius, w / 4);
   return [
     `M${f(x)},${f(y + ry)}`,
@@ -105,30 +105,48 @@ export const FramedPicture = ({
   const { w, h } = size;
   const ready = w > 0 && h > 0;
   const isCameo = frame === 'cameo';
-  const isPearl = frame === 'pearl' || isCameo; // frames lined with pearls
+  const isArch = frame === 'pearl';
+  const isPearl = isArch || isCameo; // frames lined with pearls
   const thickness = isCameo
     ? Math.max(11, Math.min(15, w * 0.035))
-    : Math.max(11, Math.min(isPearl ? 22 : 16, w * (isPearl ? 0.062 : 0.045)));
-  const shape = isCameo ? cameoPath : frame === 'pearl' ? archPath : ogeePath;
+    : isArch
+      ? Math.max(12, Math.min(18, w * 0.05))
+      : Math.max(11, Math.min(16, w * 0.045));
+  // Cream border between the frame and the photo, so the photo sits further in.
+  const gap = isCameo ? Math.max(8, Math.min(12, w * 0.028)) : Math.max(6, Math.min(14, w * 0.035));
+  const shape = isCameo ? cameoPath : isArch ? archPath : ogeePath;
   const outerR = isCameo ? thickness * 2.6 : thickness * 1.6;
   const innerR = isCameo ? thickness * 1.8 : thickness * 0.8;
+  const photoR = Math.max(4, innerR - gap * 0.5);
   const outerBox: Box = { x: 0, y: 0, w, h };
   const innerBox = inset(outerBox, thickness);
+  const photoBox = inset(innerBox, gap);
   const outer = ready ? shape(outerBox, outerR) : '';
   const inner = ready ? shape(innerBox, innerR) : '';
+  const photo = ready ? shape(photoBox, photoR) : '';
   const innerClip = ready ? shape({ ...innerBox, x: 0, y: 0 }, innerR) : '';
+  const photoClip = ready ? shape({ ...photoBox, x: 0, y: 0 }, photoR) : '';
   const pearlLine = ready && isPearl ? shape(inset(outerBox, thickness / 2), (outerR + innerR) / 2) : '';
   const goldLine = ready && !isPearl ? shape(inset(outerBox, thickness + 4), thickness * 0.6) : '';
-  const pearl = isCameo ? Math.max(4, Math.min(5.5, w * 0.013)) : Math.max(5.5, Math.min(8.5, w * 0.024));
+  const pearl = isCameo ? Math.max(4, Math.min(5.5, w * 0.013)) : isArch ? thickness * 0.56 : 6;
+  const pearlStep = isArch ? pearl * 1.1 : pearl * 1.55;
+  const frameFill = isArch ? `url(#cream-${id})` : `url(#ivory-${id})`;
 
   return (
     <div ref={ref} className={`relative ${frame === 'ornate' ? 'mt-6' : ''} ${className}`}>
-      {/* The picture, clipped to the frame's opening */}
+      {/* Cream border inside the frame */}
+      {gap > 0 && (
+        <div
+          className="absolute bg-[#FBF6F1]"
+          style={{ inset: thickness, clipPath: ready ? `path('${innerClip}')` : undefined }}
+        />
+      )}
+      {/* The picture, clipped to the opening */}
       <div
         className={`absolute overflow-hidden ${pictureClassName}`}
         style={{
-          inset: thickness,
-          clipPath: ready ? `path('${innerClip}')` : undefined,
+          inset: thickness + gap,
+          clipPath: ready ? `path('${photoClip}')` : undefined,
           borderRadius: ready ? undefined : '999px 999px 12px 12px',
         }}
       >
@@ -147,6 +165,11 @@ export const FramedPicture = ({
               <stop offset="45%" stopColor="#F7F1EA" />
               <stop offset="100%" stopColor="#E6DACB" />
             </linearGradient>
+            <linearGradient id={`cream-${id}`} x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stopColor="#FBF0E6" />
+              <stop offset="50%" stopColor="#F2DFCD" />
+              <stop offset="100%" stopColor="#E6CDB7" />
+            </linearGradient>
             <clipPath id={`open-${id}`}>
               <path d={inner} />
             </clipPath>
@@ -155,11 +178,12 @@ export const FramedPicture = ({
             </filter>
           </defs>
 
-          {/* Shadow cast by the frame onto the picture */}
-          <path d={inner} fill="none" stroke="rgba(40,30,20,0.28)" strokeWidth={10} filter={`url(#soft-${id})`} clipPath={`url(#open-${id})`} />
+          {/* Shadow cast by the frame inside the opening */}
+          <path d={inner} fill="none" stroke={gap > 0 ? 'rgba(40,30,20,0.14)' : 'rgba(40,30,20,0.28)'} strokeWidth={10} filter={`url(#soft-${id})`} clipPath={`url(#open-${id})`} />
+          {gap > 0 && <path d={photo} fill="none" stroke="rgba(150,115,85,0.28)" strokeWidth={1} />}
 
           {/* Frame body */}
-          <path d={`${outer} ${inner}`} fillRule="evenodd" fill={`url(#ivory-${id})`} />
+          <path d={`${outer} ${inner}`} fillRule="evenodd" fill={frameFill} />
           <path d={outer} fill="none" stroke="rgba(255,255,255,0.9)" strokeWidth={1.5} />
           <path d={outer} fill="none" stroke="rgba(150,120,90,0.18)" strokeWidth={1} transform="translate(0.6 0.8)" />
           <path d={inner} fill="none" stroke="rgba(130,100,70,0.35)" strokeWidth={1.2} />
@@ -167,9 +191,10 @@ export const FramedPicture = ({
 
           {isPearl && (
             <g strokeLinecap="round" fill="none">
-              <path d={pearlLine} stroke="rgba(140,105,75,0.45)" strokeWidth={pearl + 1} strokeDasharray={`0 ${pearl * 1.55}`} transform="translate(0.5 0.9)" />
-              <path d={pearlLine} stroke="#EADBC8" strokeWidth={pearl} strokeDasharray={`0 ${pearl * 1.55}`} />
-              <path d={pearlLine} stroke="#FFFFFF" strokeWidth={pearl * 0.42} strokeDasharray={`0 ${pearl * 1.55}`} transform={`translate(${-pearl * 0.18} ${-pearl * 0.2})`} />
+              {isArch && <path d={pearlLine} stroke="rgba(170,130,100,0.25)" strokeWidth={pearl + 2.5} strokeLinecap="butt" />}
+              <path d={pearlLine} stroke="rgba(140,105,75,0.45)" strokeWidth={pearl + 1} strokeDasharray={`0 ${pearlStep}`} transform="translate(0.5 0.9)" />
+              <path d={pearlLine} stroke={isArch ? '#F3E2D1' : '#EADBC8'} strokeWidth={pearl} strokeDasharray={`0 ${pearlStep}`} />
+              <path d={pearlLine} stroke="#FFFFFF" strokeOpacity={isArch ? 0.9 : 1} strokeWidth={pearl * 0.42} strokeDasharray={`0 ${pearlStep}`} transform={`translate(${-pearl * 0.18} ${-pearl * 0.2})`} />
             </g>
           )}
 

@@ -11,7 +11,7 @@ export const Shop = () => {
     document.title = "Shop Luxury Handmade Candles | Mari's Handmade UK";
     const metaDesc = document.querySelector('meta[name="description"]');
     if (metaDesc) {
-      metaDesc.setAttribute('content', 'Browse our collection of luxury handcrafted sculptural candles. Pillar candles, arrangements, jars, and seasonal designs. Hand-poured in the UK with premium ingredients.');
+      metaDesc.setAttribute('content', 'Browse our collection of luxury handcrafted sculptural candles. Pillar candles, arrangements, jars, and seasonal designs. Hand poured in the UK with premium ingredients.');
     }
   }, []);
   const [activeCategory, setActiveCategory] = useState('All');

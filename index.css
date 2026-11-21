@@ -119,3 +119,19 @@ body {
                 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 40' preserveAspectRatio='none'%3E%3Cpath d='M0,0 H1440 V14 C1320,36 1200,36 1080,20 C960,4 840,4 720,20 C600,36 480,36 360,20 C240,4 120,4 0,28 Z' fill='black'/%3E%3C/svg%3E") bottom / 100% var(--nav-wave-h) no-repeat;
   }
 }
+
+/* Candle flame apostrophe in the logo */
+@keyframes logo-flicker {
+  0%, 100% { transform: scale(1, 1) rotate(0deg); }
+  30% { transform: scale(0.95, 1.05) rotate(-2deg); }
+  60% { transform: scale(1.04, 0.97) rotate(2deg); }
+}
+@keyframes logo-glow {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 0.9; }
+}
+.logo-flame { transform-box: fill-box; transform-origin: 50% 100%; animation: logo-flicker 2.2s ease-in-out infinite; }
+.logo-glow { animation: logo-glow 2.8s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .logo-flame, .logo-glow { animation: none; }
+}

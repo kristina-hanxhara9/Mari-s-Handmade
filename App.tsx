@@ -8,6 +8,7 @@ import { Home } from './pages/Home';
 import { LightCursor } from './components/LightCursor';
 import { BackgroundLayout } from './layouts/BackgroundLayout';
 import { WhatsAppButton } from './components/WhatsAppButton';
+import { CandleApostrophe } from './components/CandleApostrophe';
 import { Instagram } from 'lucide-react';
 
 const INSTAGRAM_URL = 'https://www.instagram.com/maris_handmade25/';
@@ -32,10 +33,10 @@ const ScrollToTop = () => {
 const modalContent = {
   shipping: (
     <div className="space-y-4">
-      <p><strong>Processing Time:</strong> All our candles are handmade to order. Please allow 3-5 business days for your order to be crafted and cured before dispatch.</p>
-      <p><strong>UK Standard Delivery (£4.99):</strong> 2-4 working days via Royal Mail Tracked 48.</p>
+      <p><strong>Processing Time:</strong> All our candles are handmade to order. Please allow 3 to 5 business days for your order to be crafted and cured before dispatch.</p>
+      <p><strong>UK Standard Delivery (£4.99):</strong> 2 to 4 working days via Royal Mail Tracked 48.</p>
       <p><strong>Express Delivery (£7.99):</strong> Next working day delivery via DPD (Orders placed before 12pm).</p>
-      <p>Currently, we only ship within the United Kingdom. We pack all orders using plastic-free, biodegradable materials to ensure your candles arrive safely and sustainably.</p>
+      <p>Currently, we only ship within the United Kingdom. We pack all orders using plastic free, biodegradable materials to ensure your candles arrive safely and sustainably.</p>
     </div>
   ),
   returns: (
@@ -43,7 +44,7 @@ const modalContent = {
       <p>We hope you love your Mari's Handmade purchase. However, if you are not completely satisfied, we are here to help.</p>
       <p><strong>Return Policy:</strong> You have 14 days from the date of delivery to return your item. To be eligible for a return, your item must be unused, in the same condition that you received it, and in the original packaging.</p>
       <p><strong>Damages:</strong> If your candle arrives damaged, please contact us within 48 hours with photographic evidence, and we will arrange a replacement immediately.</p>
-      <p><strong>Refunds:</strong> Once we receive your return, we will inspect it and notify you. If approved, your refund will be processed to your original method of payment within 5-10 business days.</p>
+      <p><strong>Refunds:</strong> Once we receive your return, we will inspect it and notify you. If approved, your refund will be processed to your original method of payment within 5 to 10 business days.</p>
     </div>
   ),
   contact: (
@@ -54,7 +55,7 @@ const modalContent = {
         <li><strong>Email:</strong> hello@marishandmade.co.uk</li>
         <li><strong>Instagram:</strong> <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" className="underline hover:text-mari-teal">@maris_handmade25</a></li>
         <li><strong>Studio:</strong> London, UK</li>
-        <li><strong>Studio Hours:</strong> Mon-Fri, 9am - 5pm</li>
+        <li><strong>Studio Hours:</strong> Monday to Friday, 9am to 5pm</li>
       </ul>
       <p>For wholesale inquiries, please include "Wholesale" in your email subject line.</p>
     </div>
@@ -111,7 +112,7 @@ const Footer = ({ onOpenModal }: { onOpenModal: (type: string) => void }) => (
       <div className="max-w-7xl mx-auto px-6 sm:px-12 lg:px-16">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 mb-10 md:mb-12">
           <div className="space-y-4 text-center md:text-left">
-            <h3 className="text-xl md:text-2xl font-serif text-white tracking-widest uppercase">Mari's</h3>
+            <h3 className="text-xl md:text-2xl font-serif text-white tracking-widest uppercase">Mari<CandleApostrophe />s</h3>
             <p className="text-white/70 font-light leading-relaxed max-w-sm mx-auto md:mx-0 italic text-sm md:text-base">
               "Every light is a sculpture, every scent a memory." Handcrafted with devotion in our London studio.
             </p>
