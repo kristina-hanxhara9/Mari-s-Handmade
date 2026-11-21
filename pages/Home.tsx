@@ -260,7 +260,7 @@ export const Home = () => {
         <Section
           variant="transparent"
           className="overflow-hidden"
-          paddingClass="pt-8 pb-20 md:pt-12 md:pb-[100px]"
+          paddingClass="pt-8 pb-6 md:pt-12 md:pb-10"
         >
           <div ref={featuredRef} className="max-w-7xl mx-auto relative">
             <div className="flex flex-col md:flex-row justify-between items-center md:items-end mb-16 gap-4 text-center md:text-left">
@@ -324,7 +324,7 @@ export const Home = () => {
         </Section>
 
         {/* SEASONAL COLLECTIONS */}
-        <Section variant="transparent" className="overflow-hidden">
+        <Section variant="transparent" className="overflow-hidden" paddingClass="pt-10 pb-20 md:pt-14 md:pb-[100px]">
           <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
             <div className="text-center mb-12 md:mb-16">
               <div className="flex items-center justify-center gap-4 mb-4">

@@ -32,7 +32,7 @@ export const CandleGlow = () => {
       aria-hidden="true"
       className={`candle-glow absolute inset-0 pointer-events-none overflow-hidden flex items-center justify-center ${visible ? '' : 'is-paused'}`}
     >
-      <div className="relative w-[240px] h-[340px] md:w-[320px] md:h-[440px]">
+      <div className="cg-body relative w-[240px] h-[340px] md:w-[320px] md:h-[440px]">
         {/* warm halo */}
         <div className="cg-halo absolute -inset-[45%] rounded-full" />
         {/* flame layers: outer teal and pink, warm middle, bright core */}

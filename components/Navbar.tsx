@@ -36,6 +36,13 @@ export const Navbar = () => {
   ];
 
   const isHome = location.pathname === '/';
+
+  // Section links ("/#story") also scroll when you are already on that page.
+  const handleNav = (path: string) => {
+    setMobileMenuOpen(false);
+    const id = path.split('#')[1];
+    if (id) window.setTimeout(() => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 200);
+  };
   const shouldShowBackground = isScrolled || mobileMenuOpen || !isHome;
 
   return (
@@ -98,6 +105,7 @@ export const Navbar = () => {
             <Link
               key={link.name}
               to={link.path}
+              onClick={() => handleNav(link.path)}
               className={`text-[10px] font-bold tracking-[0.3em] transition-all duration-300 uppercase relative group drop-shadow-[0_1px_2px_rgba(255,255,255,0.5)] ${
                 shouldShowBackground ? 'text-mari-dark hover:text-mari-gold' : 'text-mari-dark/80 hover:text-mari-gold'
               }`}
@@ -155,7 +163,7 @@ export const Navbar = () => {
                 >
                   <Link
                     to={link.path}
-                    onClick={() => setMobileMenuOpen(false)}
+                    onClick={() => handleNav(link.path)}
                     className="text-3xl font-serif text-mari-dark hover:text-mari-gold transition-colors block"
                   >
                     {link.name}

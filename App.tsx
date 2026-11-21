@@ -21,11 +21,18 @@ const Checkout = lazy(() => import('./pages/Checkout').then((m) => ({ default: m
 const Admin = lazy(() => import('./pages/Admin').then((m) => ({ default: m.Admin })));
 
 // Scroll to top helper
+// Scroll to the top on page change, or to a section when the link names one (e.g. "/#story")
 const ScrollToTop = () => {
-  const { pathname } = useLocation();
+  const { pathname, hash } = useLocation();
   useEffect(() => {
+    if (hash) {
+      const timer = window.setTimeout(() => {
+        document.getElementById(hash.slice(1))?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 150);
+      return () => window.clearTimeout(timer);
+    }
     window.scrollTo(0, 0);
-  }, [pathname]);
+  }, [pathname, hash]);
   return null;
 };
 
@@ -88,8 +95,8 @@ const getModalTitle = (type: ModalType | null) => {
 };
 
 const Footer = ({ onOpenModal }: { onOpenModal: (type: string) => void }) => (
-  <footer className="relative pt-12 md:pt-16 pb-8 bg-transparent overflow-hidden">
-    <div className="absolute top-0 left-0 right-0 h-16 md:h-20 z-10 pointer-events-none">
+  <footer className="relative pt-10 md:pt-16 bg-transparent overflow-hidden">
+    <div className="absolute top-0 left-0 right-0 h-12 md:h-20 z-10 pointer-events-none">
       <svg 
         viewBox="0 0 1440 160" 
         className="absolute top-0 w-full h-full fill-mari-charcoal"
@@ -108,24 +115,24 @@ const Footer = ({ onOpenModal }: { onOpenModal: (type: string) => void }) => (
       </svg>
     </div>
 
-    <div className="bg-mari-charcoal text-white pt-8 md:pt-12 relative z-20">
+    <div className="bg-mari-charcoal text-white pt-6 md:pt-12 relative z-20">
       <div className="max-w-7xl mx-auto px-6 sm:px-12 lg:px-16">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 mb-10 md:mb-12">
-          <div className="space-y-4 text-center md:text-left">
-            <h3 className="text-xl md:text-2xl font-serif text-white tracking-widest uppercase">Mari<CandleApostrophe />s</h3>
-            <p className="text-white/70 font-light leading-relaxed max-w-sm mx-auto md:mx-0 italic text-sm md:text-base">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-6 md:gap-12 mb-6 md:mb-12">
+          <div className="col-span-2 md:col-span-1 space-y-2 md:space-y-4">
+            <h3 className="text-lg md:text-2xl font-serif text-white tracking-widest uppercase">Mari<CandleApostrophe />s</h3>
+            <p className="text-white/70 font-light leading-relaxed max-w-sm italic text-xs md:text-base">
               "Every light is a sculpture, every scent a memory." Handcrafted with devotion in our London studio.
             </p>
           </div>
           
-          <div className="text-center md:text-left">
-            <h4 className="text-[9px] md:text-[10px] font-bold tracking-[0.4em] mb-4 md:mb-6 text-mari-gold uppercase">Customer Support</h4>
-            <ul className="space-y-2 md:space-y-3">
+          <div>
+            <h4 className="text-[8px] md:text-[10px] font-bold tracking-[0.3em] md:tracking-[0.4em] mb-3 md:mb-6 text-mari-gold uppercase">Customer Support</h4>
+            <ul className="space-y-1.5 md:space-y-3">
               {['shipping', 'returns', 'terms', 'contact'].map((type) => (
                 <li key={type}>
                   <button 
                     onClick={() => onOpenModal(type)} 
-                    className="text-white/60 hover:text-white transition-all text-xs font-medium tracking-wide flex items-center gap-2 justify-center md:justify-start mx-auto md:mx-0"
+                    className="text-white/60 hover:text-white transition-all text-[11px] md:text-xs font-medium tracking-wide text-left"
                   >
                     {getModalTitle(type as ModalType)}
                   </button>
@@ -134,14 +141,14 @@ const Footer = ({ onOpenModal }: { onOpenModal: (type: string) => void }) => (
             </ul>
           </div>
           
-          <div className="space-y-6 text-center md:text-left">
+          <div className="space-y-3 md:space-y-6 min-w-0">
              <div>
-               <h4 className="text-[9px] md:text-[10px] font-bold tracking-[0.4em] mb-3 md:mb-4 text-mari-gold uppercase">The Studio</h4>
-               <p className="text-white/60 text-xs md:text-sm leading-relaxed">
+               <h4 className="text-[8px] md:text-[10px] font-bold tracking-[0.3em] md:tracking-[0.4em] mb-3 md:mb-4 text-mari-gold uppercase">The Studio</h4>
+               <p className="text-white/60 text-[11px] md:text-sm leading-relaxed break-words">
                  London, UK<br/>
                  Open for custom commissions.<br/>
                  <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="hover:text-mari-gold transition-colors">WhatsApp {WHATSAPP_DISPLAY}</a><br/>
-                 hello@marishandmade.co.uk
+                 <a href="mailto:hello@marishandmade.co.uk" className="hover:text-mari-gold transition-colors">hello@marishandmade.co.uk</a>
                </p>
              </div>
              <a
@@ -149,17 +156,17 @@ const Footer = ({ onOpenModal }: { onOpenModal: (type: string) => void }) => (
                target="_blank"
                rel="noopener noreferrer"
                aria-label="Follow Mari's Handmade on Instagram"
-               className="inline-flex items-center gap-3 group"
+               className="inline-flex items-center gap-2 md:gap-3 group"
              >
-               <span className="w-9 h-9 md:w-10 md:h-10 rounded-full flex items-center justify-center bg-gradient-to-br from-[#3F8FB0] via-[#8FB8E0] to-[#E8799F] shadow-[0_4px_14px_-4px_rgba(232,160,184,0.6)] transition-all duration-300 group-hover:scale-110 group-hover:shadow-[0_6px_18px_-4px_rgba(74,144,164,0.7)]">
-                 <Instagram className="w-4 h-4 text-white" />
+               <span className="shrink-0 w-7 h-7 md:w-10 md:h-10 rounded-full flex items-center justify-center bg-gradient-to-br from-[#3F8FB0] via-[#8FB8E0] to-[#E8799F] shadow-[0_4px_14px_-4px_rgba(232,160,184,0.6)] transition-all duration-300 group-hover:scale-110 group-hover:shadow-[0_6px_18px_-4px_rgba(74,144,164,0.7)]">
+                 <Instagram className="w-3.5 h-3.5 md:w-4 md:h-4 text-white" />
                </span>
-               <span className="text-xs md:text-sm tracking-wide font-semibold bg-gradient-to-r from-[#8CC4EA] to-[#F291B4] bg-clip-text text-transparent transition-all duration-300 group-hover:from-[#B5DCF5] group-hover:to-[#F8B4CC]">@maris_handmade25</span>
+               <span className="text-[11px] md:text-sm tracking-wide font-semibold bg-gradient-to-r from-[#8CC4EA] to-[#F291B4] bg-clip-text text-transparent transition-all duration-300 group-hover:from-[#B5DCF5] group-hover:to-[#F8B4CC]">@maris_handmade25</span>
              </a>
           </div>
         </div>
         
-        <div className="border-t border-white/5 pt-6 md:pt-8 text-center flex flex-col md:flex-row justify-between items-center gap-3 md:gap-4 pb-4 md:pb-6">
+        <div className="border-t border-white/5 pt-4 md:pt-8 flex flex-row flex-wrap justify-between items-center gap-2 md:gap-4 pb-14 md:pb-6">
           <span className="text-white/30 text-[8px] md:text-[9px] tracking-[0.3em] uppercase">&copy; {new Date().getFullYear()} Mari's Handmade</span>
           <div className="flex flex-wrap justify-center items-center gap-4 md:gap-6">
             <Link to="/admin" className="text-white/20 hover:text-mari-gold transition-colors text-[8px] md:text-[9px] uppercase tracking-widest font-bold">Admin Portal</Link>

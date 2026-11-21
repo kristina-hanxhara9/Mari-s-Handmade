@@ -161,17 +161,17 @@ body {
 .cg-outer {
   background: radial-gradient(ellipse at 50% 70%, rgba(244, 194, 194, 0.55), rgba(74, 144, 164, 0.28) 55%, transparent 75%);
   filter: blur(22px);
-  animation: cg-sway 5s ease-in-out infinite;
+  animation: cg-sway 4.5s ease-in-out infinite;
 }
 .cg-mid {
   background: radial-gradient(ellipse at 50% 72%, rgba(255, 214, 140, 0.75), rgba(255, 158, 128, 0.35) 55%, transparent 78%);
   filter: blur(14px);
-  animation: cg-flicker 2.6s ease-in-out infinite;
+  animation: cg-flicker 1.9s ease-in-out infinite;
 }
 .cg-core {
   background: radial-gradient(ellipse at 50% 70%, rgba(255, 255, 245, 0.95), rgba(255, 228, 170, 0.6) 50%, transparent 80%);
   filter: blur(8px);
-  animation: cg-flicker 1.8s ease-in-out infinite reverse;
+  animation: cg-flicker 1.3s ease-in-out infinite reverse;
 }
 .cg-spark {
   background: radial-gradient(circle, #FFF6DA, rgba(255, 199, 90, 0.6) 60%, transparent 70%);
@@ -180,23 +180,31 @@ body {
   will-change: transform, opacity;
 }
 @keyframes cg-pulse {
-  0%, 100% { opacity: 0.75; transform: scale(1); }
-  50% { opacity: 1; transform: scale(1.06); }
+  0%, 100% { opacity: 0.6; transform: scale(0.96); }
+  50% { opacity: 1; transform: scale(1.12); }
 }
 @keyframes cg-sway {
-  0%, 100% { transform: rotate(-2deg) scaleY(1); }
-  50% { transform: rotate(2deg) scaleY(1.04); }
+  0%, 100% { transform: translateX(-8px) rotate(-5deg) scaleY(0.96); }
+  25% { transform: translateX(3px) rotate(2deg) scaleY(1.05); }
+  50% { transform: translateX(8px) rotate(5deg) scaleY(0.98); }
+  75% { transform: translateX(-2px) rotate(-1deg) scaleY(1.07); }
 }
 @keyframes cg-flicker {
-  0%, 100% { transform: scale(1, 1); opacity: 0.9; }
-  30% { transform: scale(0.95, 1.06); opacity: 1; }
-  60% { transform: scale(1.04, 0.97); opacity: 0.85; }
+  0%, 100% { transform: translateX(0) scale(1, 1); opacity: 0.85; }
+  20% { transform: translateX(-4px) scale(0.9, 1.12); opacity: 1; }
+  45% { transform: translateX(3px) scale(1.06, 0.94); opacity: 0.75; }
+  70% { transform: translateX(-2px) scale(0.94, 1.08); opacity: 1; }
+}
+@keyframes cg-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
 }
 @keyframes cg-rise {
   0% { transform: translate(0, 0) scale(1); opacity: 0; }
   15% { opacity: 0.9; }
   100% { transform: translate(14px, -220px) scale(0.3); opacity: 0; }
 }
+.cg-body { animation: cg-float 6s ease-in-out infinite; will-change: transform; }
 .candle-glow.is-paused * { animation-play-state: paused; }
 @media (prefers-reduced-motion: reduce) {
   .candle-glow * { animation: none !important; }
