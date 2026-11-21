@@ -206,18 +206,18 @@ export const Home = () => {
               transition={{ delay: 1.8, duration: 0.8 }}
               className="text-[8px] sm:text-[10px] md:text-[11px] tracking-[0.15em] sm:tracking-[0.25em] uppercase text-mari-ink/70"
             >
-              Handmade to order in London<span className="hidden sm:inline"> &middot; </span><br className="sm:hidden" />UK delivery
+              Handmade &middot; UK delivery
             </motion.p>
           </div>
         </div>
         
         <div className="flex-[46] md:flex-1 min-w-0 relative z-10 flex justify-center">
-          <div className="marble-halo w-full md:max-w-[340px] lg:max-w-[450px]">
+          <div className="marble-halo w-full md:max-w-[350px] lg:max-w-[480px]">
             <motion.div 
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 1.5, ease: "easeOut" }}
-              className="w-full max-w-2xl aspect-[3/5] sm:aspect-[3/4] arch-top overflow-hidden shadow-2xl md:shadow-[0_25px_60px_-20px_rgba(0,0,0,0.2)] relative bg-white"
+              className="w-full max-w-2xl aspect-[3/5] sm:aspect-[4/5] arch-top overflow-hidden shadow-2xl md:shadow-[0_25px_60px_-20px_rgba(0,0,0,0.2)] relative bg-white"
             >
               <img
                 src={siteConfig.heroForeground}
