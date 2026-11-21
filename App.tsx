@@ -116,7 +116,7 @@ const Footer = ({ onOpenModal }: { onOpenModal: (type: string) => void }) => (
     </div>
 
     <div className="bg-mari-charcoal text-white pt-6 md:pt-12 relative z-20">
-      <div className="max-w-7xl mx-auto px-6 sm:px-12 lg:px-16">
+      <div className="max-w-7xl mx-auto px-6">
         <div className="grid grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-6 md:gap-12 mb-6 md:mb-12">
           <div className="col-span-2 md:col-span-1 space-y-2 md:space-y-4">
             <h3 className="text-lg md:text-2xl font-serif text-white tracking-widest uppercase">Mari<CandleApostrophe />s</h3>

@@ -249,7 +249,7 @@ export const Checkout = () => {
   // Checkout form
   return (
     <div className="min-h-screen bg-gray-50 pt-32 pb-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-6">
         <Link to="/shop" className="inline-flex items-center text-gray-500 hover:text-mari-dark mb-8">
           <ArrowLeft className="w-4 h-4 mr-2" /> Back to Shop
         </Link>

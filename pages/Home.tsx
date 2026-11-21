@@ -161,8 +161,9 @@ export const Home = () => {
   return (
     <div className="w-full">
       {/* 1. HERO SECTION - Now with transparent background to show the global photo */}
-      <header className="relative md:min-h-screen flex flex-row items-center overflow-hidden z-20 pt-24 pb-10 md:pt-32 md:pb-0">
-        <div className="relative w-[54%] md:w-1/2 h-full flex flex-col justify-center pl-5 pr-2 sm:px-12 lg:px-24 z-10">
+      <header className="relative md:min-h-screen flex items-center overflow-hidden z-20 pt-24 pb-10 md:pt-32 md:pb-0">
+        <div className="max-w-7xl mx-auto px-6 w-full flex flex-row items-center gap-4 md:gap-10">
+        <div className="relative flex-[54] md:flex-[55] min-w-0 h-full flex flex-col justify-center z-10">
           <div className="relative space-y-4 sm:space-y-6 lg:space-y-10 max-w-xl">
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
@@ -205,13 +206,13 @@ export const Home = () => {
               transition={{ delay: 1.8, duration: 0.8 }}
               className="text-[8px] sm:text-[10px] md:text-[11px] tracking-[0.15em] sm:tracking-[0.25em] uppercase text-mari-ink/70"
             >
-              Handmade to order in London &middot; UK delivery
+              Handmade to order in London<span className="hidden sm:inline"> &middot; </span><br className="sm:hidden" />UK delivery
             </motion.p>
           </div>
         </div>
         
-        <div className="w-[46%] md:w-1/2 relative pr-5 pl-1 sm:p-6 lg:p-20 z-10 flex justify-center">
-          <div className="marble-halo w-full sm:max-w-md md:max-w-2xl">
+        <div className="flex-[46] md:flex-[45] min-w-0 relative z-10 flex justify-center md:justify-start">
+          <div className="marble-halo w-full md:max-w-[300px] lg:max-w-[350px] xl:max-w-[370px]">
             <motion.div 
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -226,6 +227,7 @@ export const Home = () => {
               />
             </motion.div>
           </div>
+        </div>
         </div>
       </header>
 
@@ -325,7 +327,7 @@ export const Home = () => {
 
         {/* SEASONAL COLLECTIONS */}
         <Section variant="transparent" className="overflow-hidden" paddingClass="pt-10 pb-20 md:pt-14 md:pb-[100px]">
-          <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
+          <div>
             <div className="text-center mb-12 md:mb-16">
               <div className="flex items-center justify-center gap-4 mb-4">
                 <span className="w-10 md:w-16 h-px bg-mari-gold/50" />
@@ -402,13 +404,14 @@ export const Home = () => {
         </Section>
 
         {/* 5. REVIEWS, laid out like "Behind the Flame" */}
-        <Section variant="transparent" className="overflow-hidden" backgroundElement={<CandleGlow />}>
+        <Section variant="transparent" className="overflow-hidden">
           <div className="grid md:grid-cols-2 gap-10 md:gap-16 items-center">
             <div className="space-y-6 md:space-y-8 text-center md:text-left">
               <span className="text-mari-gold font-bold tracking-[0.4em] text-[10px] uppercase">Kind Words</span>
               <h2 className="text-5xl md:text-8xl font-display font-normal text-mari-ink">From our <span className="italic font-light text-mari-teal">customers.</span></h2>
             </div>
-            <div ref={reviewRef} className="text-center md:text-left">
+            <div ref={reviewRef} className="relative isolate text-center md:text-left">
+              <CandleGlow />
               <AnimatePresence mode="wait">
                 <motion.div
                   key={currentReview}

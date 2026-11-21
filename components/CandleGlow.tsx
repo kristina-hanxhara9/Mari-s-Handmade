@@ -11,7 +11,7 @@ const SPARKS = [
 ];
 
 /**
- * Soft, glowing candle flame drawn with gradients, used behind the reviews.
+ * Soft, glowing candle flame drawn with gradients, placed behind the review quotes.
  * It only animates transforms and opacity (cheap for the browser) and pauses off screen.
  */
 export const CandleGlow = () => {
@@ -30,7 +30,7 @@ export const CandleGlow = () => {
     <div
       ref={ref}
       aria-hidden="true"
-      className={`candle-glow absolute inset-0 pointer-events-none overflow-hidden flex items-center justify-center ${visible ? '' : 'is-paused'}`}
+      className={`candle-glow absolute inset-0 -z-10 pointer-events-none flex items-center justify-center ${visible ? '' : 'is-paused'}`}
     >
       <div className="cg-body relative w-[240px] h-[340px] md:w-[320px] md:h-[440px]">
         {/* warm halo */}

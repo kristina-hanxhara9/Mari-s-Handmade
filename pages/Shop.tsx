@@ -29,7 +29,7 @@ export const Shop = () => {
 
   return (
     <div className="pt-28 md:pt-32 pb-24 min-h-screen relative bg-transparent">
-      <div className="max-w-7xl mx-auto px-6 sm:px-12 lg:px-8 relative z-10">
+      <div className="max-w-7xl mx-auto px-6 relative z-10">
         
         {/* Header */}
         <div className="text-center mb-12 md:mb-16">
