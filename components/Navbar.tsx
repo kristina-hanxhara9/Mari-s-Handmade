@@ -7,6 +7,10 @@ import { AnimatePresence, motion } from 'framer-motion';
 
 const basePath = import.meta.env.BASE_URL || '/';
 
+// Bottom edges of the navbar wave. Keep in sync with the masks in index.html (.nav-wave).
+const WAVE_MOBILE_EDGE = 'M0,32 C110,2 270,40 400,8';
+const WAVE_DESKTOP_EDGE = 'M0,22 C240,4 480,38 720,20 C960,4 1200,36 1440,16';
+
 export const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -34,58 +38,32 @@ export const Navbar = () => {
   const shouldShowBackground = isScrolled || mobileMenuOpen || !isHome;
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 transition-all duration-700">
-      {/* Sculpted Wavy Background Layer */}
-      <div 
-        className={`absolute inset-0 z-[-1] transition-all duration-1000 ease-in-out pointer-events-none ${
-          shouldShowBackground ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-8'
+    <nav className="fixed top-0 left-0 right-0 z-50">
+      {/* Sculpted wave background. One shape is used for both the fill (CSS mask)
+          and the teal line, so they always line up. Phones get a single soft swoop,
+          wider screens a gentle double wave; see .nav-wave in index.html. */}
+      <div
+        aria-hidden="true"
+        className={`absolute inset-x-0 top-0 h-[calc(100%+var(--nav-wave-h))] pointer-events-none transition-all duration-700 ease-out ${
+          shouldShowBackground ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-6'
         }`}
       >
-        <div className="absolute inset-0 h-[calc(100%+3.5rem)] w-full overflow-hidden filter drop-shadow(0 15px 40px rgba(0,0,0,0.08))">
-          
-          {/* Ambient Background with Clip Path to prevent blurring in "empty" wave areas */}
-          <div className="absolute inset-0 z-0" style={{ clipPath: 'url(#waveClip)' }}>
-             <img 
-               src={siteConfig.navbarBackground || `${basePath}images/nav-photo.png`}
-               alt="Navbar Ambient Background" 
-               className="w-full h-full object-cover opacity-30"
-             />
-             {/* Increased opacity to bg-white/90 for better text contrast */}
-             <div className="absolute inset-0 bg-white/90 backdrop-blur-xl" />
+        <div className="nav-wave absolute inset-0 drop-shadow-[0_10px_24px_rgba(0,0,0,0.06)]">
+          <div className="nav-wave-fill absolute inset-0">
+            <img
+              src={siteConfig.navbarBackground || `${basePath}images/nav-photo.png`}
+              alt=""
+              className="w-full h-full object-cover opacity-30"
+            />
+            <div className="absolute inset-0 bg-[#FCFBF9]/95 backdrop-blur-xl" />
           </div>
-
-          <svg 
-            viewBox="0 0 1440 160" 
-            className="absolute bottom-0 w-full h-full fill-white"
-            preserveAspectRatio="none"
-          >
-            <defs>
-              <linearGradient id="navGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="#FCFBF9" stopOpacity="0.95" />
-                <stop offset="100%" stopColor="#FFFFFF" stopOpacity="1" />
-              </linearGradient>
-              <filter id="tealGlow" x="-20%" y="-20%" width="140%" height="140%">
-                <feGaussianBlur stdDeviation="2" result="blur" />
-                <feComposite in="SourceGraphic" in2="blur" operator="over" />
-              </filter>
-              <clipPath id="waveClip" clipPathUnits="objectBoundingBox">
-                 <path d="M0,0 L1,0 L1,0.625 C0.916,0.875 0.833,0.5 0.75,0.625 C0.666,0.75 0.583,1 0.5,0.875 C0.416,0.75 0.333,0.5 0.25,0.625 C0.166,0.75 0.083,1 0,0.875 Z" />
-              </clipPath>
-            </defs>
-            <path 
-              fill="url(#navGradient)"
-              d="M0,0 L1440,0 L1440,100 C1320,140 1200,80 1080,100 C960,120 840,160 720,140 C600,120 480,80 360,100 C240,120 120,160 0,140 Z"
-            />
-            <path 
-              fill="none" 
-              stroke="#4A90A4" 
-              strokeWidth="2" 
-              strokeOpacity="0.3"
-              filter="url(#tealGlow)"
-              d="M0,141 C120,161 240,121 360,101 C480,81 600,121 720,141 C840,161 960,121 1080,101 C1200,81 1320,141 1440,101"
-            />
-          </svg>
         </div>
+        <svg className="absolute bottom-0 left-0 w-full h-[var(--nav-wave-h)] md:hidden" viewBox="0 0 400 40" preserveAspectRatio="none">
+          <path d={WAVE_MOBILE_EDGE} fill="none" stroke="#4A90A4" strokeOpacity="0.35" strokeWidth="1.5" vectorEffect="non-scaling-stroke" />
+        </svg>
+        <svg className="absolute bottom-0 left-0 w-full h-[var(--nav-wave-h)] hidden md:block" viewBox="0 0 1440 40" preserveAspectRatio="none">
+          <path d={WAVE_DESKTOP_EDGE} fill="none" stroke="#4A90A4" strokeOpacity="0.35" strokeWidth="1.5" vectorEffect="non-scaling-stroke" />
+        </svg>
       </div>
 
       <div className={`max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 flex justify-between items-center transition-all duration-700 ${shouldShowBackground ? 'py-3 md:py-4' : 'py-8 md:py-12'}`}>

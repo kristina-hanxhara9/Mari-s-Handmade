@@ -150,7 +150,9 @@ export const Home = () => {
     );
   }, []);
 
-  const featuredProducts = products.slice(0, 6);
+  // Products ticked "Featured" in the admin; falls back to the newest ones.
+  const featuredPicks = products.filter((p) => p.featured);
+  const featuredProducts = (featuredPicks.length ? featuredPicks : products).slice(0, 6);
 
   return (
     <div className="w-full">
@@ -252,17 +254,27 @@ export const Home = () => {
           <div ref={featuredRef} className="max-w-7xl mx-auto relative">
             <div className="flex flex-col md:flex-row justify-between items-center md:items-end mb-16 gap-4 text-center md:text-left">
               <div className="w-full md:w-auto">
-                <span className="text-mari-gold font-bold tracking-[0.3em] text-[10px] uppercase block mb-2">Editor's Choice</span>
-                <h2 className="text-3xl md:text-6xl font-serif text-mari-dark">Signature Pieces</h2>
+                <span className="font-serif italic text-mari-gold text-base md:text-lg tracking-wide block mb-3">Editor's Choice</span>
+                <h2 className="text-3xl md:text-6xl font-serif font-normal text-mari-dark">
+                  Signature <span className="italic font-light text-mari-teal">Pieces</span>
+                </h2>
+                <div className="mt-5 flex items-center justify-center md:justify-start gap-3" aria-hidden="true">
+                  <span className="w-10 h-px bg-mari-gold/50" />
+                  <span className="w-1.5 h-1.5 rotate-45 border border-mari-gold/70" />
+                  <span className="w-10 h-px bg-mari-gold/50" />
+                </div>
               </div>
-              <Link to="/shop" className="inline-flex items-center gap-3 text-[10px] md:text-xs font-bold tracking-widest uppercase text-mari-dark border-b border-mari-dark pb-1 hover:text-mari-gold transition-all">
-                Full Collection <ArrowRight className="w-4 h-4" />
+              <Link to="/shop" className="inline-flex items-center gap-3 font-serif italic text-sm md:text-base text-mari-dark/80 border-b border-mari-gold/40 pb-1 hover:text-mari-gold hover:border-mari-gold transition-all">
+                View the full collection <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
             <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-12 lg:gap-20" role="list" aria-label="Featured candle products">
               {featuredProducts.map((product) => (
                 <article key={product.id} className="featured-card group cursor-pointer text-center" role="listitem" itemScope itemType="https://schema.org/Product">
-                  <div className="relative aspect-[3/4.5] arch-top overflow-hidden bg-white/40 backdrop-blur-sm shadow-xl transition-all duration-700 group-hover:-translate-y-3">
+                  {/* Gilded arch frame: ivory mount, gold hairlines and a soft halo */}
+                  <div className="relative arch-top p-2.5 md:p-3 bg-gradient-to-b from-[#FFFDF8] via-[#F8F1E4] to-[#EFE2C8] shadow-[0_30px_60px_-25px_rgba(120,90,40,0.35),0_0_0_1px_rgba(201,169,110,0.45)] transition-all duration-700 group-hover:-translate-y-3 group-hover:shadow-[0_40px_70px_-25px_rgba(120,90,40,0.45),0_0_0_1px_rgba(201,169,110,0.7)]">
+                  <div className="absolute inset-[5px] md:inset-[6px] arch-top border border-mari-gold/40 pointer-events-none" aria-hidden="true" />
+                  <div className="relative aspect-[3/4.5] arch-top overflow-hidden bg-white/40 ring-1 ring-mari-gold/50">
                     <img
                       src={product.image}
                       alt={`${product.name} - Handcrafted luxury candle by Mari's Handmade, ${product.scentNotes}`}
@@ -270,6 +282,7 @@ export const Home = () => {
                       loading="lazy"
                       itemProp="image"
                     />
+                    <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-black/10 via-transparent to-white/10" aria-hidden="true" />
                     <div className="absolute inset-0 bg-black/5 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                         <button
                           onClick={() => addItem(product)}
@@ -280,9 +293,13 @@ export const Home = () => {
                         </button>
                     </div>
                   </div>
+                  </div>
                   <div className="mt-8">
-                      <h3 className="text-xl md:text-2xl font-serif text-mari-dark mb-2" itemProp="name">{product.name}</h3>
-                      <p className="text-[10px] text-gray-400 uppercase tracking-[0.3em] font-bold" itemProp="offers" itemScope itemType="https://schema.org/Offer">
+                      <h3 className="text-xl md:text-2xl font-serif font-normal text-mari-dark mb-2" itemProp="name">{product.name}</h3>
+                      {product.scentNotes && (
+                        <p className="text-sm text-gray-500 font-light italic mb-3">{product.scentNotes}</p>
+                      )}
+                      <p className="text-sm font-serif text-mari-gold tracking-wider" itemProp="offers" itemScope itemType="https://schema.org/Offer">
                         <span itemProp="priceCurrency" content="GBP">£</span>
                         <span itemProp="price" content={product.price.toString()}>{product.price.toFixed(2)}</span>
                       </p>
