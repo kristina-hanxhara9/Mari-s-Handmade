@@ -1,5 +1,5 @@
 
-import { lazy, Suspense, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { LucideIcon } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useAdminStore, useCartStore } from '../store';
@@ -10,8 +10,6 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ArrowRight, ShoppingBag, TreePine, Heart, Egg, Cake, Gift, Leaf } from 'lucide-react';
 
-// The 3D glow uses three.js (large), so it is only downloaded when the reviews section is near.
-const CandleEffect = lazy(() => import('../components/CandleEffect').then((m) => ({ default: m.CandleEffect })));
 import { motion, AnimatePresence } from 'framer-motion';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -106,25 +104,6 @@ export const Home = () => {
   const reviewRef = useRef<HTMLDivElement>(null);
 
   const [currentReview, setCurrentReview] = useState(0);
-  const effectRef = useRef<HTMLDivElement>(null);
-  const [showEffect, setShowEffect] = useState(false);
-
-  // Load the 3D glow only when the reviews section is about to scroll into view.
-  useEffect(() => {
-    const el = effectRef.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setShowEffect(true);
-          observer.disconnect();
-        }
-      },
-      { rootMargin: '600px 0px' }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -250,7 +229,14 @@ export const Home = () => {
 
       <main className="relative z-10 bg-transparent">
         {/* 2. STORY SECTION - Showing background photo */}
-        <Section id="story" variant="transparent" className="overflow-hidden">
+        <Section id="story" variant="transparent" className="overflow-hidden" paddingClass="pt-16 pb-8 md:pt-[100px] md:pb-12">
+          {/* On phones the heading sits above the picture so it fits on one line */}
+          <div className="md:hidden mb-6 text-left">
+            <h2 className="text-[10px] font-bold tracking-[0.35em] text-mari-gold uppercase mb-2">The Craft</h2>
+            <h3 className="text-[2rem] font-display font-normal text-mari-ink leading-tight whitespace-nowrap">
+              Sculptures <span className="italic font-light text-mari-gold">of</span> Light.
+            </h3>
+          </div>
           <div ref={storyRef} className="grid grid-cols-2 gap-5 sm:gap-12 md:gap-24 items-center">
             <div className="relative flex justify-center md:justify-start">
               <FramedPicture frame="ornate" className="w-full sm:max-w-sm md:max-w-md aspect-[3/4]" pictureClassName="bg-[#F6EEEA]">
@@ -263,11 +249,11 @@ export const Home = () => {
               </FramedPicture>
             </div>
             <div className="flex flex-col items-start gap-3 sm:gap-6 pt-6">
-              <h2 className="text-[9px] sm:text-[10px] font-bold tracking-[0.3em] sm:tracking-[0.4em] text-mari-gold uppercase">The Craft</h2>
-              <h3 className="text-[1.6rem] sm:text-4xl lg:text-5xl font-display font-normal text-mari-ink leading-tight md:whitespace-nowrap">
-                Sculptures <br className="md:hidden" /><span className="italic font-light text-mari-gold">of</span> Light.
+              <h2 className="hidden md:block text-[10px] font-bold tracking-[0.4em] text-mari-gold uppercase">The Craft</h2>
+              <h3 className="hidden md:block md:text-5xl lg:text-6xl font-display font-normal text-mari-ink leading-tight whitespace-nowrap">
+                Sculptures <span className="italic font-light text-mari-gold">of</span> Light.
               </h3>
-              <p className="text-gray-500 leading-relaxed font-sans text-[12px] sm:text-base md:text-xl font-light italic">
+              <p className="text-gray-500 leading-relaxed font-sans text-[15px] sm:text-lg md:text-2xl font-light italic">
                 Every piece at <strong>Mari's Handmade</strong> is a labor of love. We create sculptural wax art that defies the ordinary.
               </p>
             </div>
@@ -275,9 +261,10 @@ export const Home = () => {
         </Section>
 
         {/* 3. FEATURED SECTION - Carved in Ivory Marble */}
-        <Section 
-          variant="transparent" 
+        <Section
+          variant="transparent"
           className="overflow-hidden"
+          paddingClass="pt-8 pb-20 md:pt-12 md:pb-[100px]"
         >
           <div ref={featuredRef} className="max-w-7xl mx-auto relative">
             <div className="flex flex-col md:flex-row justify-between items-center md:items-end mb-16 gap-4 text-center md:text-left">
@@ -396,8 +383,7 @@ export const Home = () => {
                   </p>
               </div>
               <div className="relative flex justify-center md:justify-end">
-                  <div className="relative p-[3px] md:p-[4px] rounded-2xl" style={{ background: 'linear-gradient(135deg, rgba(74,144,164,0.4), rgba(74,144,164,0.2), rgba(74,144,164,0.3))' }}>
-                      <div className="aspect-video w-full max-w-xl md:max-w-2xl overflow-hidden rounded-2xl shadow-xl">
+                  <FramedPicture frame="video" className="w-full max-w-xl md:max-w-2xl aspect-video" pictureClassName="bg-[#EFE4DE]">
                           <video
                             src={`${basePath}video/candle-video.mp4`}
                             autoPlay
@@ -414,89 +400,44 @@ export const Home = () => {
                               }
                             }}
                           />
-                      </div>
-                  </div>
+                  </FramedPicture>
               </div>
           </div>
         </Section>
 
-        {/* 5. REVIEW SECTION - Carved in Ivory Marble */}
-        <Section variant="transparent" className="overflow-hidden min-h-[600px] flex items-center justify-center">
-          <div ref={effectRef} className="absolute inset-0 z-0">
-              <div className="absolute inset-0 opacity-80">
-                  {showEffect && (
-                    <Suspense fallback={null}>
-                      <CandleEffect />
-                    </Suspense>
-                  )}
-              </div>
-          </div>
-
-          <div className="relative z-10 w-full">
-            <div className="mb-12 md:mb-16 text-center px-4">
-              <span className="text-mari-gold font-bold tracking-[0.5em] text-[10px] md:text-[12px] uppercase block mb-4">Kind Words</span>
-              <h2 className="text-4xl md:text-8xl font-display font-normal text-mari-ink italic font-light">Reviews</h2>
+        {/* 5. REVIEWS, laid out like "Behind the Flame" */}
+        <Section variant="transparent" className="overflow-hidden">
+          <div className="grid md:grid-cols-2 gap-10 md:gap-16 items-center">
+            <div className="space-y-6 md:space-y-8 text-center md:text-left">
+              <span className="text-mari-gold font-bold tracking-[0.4em] text-[10px] uppercase">Kind Words</span>
+              <h2 className="text-5xl md:text-8xl font-display font-normal text-mari-ink">From our <span className="italic font-light text-mari-teal">customers.</span></h2>
             </div>
-
-            <div ref={reviewRef} className="w-full max-w-4xl mx-auto relative px-6">
-              <div className="relative group mx-auto w-full max-w-3xl">
-                {/* Wavy white container using SVG with curved edges */}
-                <svg className="absolute -inset-6 w-[calc(100%+48px)] h-[calc(100%+48px)]" viewBox="0 0 200 100" preserveAspectRatio="none">
-                  <defs>
-                    <linearGradient id="wavyContainerGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                      <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.15" />
-                      <stop offset="50%" stopColor="#FFFFFF" stopOpacity="0.1" />
-                      <stop offset="100%" stopColor="#FFFFFF" stopOpacity="0.15" />
-                    </linearGradient>
-                  </defs>
-                  <path
-                    fill="url(#wavyContainerGradient)"
-                    d="M0,12
-                       C15,5 30,18 50,8
-                       C70,0 90,15 110,6
-                       C130,0 150,12 170,5
-                       C185,0 195,8 200,12
-                       L200,88
-                       C195,92 185,100 170,95
-                       C150,88 130,100 110,94
-                       C90,85 70,100 50,92
-                       C30,82 15,95 0,88
-                       Z"
+            <div ref={reviewRef} className="text-center md:text-left">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={currentReview}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.7 }}
+                  className="min-h-[190px] md:min-h-[220px]"
+                >
+                  <p className="text-lg md:text-2xl text-gray-600 font-light italic leading-relaxed mb-6">
+                    "{reviews[currentReview].text}"
+                  </p>
+                  <span className="block font-bold tracking-[0.4em] uppercase text-[9px] text-mari-gold mb-1">{reviews[currentReview].author}</span>
+                  <span className="block text-gray-400 text-[8px] font-medium tracking-[0.2em] uppercase">{reviews[currentReview].location}</span>
+                </motion.div>
+              </AnimatePresence>
+              <div className="flex justify-center md:justify-start gap-3 mt-8">
+                {reviews.map((review, idx) => (
+                  <button
+                    key={review.id}
+                    onClick={() => setCurrentReview(idx)}
+                    aria-label={`Show review ${idx + 1}`}
+                    className={`h-1 transition-all duration-700 rounded-full ${currentReview === idx ? 'w-8 bg-mari-gold' : 'w-2 bg-mari-gold/30'}`}
                   />
-                </svg>
-
-                {/* Card content */}
-                <div className="relative min-h-[350px] md:min-h-[400px] flex flex-col justify-center items-center overflow-visible">
-                  <div className="relative z-10 p-8 md:p-20 text-center w-full">
-                    <AnimatePresence mode="wait">
-                      <motion.div
-                        key={currentReview}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -20 }}
-                        transition={{ duration: 0.7 }}
-                      >
-                        <p className="text-base md:text-3xl font-serif text-mari-dark leading-relaxed mb-6 italic px-2">
-                          "{reviews[currentReview].text}"
-                        </p>
-                        <div className="flex flex-col items-center">
-                          <span className="font-bold tracking-[0.4em] uppercase text-[9px] text-mari-gold mb-1">{reviews[currentReview].author}</span>
-                          <span className="text-gray-400 text-[8px] font-medium tracking-[0.2em] uppercase">{reviews[currentReview].location}</span>
-                        </div>
-                      </motion.div>
-                    </AnimatePresence>
-
-                    <div className="flex justify-center gap-3 mt-8 md:mt-12">
-                      {reviews.map((_, idx) => (
-                        <button 
-                          key={idx}
-                          onClick={() => setCurrentReview(idx)}
-                          className={`h-1 transition-all duration-700 rounded-full ${currentReview === idx ? 'w-8 bg-mari-gold' : 'w-2 bg-mari-gold/20'}`}
-                        />
-                      ))}
-                    </div>
-                  </div>
-                </div>
+                ))}
               </div>
             </div>
           </div>

@@ -11,6 +11,8 @@ interface SectionProps {
   backgroundPosition?: string;
   backgroundRepeat?: string;
   backgroundElement?: React.ReactNode;
+  /** Vertical padding classes; defaults to the standard section spacing. */
+  paddingClass?: string;
 }
 
 export const Section: React.FC<SectionProps> = ({ 
@@ -22,14 +24,12 @@ export const Section: React.FC<SectionProps> = ({
   backgroundSize = 'cover',
   backgroundPosition = 'center',
   backgroundRepeat = 'no-repeat',
-  backgroundElement
+  backgroundElement,
+  paddingClass = 'py-20 md:py-[100px]',
 }) => {
   const toneClass = `tone-${variant}`;
 
-  // Consistent section spacing
   const style: React.CSSProperties = {
-    paddingTop: '100px',
-    paddingBottom: '100px',
     backgroundImage: backgroundImage ? `url(${backgroundImage})` : undefined,
     backgroundSize: backgroundImage ? backgroundSize : undefined,
     backgroundPosition: backgroundImage ? backgroundPosition : undefined,
@@ -39,7 +39,7 @@ export const Section: React.FC<SectionProps> = ({
   return (
     <section 
       id={id} 
-      className={`section-container ${toneClass} ${className}`}
+      className={`section-container ${toneClass} ${paddingClass} ${className}`}
       style={style}
     >
       {backgroundElement && (
