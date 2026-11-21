@@ -127,7 +127,6 @@ const Footer = ({ onOpenModal }: { onOpenModal: (type: string) => void }) => (
                     onClick={() => onOpenModal(type)} 
                     className="text-white/60 hover:text-white transition-all text-xs font-medium tracking-wide flex items-center gap-2 justify-center md:justify-start mx-auto md:mx-0"
                   >
-                    <span className="w-3 h-[1px] bg-mari-gold/30 hidden md:block"></span>
                     {getModalTitle(type as ModalType)}
                   </button>
                 </li>
