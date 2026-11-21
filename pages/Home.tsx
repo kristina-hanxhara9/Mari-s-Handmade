@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { useAdminStore, useCartStore } from '../store';
 import { CandleEffect } from '../components/CandleEffect';
 import { Section } from '../components/Section/Section';
+import { ProductImage } from '../components/ProductImage';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ArrowRight, ShoppingBag } from 'lucide-react';
@@ -271,35 +272,22 @@ export const Home = () => {
             <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-12 lg:gap-20" role="list" aria-label="Featured candle products">
               {featuredProducts.map((product) => (
                 <article key={product.id} className="featured-card group cursor-pointer text-center" role="listitem" itemScope itemType="https://schema.org/Product">
-                  {/* Arch frame in the same soft teal-blue gradient as the video frame */}
-                  <div
-                    className="relative arch-top p-[4px] md:p-[5px] shadow-[0_30px_60px_-28px_rgba(74,144,164,0.55)] transition-all duration-700 group-hover:-translate-y-3 group-hover:shadow-[0_40px_70px_-28px_rgba(74,144,164,0.7)]"
-                    style={{ background: 'linear-gradient(135deg, rgba(74,144,164,0.55), rgba(168,208,219,0.45), rgba(74,144,164,0.45))' }}
+                  <ProductImage
+                    src={product.image}
+                    alt={`${product.name}: handcrafted candle by Mari's Handmade`}
                   >
-                  <div className="arch-top p-[6px] md:p-[8px] bg-[#FCFBF9]/85">
-                  <div className="relative aspect-[3/4.5] arch-top overflow-hidden bg-white/40 ring-1 ring-mari-teal/30">
-                    <img
-                      src={product.image}
-                      alt={`${product.name} - Handcrafted luxury candle by Mari's Handmade, ${product.scentNotes}`}
-                      className="w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-110"
-                      loading="lazy"
-                      itemProp="image"
-                    />
-                    <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-black/10 via-transparent to-white/10" aria-hidden="true" />
                     <div className="absolute inset-0 bg-black/5 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                        <button
-                          onClick={() => addItem(product)}
-                          className="bg-white text-mari-dark p-4 rounded-full shadow-2xl"
-                          aria-label={`Add ${product.name} to basket`}
-                        >
-                            <ShoppingBag className="w-6 h-6" aria-hidden="true" />
-                        </button>
+                      <button
+                        onClick={() => addItem(product)}
+                        className="bg-white text-mari-dark p-4 rounded-full shadow-2xl"
+                        aria-label={`Add ${product.name} to basket`}
+                      >
+                        <ShoppingBag className="w-6 h-6" aria-hidden="true" />
+                      </button>
                     </div>
-                  </div>
-                  </div>
-                  </div>
+                  </ProductImage>
                   <div className="mt-8">
-                      <h3 className="text-2xl md:text-3xl font-display font-normal text-mari-ink mb-1" itemProp="name">{product.name}</h3>
+                      <h3 className="text-2xl md:text-3xl font-display font-normal text-mari-ink leading-tight line-clamp-2 min-h-[2.5em] flex items-center justify-center mb-1" itemProp="name">{product.name}</h3>
                       {product.scentNotes && (
                         <p className="text-sm text-gray-500 font-light italic mb-3">{product.scentNotes}</p>
                       )}
