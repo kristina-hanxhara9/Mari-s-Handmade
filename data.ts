@@ -9,7 +9,7 @@ export const products: Product[] = [
     description: 'Our signature arrangement featuring hand-poured peony, rose, and heart-shaped candles in soft pinks and creams. Presented in a luxury white box with an elegant gold chain handle.',
     price: 48.00,
     category: 'Arrangements',
-    image: `/images/produkt1.jpeg`,
+    image: `/images/produkt1.webp`,
     scentNotes: 'Peony, Rose Petals, Sweet Pea'
   },
   {
@@ -18,7 +18,7 @@ export const products: Product[] = [
     description: 'A masterpiece of wax art. This tall pillar features a mesmerising mottled blue and white texture, hand-gilded with 24k gold leaf accents. Each piece is completely unique.',
     price: 35.00,
     category: 'Pillars',
-    image: `/images/produkt2.jpeg`,
+    image: `/images/produkt2.webp`,
     scentNotes: 'Ocean Mist, Driftwood, Amber'
   },
   {
@@ -27,7 +27,7 @@ export const products: Product[] = [
     description: 'A whimsical white ceramic vessel adorned with intricate carousel horse reliefs. Filled with our creamy soy wax blend.',
     price: 42.00,
     category: 'Jars',
-    image: `/images/produkt3.jpeg`,
+    image: `/images/produkt3.webp`,
     scentNotes: 'Vanilla Bean, Cashmere, Sandalwood'
   },
   {

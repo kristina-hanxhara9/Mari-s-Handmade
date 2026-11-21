@@ -4,12 +4,12 @@ import { products as fallbackProducts } from './data';
 import * as db from './lib/supabase';
 
 const defaultSiteConfig: SiteConfig = {
-  heroBackground: '/images/backround-image.png',
-  heroForeground: '/images/collage-prodcut.png',
-  storyImage: '/images/web-image.png',
+  heroBackground: '/images/backround-image.webp',
+  heroForeground: '/images/collage-prodcut.webp',
+  storyImage: '/images/web-image.webp',
   aboutImage: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=800&auto=format&fit=crop',
   reviewsBackground: 'https://images.unsplash.com/photo-1596436066266-932f995a9478?q=80&w=2000&auto=format&fit=crop',
-  navbarBackground: '/images/nav-photo.png',
+  navbarBackground: '/images/nav-photo.webp',
 };
 
 // --- Cart Store ---

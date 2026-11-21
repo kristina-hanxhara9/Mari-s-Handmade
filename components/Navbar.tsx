@@ -7,7 +7,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 
 const basePath = import.meta.env.BASE_URL || '/';
 
-// Bottom edges of the navbar wave. Keep in sync with the masks in index.html (.nav-wave).
+// Bottom edges of the navbar wave. Keep in sync with the masks in index.css (.nav-wave-fill).
 const WAVE_MOBILE_EDGE = 'M0,30 C70,2 130,2 200,20 C270,38 330,38 400,10';
 const WAVE_DESKTOP_EDGE = 'M0,28 C120,4 240,4 360,20 C480,36 600,36 720,20 C840,4 960,4 1080,20 C1200,36 1320,36 1440,14';
 
@@ -41,17 +41,20 @@ export const Navbar = () => {
     <nav className="fixed top-0 left-0 right-0 z-50">
       {/* Sculpted wave background. One shape is used for both the fill (CSS mask)
           and the teal line, so they always line up. Phones get a single soft swoop,
-          wider screens a gentle double wave; see .nav-wave in index.html. */}
+          wider screens a gentle double wave; see .nav-wave-fill in index.css. */}
       <div
         aria-hidden="true"
-        className={`absolute inset-x-0 top-0 h-[calc(100%+var(--nav-wave-h))] pointer-events-none transition-all duration-700 ease-out ${
-          shouldShowBackground ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-6'
-        }`}
+        className="absolute inset-x-0 top-0 h-[calc(100%+var(--nav-wave-h))] pointer-events-none"
       >
-        <div className="nav-wave absolute inset-0 drop-shadow-[0_10px_24px_rgba(0,0,0,0.06)]">
+        {/* The ivory fill only appears once scrolled; the blue line is always there. */}
+        <div
+          className={`nav-wave absolute inset-0 drop-shadow-[0_10px_24px_rgba(0,0,0,0.06)] transition-opacity duration-700 ease-out ${
+            shouldShowBackground ? 'opacity-100' : 'opacity-0'
+          }`}
+        >
           <div className="nav-wave-fill absolute inset-0">
             <img
-              src={siteConfig.navbarBackground || `${basePath}images/nav-photo.png`}
+              src={siteConfig.navbarBackground || `${basePath}images/nav-photo.webp`}
               alt=""
               className="w-full h-full object-cover opacity-30"
             />
@@ -59,10 +62,10 @@ export const Navbar = () => {
           </div>
         </div>
         <svg className="absolute bottom-0 left-0 w-full h-[var(--nav-wave-h)] md:hidden" viewBox="0 0 400 40" preserveAspectRatio="none">
-          <path d={WAVE_MOBILE_EDGE} fill="none" stroke="#4A90A4" strokeOpacity="0.35" strokeWidth="1.5" vectorEffect="non-scaling-stroke" />
+          <path d={WAVE_MOBILE_EDGE} fill="none" stroke="#4A90A4" strokeOpacity="0.55" strokeWidth="1.5" vectorEffect="non-scaling-stroke" />
         </svg>
         <svg className="absolute bottom-0 left-0 w-full h-[var(--nav-wave-h)] hidden md:block" viewBox="0 0 1440 40" preserveAspectRatio="none">
-          <path d={WAVE_DESKTOP_EDGE} fill="none" stroke="#4A90A4" strokeOpacity="0.35" strokeWidth="1.5" vectorEffect="non-scaling-stroke" />
+          <path d={WAVE_DESKTOP_EDGE} fill="none" stroke="#4A90A4" strokeOpacity="0.55" strokeWidth="1.5" vectorEffect="non-scaling-stroke" />
         </svg>
       </div>
 

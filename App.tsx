@@ -1,19 +1,23 @@
 
-import { useEffect, useState } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import { HashRouter as Router, Routes, Route, useLocation, Link } from 'react-router-dom';
 import { Navbar } from './components/Navbar';
 import { CartSidebar } from './components/CartSidebar';
 import { InfoModal } from './components/InfoModal';
 import { Home } from './pages/Home';
-import { Shop } from './pages/Shop';
-import { Checkout } from './pages/Checkout';
-import { Admin } from './pages/Admin';
 import { LightCursor } from './components/LightCursor';
 import { BackgroundLayout } from './layouts/BackgroundLayout';
 import { WhatsAppButton } from './components/WhatsAppButton';
 import { Instagram } from 'lucide-react';
 
 const INSTAGRAM_URL = 'https://www.instagram.com/maris_handmade25/';
+const WHATSAPP_DISPLAY = '+44 7827 804920';
+const WHATSAPP_URL = 'https://wa.me/447827804920';
+
+// Only the home page is in the first download; the rest load when visited.
+const Shop = lazy(() => import('./pages/Shop').then((m) => ({ default: m.Shop })));
+const Checkout = lazy(() => import('./pages/Checkout').then((m) => ({ default: m.Checkout })));
+const Admin = lazy(() => import('./pages/Admin').then((m) => ({ default: m.Admin })));
 
 // Scroll to top helper
 const ScrollToTop = () => {
@@ -46,7 +50,10 @@ const modalContent = {
     <div className="space-y-4">
       <p>Have a question about a custom order or need help with your purchase? We'd love to hear from you.</p>
       <ul className="list-disc pl-5 space-y-2">
+        <li><strong>WhatsApp:</strong> <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="underline hover:text-mari-teal">{WHATSAPP_DISPLAY}</a></li>
         <li><strong>Email:</strong> hello@marishandmade.co.uk</li>
+        <li><strong>Instagram:</strong> <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" className="underline hover:text-mari-teal">@maris_handmade25</a></li>
+        <li><strong>Studio:</strong> London, UK</li>
         <li><strong>Studio Hours:</strong> Mon-Fri, 9am - 5pm</li>
       </ul>
       <p>For wholesale inquiries, please include "Wholesale" in your email subject line.</p>
@@ -106,7 +113,7 @@ const Footer = ({ onOpenModal }: { onOpenModal: (type: string) => void }) => (
           <div className="space-y-4 text-center md:text-left">
             <h3 className="text-xl md:text-2xl font-serif text-white tracking-widest uppercase">Mari's</h3>
             <p className="text-white/70 font-light leading-relaxed max-w-sm mx-auto md:mx-0 italic text-sm md:text-base">
-              "Every light is a sculpture, every scent a memory." Handcrafted with devotion in our UK studio.
+              "Every light is a sculpture, every scent a memory." Handcrafted with devotion in our London studio.
             </p>
           </div>
           
@@ -131,7 +138,9 @@ const Footer = ({ onOpenModal }: { onOpenModal: (type: string) => void }) => (
              <div>
                <h4 className="text-[9px] md:text-[10px] font-bold tracking-[0.4em] mb-3 md:mb-4 text-mari-gold uppercase">The Studio</h4>
                <p className="text-white/60 text-xs md:text-sm leading-relaxed">
+                 London, UK<br/>
                  Open for custom commissions.<br/>
+                 <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="hover:text-mari-gold transition-colors">WhatsApp {WHATSAPP_DISPLAY}</a><br/>
                  hello@marishandmade.co.uk
                </p>
              </div>
@@ -154,7 +163,7 @@ const Footer = ({ onOpenModal }: { onOpenModal: (type: string) => void }) => (
           <span className="text-white/30 text-[8px] md:text-[9px] tracking-[0.3em] uppercase">&copy; {new Date().getFullYear()} Mari's Handmade</span>
           <div className="flex flex-wrap justify-center items-center gap-4 md:gap-6">
             <Link to="/admin" className="text-white/20 hover:text-mari-gold transition-colors text-[8px] md:text-[9px] uppercase tracking-widest font-bold">Admin Portal</Link>
-            <span className="text-white/10 text-[8px] md:text-[9px] tracking-[0.4em] uppercase">Handmade in UK</span>
+            <span className="text-white/10 text-[8px] md:text-[9px] tracking-[0.4em] uppercase">Handmade in London, UK</span>
           </div>
         </div>
       </div>
@@ -174,12 +183,14 @@ function App() {
           <Navbar />
           <CartSidebar />
           
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/shop" element={<Shop />} />
-            <Route path="/checkout" element={<Checkout />} />
-            <Route path="/admin" element={<Admin />} />
-          </Routes>
+          <Suspense fallback={<div className="min-h-screen" />}>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/shop" element={<Shop />} />
+              <Route path="/checkout" element={<Checkout />} />
+              <Route path="/admin" element={<Admin />} />
+            </Routes>
+          </Suspense>
           
           <Footer onOpenModal={(type) => setActiveModal(type as ModalType)} />
 

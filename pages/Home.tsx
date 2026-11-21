@@ -1,13 +1,16 @@
 
-import { useEffect, useRef, useState } from 'react';
+import { lazy, Suspense, useEffect, useRef, useState } from 'react';
+import type { LucideIcon } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useAdminStore, useCartStore } from '../store';
-import { CandleEffect } from '../components/CandleEffect';
 import { Section } from '../components/Section/Section';
 import { ProductImage } from '../components/ProductImage';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { ArrowRight, ShoppingBag } from 'lucide-react';
+import { ArrowRight, ShoppingBag, TreePine, Heart, Egg, Cake, Flower2, Leaf } from 'lucide-react';
+
+// The 3D glow uses three.js (large), so it is only downloaded when the reviews section is near.
+const CandleEffect = lazy(() => import('../components/CandleEffect').then((m) => ({ default: m.CandleEffect })));
 import { motion, AnimatePresence } from 'framer-motion';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -18,7 +21,7 @@ const useHomeSEO = () => {
     document.title = "Mari's Handmade Candles | Luxury Sculptural Candles UK | Handcrafted Artisan Wax Art";
     const metaDesc = document.querySelector('meta[name="description"]');
     if (metaDesc) {
-      metaDesc.setAttribute('content', "Discover exquisite handcrafted sculptural candles from Mari's Handmade. Luxury artisan candles hand-poured in the UK. Perfect for gifts, weddings, and home decor.");
+      metaDesc.setAttribute('content', "Discover exquisite handcrafted sculptural candles from Mari's Handmade. Luxury artisan candles hand-poured in London, UK. Perfect for gifts, weddings, and home decor.");
     }
   }, []);
 };
@@ -52,43 +55,76 @@ const reviews = [
   }
 ];
 
-const seasonalCollections = [
+// Small repeating motif drawn behind each festive card.
+const motif = (svg: string) => `url("data:image/svg+xml,${encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' width='64' height='64'>${svg}</svg>`)}")`;
+const HEART = 'M12 21s-7-4.5-9.5-9A5 5 0 0 1 12 6a5 5 0 0 1 9.5 6C19 16.5 12 21 12 21z';
+
+type SeasonalCollection = {
+  title: string;
+  tag: string;
+  blurb: string;
+  icon: LucideIcon;
+  accent: string;
+  background: string;
+  pattern: string;
+};
+
+// Blurbs are kept to a similar length so every card lines up.
+const seasonalCollections: SeasonalCollection[] = [
   {
     title: 'Christmas Atelier',
     tag: 'Christmas',
-    blurb: 'Fir, clove, pearlescent shimmer, and gold leaf layered into sculpted pillars for cozy fireside rituals.',
-    image: 'https://images.unsplash.com/photo-1470246973918-29a93221c455?q=80&w=1200&auto=format&fit=crop'
+    blurb: 'Fir, clove and gold leaf, sculpted for long fireside evenings.',
+    icon: TreePine,
+    accent: '#2F6B4F',
+    background: 'linear-gradient(160deg, #EEF4EF 0%, #DCE9E0 55%, #F3ECDD 100%)',
+    pattern: motif("<path d='M16 8l1.6 5.4L23 15l-5.4 1.6L16 22l-1.6-5.4L9 15l5.4-1.6z' fill='#C5A059' fill-opacity='.45'/><circle cx='46' cy='44' r='1.8' fill='#2F6B4F' fill-opacity='.3'/><circle cx='44' cy='14' r='1.2' fill='#C5A059' fill-opacity='.5'/><circle cx='12' cy='50' r='1' fill='#2F6B4F' fill-opacity='.3'/>"),
   },
   {
-    title: 'Valentines Salon',
-    tag: 'Valentines',
-    blurb: 'Rosy sculpted heart candles with silk bows and rosewater accords—made to light love-soaked evenings.',
-    image: 'https://images.unsplash.com/photo-1501004318641-b39e6451bec6?q=80&w=1200&auto=format&fit=crop'
+    title: "Valentine's Salon",
+    tag: "Valentine's",
+    blurb: 'Rose-blush hearts tied in silk, made for evenings in love.',
+    icon: Heart,
+    accent: '#C45B6E',
+    background: 'linear-gradient(160deg, #FCF1F3 0%, #F8DFE4 60%, #F6E6E0 100%)',
+    pattern: motif(`<path d='${HEART}' transform='translate(6 6) scale(.6)' fill='#C45B6E' fill-opacity='.22'/><path d='${HEART}' transform='translate(38 36) scale(.45)' fill='#C45B6E' fill-opacity='.16'/>`),
   },
   {
     title: 'Easter Brunch',
     tag: 'Easter',
-    blurb: 'Speckled egg tapers with lemon-curd notes and buttercream drips to elevate pastel tablescapes.',
-    image: 'https://images.unsplash.com/photo-1528458965990-428de4b1cb0f?q=80&w=1200&auto=format&fit=crop'
+    blurb: 'Speckled egg candles in soft pastels for the spring table.',
+    icon: Egg,
+    accent: '#5E9475',
+    background: 'linear-gradient(160deg, #FBF8E8 0%, #EAF4EC 60%, #F1F0FA 100%)',
+    pattern: motif("<ellipse cx='16' cy='18' rx='5' ry='7' fill='#E9C46A' fill-opacity='.35'/><ellipse cx='46' cy='44' rx='4' ry='5.5' fill='#5E9475' fill-opacity='.25'/><circle cx='44' cy='14' r='1.4' fill='#A08BC9' fill-opacity='.4'/><circle cx='14' cy='48' r='1.4' fill='#E9C46A' fill-opacity='.45'/>"),
   },
   {
-    title: 'Birthday Parlor',
+    title: 'Birthday Parlour',
     tag: 'Birthday',
-    blurb: 'Confetti-drip keepsake pillars scented with sparkling citrus buttercream for milestone nights.',
-    image: 'https://images.unsplash.com/photo-1526655009434-6c000a543221?q=80&w=1200&auto=format&fit=crop'
+    blurb: 'Confetti-drip keepsakes with sparkling citrus for big nights.',
+    icon: Cake,
+    accent: '#5F73B8',
+    background: 'linear-gradient(160deg, #EFF3FB 0%, #F6EEF8 55%, #FCEDE2 100%)',
+    pattern: motif("<rect x='10' y='10' width='7' height='3' rx='1.5' transform='rotate(30 13 11)' fill='#5F73B8' fill-opacity='.35'/><rect x='40' y='20' width='7' height='3' rx='1.5' transform='rotate(-25 43 21)' fill='#F4A261' fill-opacity='.45'/><rect x='22' y='42' width='7' height='3' rx='1.5' transform='rotate(60 25 43)' fill='#E76F8A' fill-opacity='.35'/><circle cx='50' cy='50' r='1.8' fill='#C5A059' fill-opacity='.5'/>"),
   },
   {
-    title: 'Mother’s Day Tea',
-    tag: 'Mother\'s Day',
-    blurb: 'Silk-ribbon floral tapers with garden tea accords to honor the women who taught us warmth.',
-    image: 'https://images.unsplash.com/photo-1441123100240-f9f3f77ed41b?q=80&w=1200&auto=format&fit=crop'
+    title: "Mother's Day Tea",
+    tag: "Mother's Day",
+    blurb: "Floral pieces with garden tea notes, a gift she'll treasure.",
+    icon: Flower2,
+    accent: '#A8607F',
+    background: 'linear-gradient(160deg, #F8F1F8 0%, #F6E6EE 55%, #FBEADF 100%)',
+    pattern: motif("<g fill='#A8607F' fill-opacity='.2'><circle cx='16' cy='11' r='3'/><circle cx='21' cy='15' r='3'/><circle cx='19' cy='21' r='3'/><circle cx='13' cy='21' r='3'/><circle cx='11' cy='15' r='3'/></g><circle cx='16' cy='16' r='2' fill='#C5A059' fill-opacity='.5'/><circle cx='46' cy='46' r='1.6' fill='#A8607F' fill-opacity='.3'/>"),
   },
   {
     title: 'Autumn Harvest',
     tag: 'Autumn',
-    blurb: 'Amber lanterns with leaf reliefs and smoky vanilla pour to anchor long candle-lit dinners.',
-    image: 'https://images.unsplash.com/photo-1473186505569-9c61870c11f9?q=80&w=1200&auto=format&fit=crop'
-  }
+    blurb: 'Amber lanterns and smoky vanilla for candle-lit dinners.',
+    icon: Leaf,
+    accent: '#B0672F',
+    background: 'linear-gradient(160deg, #FBF2E4 0%, #F4E2CC 60%, #EFE6D8 100%)',
+    pattern: motif("<path d='M10 24C10 14 18 8 26 8c0 10-6 16-16 16z' fill='#B0672F' fill-opacity='.22'/><path d='M40 52c0-7 5-12 12-12 0 7-5 12-12 12z' fill='#C5A059' fill-opacity='.3'/><circle cx='48' cy='16' r='1.4' fill='#B0672F' fill-opacity='.35'/>"),
+  },
 ];
 
 export const Home = () => {
@@ -103,6 +139,25 @@ export const Home = () => {
   const reviewRef = useRef<HTMLDivElement>(null);
 
   const [currentReview, setCurrentReview] = useState(0);
+  const effectRef = useRef<HTMLDivElement>(null);
+  const [showEffect, setShowEffect] = useState(false);
+
+  // Load the 3D glow only when the reviews section is about to scroll into view.
+  useEffect(() => {
+    const el = effectRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setShowEffect(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '600px 0px' }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -181,7 +236,7 @@ export const Home = () => {
               transition={{ delay: 1, duration: 1 }}
               className="text-sm sm:text-base md:text-lg xl:text-xl text-gray-700 font-sans tracking-widest font-light italic leading-relaxed text-center md:text-left max-w-md mx-auto md:mx-0"
             >
-              Sculptural candles, hand-poured in the UK. Designed to be a masterpiece.
+              Sculptural candles, hand-poured in London, UK. Designed to be a masterpiece.
             </motion.p>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -191,11 +246,19 @@ export const Home = () => {
             >
               <Link
                 to="/shop"
-                className="group inline-flex items-center gap-3 md:gap-4 border border-mari-dark/20 text-mari-dark px-8 py-3 md:px-10 md:py-4 rounded-full font-bold tracking-[0.2em] md:tracking-[0.3em] text-[10px] md:text-xs uppercase hover:bg-mari-dark hover:text-white transition-all duration-500 shadow-lg backdrop-blur-sm"
+                className="group inline-flex items-center gap-3 md:gap-4 bg-mari-dark text-white px-8 py-3 md:px-10 md:py-4 rounded-full font-bold tracking-[0.2em] md:tracking-[0.3em] text-[10px] md:text-xs uppercase hover:bg-mari-teal transition-all duration-500 shadow-lg"
               >
-                Enter Collection <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                Shop the Candles <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Link>
             </motion.div>
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1.8, duration: 0.8 }}
+              className="text-[10px] md:text-[11px] tracking-[0.25em] uppercase text-mari-ink/70 text-center md:text-left"
+            >
+              Handmade to order in London &middot; UK delivery
+            </motion.p>
           </div>
         </div>
         
@@ -210,6 +273,7 @@ export const Home = () => {
               <img 
                 src={siteConfig.heroForeground}
                 alt="Luxury Candle Presentation"
+                fetchPriority="high"
                 className="w-full h-full object-cover"
               />
             </motion.div>
@@ -225,8 +289,9 @@ export const Home = () => {
               <div className="marble-halo max-w-sm md:max-w-md w-full">
                 <div className="aspect-[3/4] md:aspect-[3/4.5] arch-top overflow-hidden shadow-2xl border-[10px] md:border-[12px] border-white w-full">
                   <img 
-                    src={siteConfig.storyImage} 
-                    alt="Artistic candle" 
+                    src={siteConfig.storyImage}
+                    alt="Artistic candle"
+                    loading="lazy"
                     className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-[3s]"
                   />
                 </div>
@@ -316,29 +381,36 @@ export const Home = () => {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
-              {seasonalCollections.map((collection) => (
-                <div 
-                  key={collection.tag} 
-                  className="relative overflow-hidden rounded-[28px] border border-white/30 shadow-[0_20px_50px_-20px_rgba(0,0,0,0.25)] group"
-                  style={{ backgroundImage: `linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.65)), url(${collection.image})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
+              {seasonalCollections.map(({ title, tag, blurb, icon: Icon, accent, background, pattern }) => (
+                <Link
+                  key={tag}
+                  to="/shop"
+                  className="relative overflow-hidden rounded-[28px] border border-white/60 shadow-[0_20px_50px_-20px_rgba(0,0,0,0.25)] group h-[250px] md:h-[270px] block transition-transform duration-500 hover:-translate-y-1"
+                  style={{ background }}
                 >
-                  <div className="absolute inset-0 bg-gradient-to-br from-white/70 via-white/60 to-mari-gold/10 opacity-90 transition-opacity duration-700 group-hover:opacity-100" />
-                  <div className="relative p-8 md:p-10 space-y-4 flex flex-col min-h-[260px]">
-                    <div className="flex items-center justify-between gap-3">
-                      <span className="text-[9px] md:text-[10px] font-bold uppercase tracking-[0.35em] text-mari-gold">{collection.tag}</span>
-                      <div className="w-8 h-[1px] bg-mari-gold/60" />
+                  <div className="absolute inset-0" style={{ backgroundImage: pattern }} aria-hidden="true" />
+                  <div className="absolute inset-0 bg-gradient-to-br from-white/60 via-white/25 to-transparent" aria-hidden="true" />
+                  <Icon
+                    className="absolute -right-6 -bottom-6 w-40 h-40 opacity-[0.12] transition-transform duration-700 group-hover:scale-110 group-hover:-rotate-6"
+                    style={{ color: accent }}
+                    strokeWidth={1}
+                    aria-hidden="true"
+                  />
+                  <div className="relative h-full p-8 md:p-9 flex flex-col">
+                    <div className="flex items-center gap-3">
+                      <span className="w-9 h-9 rounded-full bg-white/80 flex items-center justify-center shadow-sm">
+                        <Icon className="w-4 h-4" style={{ color: accent }} aria-hidden="true" />
+                      </span>
+                      <span className="text-[9px] md:text-[10px] font-bold uppercase tracking-[0.35em]" style={{ color: accent }}>{tag}</span>
                     </div>
-                    <h3 className="text-3xl md:text-4xl font-display font-normal text-mari-ink">{collection.title}</h3>
-                    <p className="text-gray-600 font-light leading-relaxed text-sm md:text-base flex-1">{collection.blurb}</p>
-                    <Link 
-                      to="/shop" 
-                      className="inline-flex items-center gap-2 text-[10px] md:text-xs font-bold uppercase tracking-[0.25em] text-mari-dark group-hover:text-mari-gold transition-colors"
-                    >
-                      Explore {collection.tag}
+                    <h3 className="mt-5 text-3xl md:text-[2.1rem] font-display font-normal text-mari-ink whitespace-nowrap overflow-hidden text-ellipsis">{title}</h3>
+                    <p className="mt-2 text-gray-600 font-light leading-relaxed text-sm md:text-base line-clamp-2 min-h-[3.25em]">{blurb}</p>
+                    <span className="mt-auto inline-flex items-center gap-2 text-[10px] md:text-xs font-bold uppercase tracking-[0.25em] text-mari-dark group-hover:gap-3 transition-all">
+                      Shop now
                       <ArrowRight className="w-4 h-4" />
-                    </Link>
+                    </span>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           </div>
@@ -363,7 +435,8 @@ export const Home = () => {
                             loop
                             muted
                             playsInline
-                            preload="auto"
+                            preload="metadata"
+                            poster={`${basePath}video/candle-poster.webp`}
                             disablePictureInPicture
                             className="w-full h-full object-cover pointer-events-none"
                             ref={(el) => {
@@ -380,9 +453,13 @@ export const Home = () => {
 
         {/* 5. REVIEW SECTION - Carved in Ivory Marble */}
         <Section variant="transparent" className="overflow-hidden min-h-[600px] flex items-center justify-center">
-          <div className="absolute inset-0 z-0">
+          <div ref={effectRef} className="absolute inset-0 z-0">
               <div className="absolute inset-0 opacity-80">
-                  <CandleEffect />
+                  {showEffect && (
+                    <Suspense fallback={null}>
+                      <CandleEffect />
+                    </Suspense>
+                  )}
               </div>
           </div>
 

@@ -137,9 +137,9 @@ CREATE TRIGGER update_products_updated_at
 -- ============================================
 INSERT INTO products (name, price, image, description, scent_notes, category, featured, in_stock)
 SELECT * FROM (VALUES
-  ('Blossom Box with Gold Chain', 48.00, '/images/produkt1.jpeg', 'Our signature arrangement featuring hand-poured peony, rose, and heart-shaped candles in soft pinks and creams. Presented in a luxury white box with an elegant gold chain handle.', 'Peony, Rose Petals, Sweet Pea', 'Arrangements', true, true),
-  ('Celestial Blue & Gold Pillar', 35.00, '/images/produkt2.jpeg', 'A masterpiece of wax art. This tall pillar features a mesmerising mottled blue and white texture, hand-gilded with 24k gold leaf accents. Each piece is completely unique.', 'Ocean Mist, Driftwood, Amber', 'Pillars', true, true),
-  ('Carousel Dreams Jar', 42.00, '/images/produkt3.jpeg', 'A whimsical white ceramic vessel adorned with intricate carousel horse reliefs. Filled with our creamy soy wax blend.', 'Vanilla Bean, Cashmere, Sandalwood', 'Jars', true, true),
+  ('Blossom Box with Gold Chain', 48.00, '/images/produkt1.webp', 'Our signature arrangement featuring hand-poured peony, rose, and heart-shaped candles in soft pinks and creams. Presented in a luxury white box with an elegant gold chain handle.', 'Peony, Rose Petals, Sweet Pea', 'Arrangements', true, true),
+  ('Celestial Blue & Gold Pillar', 35.00, '/images/produkt2.webp', 'A masterpiece of wax art. This tall pillar features a mesmerising mottled blue and white texture, hand-gilded with 24k gold leaf accents. Each piece is completely unique.', 'Ocean Mist, Driftwood, Amber', 'Pillars', true, true),
+  ('Carousel Dreams Jar', 42.00, '/images/produkt3.webp', 'A whimsical white ceramic vessel adorned with intricate carousel horse reliefs. Filled with our creamy soy wax blend.', 'Vanilla Bean, Cashmere, Sandalwood', 'Jars', true, true),
   ('Pastel Tulip Bundle', 22.00, '', 'A delicate collection of individual tulip candles in spring pastel shades. Perfect for table settings.', 'Fresh Cut Grass, Lemon Zest', 'Novelty', false, true),
   ('Textured Love Heart', 16.00, '', 'Intricately textured heart candle in a vibrant berry pink. A perfect small gift for someone special.', 'Raspberry, Champagne, Sugar', 'Novelty', false, true),
   ('Midnight Gold', 35.00, '', 'A deep blue version of our signature gold-leaf pillar, bringing a moody elegance to your evening.', 'Oud, Black Pepper, Bergamot', 'Pillars', false, true),
