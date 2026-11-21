@@ -166,9 +166,9 @@ export const FramedPicture = ({
               <stop offset="100%" stopColor="#E6DACB" />
             </linearGradient>
             <linearGradient id={`cream-${id}`} x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stopColor="#FBF0E6" />
-              <stop offset="50%" stopColor="#F2DFCD" />
-              <stop offset="100%" stopColor="#E6CDB7" />
+              <stop offset="0%" stopColor="#FDF9F6" />
+              <stop offset="50%" stopColor="#F4EBE5" />
+              <stop offset="100%" stopColor="#E7DBD3" />
             </linearGradient>
             <clipPath id={`open-${id}`}>
               <path d={inner} />
@@ -191,9 +191,9 @@ export const FramedPicture = ({
 
           {isPearl && (
             <g strokeLinecap="round" fill="none">
-              {isArch && <path d={pearlLine} stroke="rgba(170,130,100,0.25)" strokeWidth={pearl + 2.5} strokeLinecap="butt" />}
-              <path d={pearlLine} stroke="rgba(140,105,75,0.45)" strokeWidth={pearl + 1} strokeDasharray={`0 ${pearlStep}`} transform="translate(0.5 0.9)" />
-              <path d={pearlLine} stroke={isArch ? '#F3E2D1' : '#EADBC8'} strokeWidth={pearl} strokeDasharray={`0 ${pearlStep}`} />
+              {isArch && <path d={pearlLine} stroke="rgba(150,130,125,0.2)" strokeWidth={pearl + 2.5} strokeLinecap="butt" />}
+              <path d={pearlLine} stroke={isArch ? 'rgba(125,105,100,0.38)' : 'rgba(140,105,75,0.45)'} strokeWidth={pearl + 1} strokeDasharray={`0 ${pearlStep}`} transform="translate(0.5 0.9)" />
+              <path d={pearlLine} stroke={isArch ? '#F5EEEA' : '#EADBC8'} strokeWidth={pearl} strokeDasharray={`0 ${pearlStep}`} />
               <path d={pearlLine} stroke="#FFFFFF" strokeOpacity={isArch ? 0.9 : 1} strokeWidth={pearl * 0.42} strokeDasharray={`0 ${pearlStep}`} transform={`translate(${-pearl * 0.18} ${-pearl * 0.2})`} />
             </g>
           )}
