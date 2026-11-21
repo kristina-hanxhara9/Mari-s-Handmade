@@ -70,7 +70,7 @@ export const Navbar = () => {
         </svg>
       </div>
 
-      <div className={`max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 flex justify-between items-center transition-all duration-700 ${shouldShowBackground ? 'py-3 md:py-4' : 'py-8 md:py-12'}`}>
+      <div className={`max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 flex justify-between items-center transition-all duration-700 ${shouldShowBackground ? 'py-3 md:py-4' : 'py-4 md:py-6'}`}>
         
         {/* Brand Text Logo */}
         <Link to="/" className="flex flex-col items-center group relative z-50">

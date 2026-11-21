@@ -180,18 +180,18 @@ export const Home = () => {
   return (
     <div className="w-full">
       {/* 1. HERO SECTION - Now with transparent background to show the global photo */}
-      <header className="relative min-h-[100vh] lg:min-h-screen flex flex-col md:flex-row items-center overflow-hidden z-20 pt-28 md:pt-40">
-        <div className="relative w-full md:w-1/2 h-full flex flex-col justify-center px-6 sm:px-12 lg:px-24 py-12 md:py-0 z-10">
-          <div className="relative space-y-6 lg:space-y-10 max-w-xl mx-auto md:mx-0">
+      <header className="relative md:min-h-screen flex flex-row items-center overflow-hidden z-20 pt-24 pb-10 md:pt-32 md:pb-0">
+        <div className="relative w-[54%] md:w-1/2 h-full flex flex-col justify-center pl-5 pr-2 sm:px-12 lg:px-24 z-10">
+          <div className="relative space-y-4 sm:space-y-6 lg:space-y-10 max-w-xl">
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1.5 }}
-              className="w-12 md:w-24 h-[1px] bg-mari-gold shadow-[0_0_10px_rgba(197,160,89,0.5)] mx-auto md:mx-0"
+              className="w-10 md:w-24 h-[1px] bg-mari-gold shadow-[0_0_10px_rgba(197,160,89,0.5)]"
             />
             <h1
               ref={titleRef}
-              className="text-5xl sm:text-6xl md:text-7xl xl:text-[8rem] font-serif text-mari-dark leading-[0.9] tracking-tight text-center md:text-left"
+              className="text-[2.6rem] sm:text-6xl md:text-7xl xl:text-[8rem] font-serif text-mari-dark leading-[0.9] tracking-tight"
             >
               Light.<br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-mari-teal to-mari-gold italic pr-1 md:pr-4">Art.</span><br />
@@ -201,7 +201,7 @@ export const Home = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 1, duration: 1 }}
-              className="text-sm sm:text-base md:text-lg xl:text-xl text-gray-700 font-sans tracking-widest font-light italic leading-relaxed text-center md:text-left max-w-md mx-auto md:mx-0"
+              className="text-[11px] sm:text-base md:text-lg xl:text-xl text-gray-700 font-sans tracking-wide sm:tracking-widest font-light italic leading-relaxed max-w-md"
             >
               Sculptural candles, hand poured in London, UK. Designed to be a masterpiece.
             </motion.p>
@@ -209,11 +209,11 @@ export const Home = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1.5, duration: 0.8 }}
-              className="pt-4 md:pt-6 flex justify-center md:justify-start"
+              className="pt-1 sm:pt-4 md:pt-6 flex"
             >
               <Link
                 to="/shop"
-                className="group inline-flex items-center gap-3 md:gap-4 bg-mari-dark text-white px-8 py-3 md:px-10 md:py-4 rounded-full font-bold tracking-[0.2em] md:tracking-[0.3em] text-[10px] md:text-xs uppercase hover:bg-mari-teal transition-all duration-500 shadow-lg"
+                className="group inline-flex items-center gap-2 sm:gap-3 md:gap-4 bg-mari-dark text-white px-4 py-2.5 sm:px-8 sm:py-3 md:px-10 md:py-4 rounded-full font-bold tracking-[0.12em] sm:tracking-[0.2em] md:tracking-[0.3em] text-[9px] sm:text-[10px] md:text-xs uppercase whitespace-nowrap hover:bg-mari-teal transition-all duration-500 shadow-lg"
               >
                 Shop the Candles <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Link>
@@ -222,15 +222,15 @@ export const Home = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 1.8, duration: 0.8 }}
-              className="text-[10px] md:text-[11px] tracking-[0.25em] uppercase text-mari-ink/70 text-center md:text-left"
+              className="text-[8px] sm:text-[10px] md:text-[11px] tracking-[0.15em] sm:tracking-[0.25em] uppercase text-mari-ink/70"
             >
               Handmade to order in London &middot; UK delivery
             </motion.p>
           </div>
         </div>
         
-        <div className="w-full md:w-1/2 relative p-6 lg:p-20 z-10 flex justify-center">
-          <div className="marble-halo w-full max-w-[310px] sm:max-w-md md:max-w-2xl">
+        <div className="w-[46%] md:w-1/2 relative pr-5 pl-1 sm:p-6 lg:p-20 z-10 flex justify-center">
+          <div className="marble-halo w-full sm:max-w-md md:max-w-2xl">
             <motion.div 
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -251,9 +251,9 @@ export const Home = () => {
       <main className="relative z-10 bg-transparent">
         {/* 2. STORY SECTION - Showing background photo */}
         <Section id="story" variant="transparent" className="overflow-hidden">
-          <div ref={storyRef} className="grid md:grid-cols-2 gap-12 md:gap-24 items-center">
-            <div className="relative order-2 md:order-1 flex justify-center md:justify-start">
-              <FramedPicture frame="ornate" className="max-w-[310px] sm:max-w-sm md:max-w-md w-full aspect-[3/4]" pictureClassName="bg-[#F6EEEA]">
+          <div ref={storyRef} className="grid grid-cols-2 gap-5 sm:gap-12 md:gap-24 items-center">
+            <div className="relative flex justify-center md:justify-start">
+              <FramedPicture frame="ornate" className="w-full sm:max-w-sm md:max-w-md aspect-[3/4]" pictureClassName="bg-[#F6EEEA]">
                 <img
                   src={siteConfig.storyImage}
                   alt="Artistic candle"
@@ -262,15 +262,12 @@ export const Home = () => {
                 />
               </FramedPicture>
             </div>
-            <div className="space-y-8 order-1 md:order-2 text-center md:text-left">
-              <div className="flex items-center gap-4 justify-center md:justify-start">
-                <div className="h-[1px] w-12 bg-mari-gold"></div>
-                <h2 className="text-[10px] font-bold tracking-[0.4em] text-mari-gold uppercase">The Craft</h2>
-              </div>
-              <h3 className="text-[2rem] sm:text-4xl lg:text-5xl font-display font-normal text-mari-ink leading-tight whitespace-nowrap">
-                Sculptures <span className="italic font-light text-mari-gold">of</span> Light.
+            <div className="flex flex-col items-start gap-3 sm:gap-6 pt-6">
+              <h2 className="text-[9px] sm:text-[10px] font-bold tracking-[0.3em] sm:tracking-[0.4em] text-mari-gold uppercase">The Craft</h2>
+              <h3 className="text-[1.6rem] sm:text-4xl lg:text-5xl font-display font-normal text-mari-ink leading-tight md:whitespace-nowrap">
+                Sculptures <br className="md:hidden" /><span className="italic font-light text-mari-gold">of</span> Light.
               </h3>
-              <p className="text-gray-500 leading-relaxed font-sans text-base md:text-xl font-light italic">
+              <p className="text-gray-500 leading-relaxed font-sans text-[12px] sm:text-base md:text-xl font-light italic">
                 Every piece at <strong>Mari's Handmade</strong> is a labor of love. We create sculptural wax art that defies the ordinary.
               </p>
             </div>

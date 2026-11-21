@@ -15,7 +15,7 @@ export const WhatsAppButton = () => {
       aria-label="Chat on WhatsApp"
     >
       {/* Pulse animation ring */}
-      <span className="absolute inset-0 rounded-full bg-green-500 animate-ping opacity-25" />
+      <span className="absolute inset-0 rounded-full bg-[#E8799F] animate-ping opacity-20" />
 
       {/* Ring of pearls around the button, matching the site's pearl frames */}
       <svg
@@ -39,7 +39,7 @@ export const WhatsAppButton = () => {
       </svg>
 
       {/* Button */}
-      <div className="relative flex items-center justify-center w-14 h-14 bg-green-500 rounded-full shadow-lg hover:bg-green-600 transition-all duration-300 hover:scale-110">
+      <div className="relative flex items-center justify-center w-14 h-14 rounded-full bg-gradient-to-br from-[#3F8FB0] via-[#8FB8E0] to-[#E8799F] shadow-lg transition-all duration-300 group-hover:scale-110 group-hover:brightness-110">
         {/* WhatsApp Icon */}
         <svg
           viewBox="0 0 24 24"
