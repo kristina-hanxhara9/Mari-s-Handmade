@@ -1,8 +1,9 @@
 import { useState, type ReactNode } from 'react';
 import { Flame } from 'lucide-react';
+import { FramedPicture, type FrameStyle } from './FramedPicture';
 
 /**
- * Product photo in the site's arch frame (teal-blue gradient, like the video frame).
+ * Product photo in one of the site's ivory frames (see FramedPicture).
  * Products without a photo, or with a broken one, get the same "coming soon" arch,
  * so every card in a grid looks alike.
  */
@@ -10,23 +11,24 @@ export const ProductImage = ({
   src,
   alt,
   label,
+  frame = 'pearl',
   children,
 }: {
   src?: string;
   alt: string;
   label?: string;
+  frame?: FrameStyle;
   children?: ReactNode;
 }) => {
   const [failed, setFailed] = useState(false);
   const showPhoto = !!src && !failed;
 
   return (
-    <div
-      className="relative arch-top p-[4px] md:p-[5px] shadow-[0_30px_60px_-28px_rgba(74,144,164,0.55)] transition-all duration-700 group-hover:-translate-y-2 group-hover:shadow-[0_40px_70px_-28px_rgba(74,144,164,0.7)]"
-      style={{ background: 'linear-gradient(135deg, rgba(74,144,164,0.55), rgba(168,208,219,0.45), rgba(74,144,164,0.45))' }}
+    <FramedPicture
+      frame={frame}
+      className="w-full aspect-[3/4] transition-transform duration-700 group-hover:-translate-y-2"
+      pictureClassName="bg-gradient-to-b from-[#FCFBF9] via-[#F9ECEC] to-[#F4DCDC]"
     >
-      <div className="arch-top p-[6px] md:p-[8px] bg-[#FCFBF9]/85">
-        <div className="relative aspect-[3/4] arch-top overflow-hidden ring-1 ring-mari-teal/30 bg-gradient-to-b from-[#FCFBF9] via-[#F9ECEC] to-[#F4DCDC]">
           {showPhoto ? (
             <>
               <img
@@ -52,8 +54,6 @@ export const ProductImage = ({
             </span>
           )}
           {children}
-        </div>
-      </div>
-    </div>
+    </FramedPicture>
   );
 };

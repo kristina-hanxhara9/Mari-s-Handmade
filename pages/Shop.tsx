@@ -85,7 +85,7 @@ export const Shop = () => {
                 key={product.id}
                 className="group relative flex flex-col"
               >
-                <ProductImage src={product.image} alt={product.name} label={product.category}>
+                <ProductImage frame="ogee" src={product.image} alt={product.name} label={product.category}>
                   <div className="absolute inset-0 z-20 hidden md:flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-mari-dark/10 backdrop-blur-[2px]">
                     <button
                       onClick={() => addItem(product)}

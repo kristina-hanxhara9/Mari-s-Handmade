@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom';
 import { useAdminStore, useCartStore } from '../store';
 import { Section } from '../components/Section/Section';
 import { ProductImage } from '../components/ProductImage';
+import { FramedPicture } from '../components/FramedPicture';
+import { FestiveCandle } from '../components/FestiveCandle';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ArrowRight, ShoppingBag, TreePine, Heart, Egg, Cake, Flower2, Leaf } from 'lucide-react';
@@ -74,7 +76,7 @@ const seasonalCollections: SeasonalCollection[] = [
   {
     title: 'Christmas Atelier',
     tag: 'Christmas',
-    blurb: 'Fir, clove and gold leaf, sculpted for long fireside evenings.',
+    blurb: 'Fir, clove and gold leaf for long fireside evenings.',
     icon: TreePine,
     accent: '#2F6B4F',
     background: 'linear-gradient(160deg, #EEF4EF 0%, #DCE9E0 55%, #F3ECDD 100%)',
@@ -270,7 +272,7 @@ export const Home = () => {
               transition={{ duration: 1.5, ease: "easeOut" }}
               className="w-full max-w-2xl aspect-[3/4] arch-top overflow-hidden shadow-2xl md:shadow-[0_25px_60px_-20px_rgba(0,0,0,0.2)] relative bg-white"
             >
-              <img 
+              <img
                 src={siteConfig.heroForeground}
                 alt="Luxury Candle Presentation"
                 fetchPriority="high"
@@ -286,24 +288,22 @@ export const Home = () => {
         <Section id="story" variant="transparent" className="overflow-hidden">
           <div ref={storyRef} className="grid md:grid-cols-2 gap-12 md:gap-24 items-center">
             <div className="relative order-2 md:order-1 flex justify-center md:justify-start">
-              <div className="marble-halo max-w-sm md:max-w-md w-full">
-                <div className="aspect-[3/4] md:aspect-[3/4.5] arch-top overflow-hidden shadow-2xl border-[10px] md:border-[12px] border-white w-full">
-                  <img 
-                    src={siteConfig.storyImage}
-                    alt="Artistic candle"
-                    loading="lazy"
-                    className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-[3s]"
-                  />
-                </div>
-              </div>
+              <FramedPicture frame="ornate" className="max-w-sm md:max-w-md w-full aspect-[3/4]" pictureClassName="bg-[#F6EEEA]">
+                <img
+                  src={siteConfig.storyImage}
+                  alt="Artistic candle"
+                  loading="lazy"
+                  className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-[3s]"
+                />
+              </FramedPicture>
             </div>
             <div className="space-y-8 order-1 md:order-2 text-center md:text-left">
               <div className="flex items-center gap-4 justify-center md:justify-start">
                 <div className="h-[1px] w-12 bg-mari-gold"></div>
                 <h2 className="text-[10px] font-bold tracking-[0.4em] text-mari-gold uppercase">The Craft</h2>
               </div>
-              <h3 className="text-5xl md:text-7xl font-display font-normal text-mari-ink leading-[1.05]">
-                Sculptures <br/><span className="italic font-light text-mari-gold">of</span> Light.
+              <h3 className="text-[2rem] sm:text-4xl lg:text-5xl font-display font-normal text-mari-ink leading-tight whitespace-nowrap">
+                Sculptures <span className="italic font-light text-mari-gold">of</span> Light.
               </h3>
               <p className="text-gray-500 leading-relaxed font-sans text-base md:text-xl font-light italic">
                 Every piece at <strong>Mari's Handmade</strong> is a labor of love. We create sculptural wax art that defies the ordinary.
@@ -390,11 +390,9 @@ export const Home = () => {
                 >
                   <div className="absolute inset-0" style={{ backgroundImage: pattern }} aria-hidden="true" />
                   <div className="absolute inset-0 bg-gradient-to-br from-white/60 via-white/25 to-transparent" aria-hidden="true" />
-                  <Icon
-                    className="absolute -right-6 -bottom-6 w-40 h-40 opacity-[0.12] transition-transform duration-700 group-hover:scale-110 group-hover:-rotate-6"
-                    style={{ color: accent }}
-                    strokeWidth={1}
-                    aria-hidden="true"
+                  <FestiveCandle
+                    accent={accent}
+                    className="absolute right-5 md:right-7 bottom-0 w-[66px] md:w-[76px] h-auto transition-transform duration-700 group-hover:-translate-y-1"
                   />
                   <div className="relative h-full p-8 md:p-9 flex flex-col">
                     <div className="flex items-center gap-3">
@@ -404,7 +402,7 @@ export const Home = () => {
                       <span className="text-[9px] md:text-[10px] font-bold uppercase tracking-[0.35em]" style={{ color: accent }}>{tag}</span>
                     </div>
                     <h3 className="mt-5 text-3xl md:text-[2.1rem] font-display font-normal text-mari-ink whitespace-nowrap overflow-hidden text-ellipsis">{title}</h3>
-                    <p className="mt-2 text-gray-600 font-light leading-relaxed text-sm md:text-base line-clamp-2 min-h-[3.25em]">{blurb}</p>
+                    <p className="mt-2 pr-16 md:pr-20 text-gray-600 font-light leading-relaxed text-sm md:text-base line-clamp-2 min-h-[3.25em]">{blurb}</p>
                     <span className="mt-auto inline-flex items-center gap-2 text-[10px] md:text-xs font-bold uppercase tracking-[0.25em] text-mari-dark group-hover:gap-3 transition-all">
                       Shop now
                       <ArrowRight className="w-4 h-4" />
