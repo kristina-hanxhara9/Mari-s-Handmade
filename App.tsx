@@ -11,6 +11,9 @@ import { Admin } from './pages/Admin';
 import { LightCursor } from './components/LightCursor';
 import { BackgroundLayout } from './layouts/BackgroundLayout';
 import { WhatsAppButton } from './components/WhatsAppButton';
+import { Instagram } from 'lucide-react';
+
+const INSTAGRAM_URL = 'https://www.instagram.com/maris_handmade25/';
 
 // Scroll to top helper
 const ScrollToTop = () => {
@@ -132,13 +135,18 @@ const Footer = ({ onOpenModal }: { onOpenModal: (type: string) => void }) => (
                  hello@marishandmade.co.uk
                </p>
              </div>
-             <div className="flex gap-4 justify-center md:justify-start">
-               {['IG', 'FB', 'TT'].map((social) => (
-                 <div key={social} className="w-8 h-8 md:w-10 md:h-10 border border-white/10 rounded-full flex items-center justify-center hover:bg-mari-gold hover:text-mari-dark transition-all cursor-pointer text-[8px] md:text-[10px] font-bold tracking-widest shadow-lg">
-                   {social}
-                 </div>
-               ))}
-             </div>
+             <a
+               href={INSTAGRAM_URL}
+               target="_blank"
+               rel="noopener noreferrer"
+               aria-label="Follow Mari's Handmade on Instagram"
+               className="inline-flex items-center gap-3 text-white/70 hover:text-mari-gold transition-colors group"
+             >
+               <span className="w-9 h-9 md:w-10 md:h-10 border border-white/15 rounded-full flex items-center justify-center group-hover:border-mari-gold transition-colors">
+                 <Instagram className="w-4 h-4" />
+               </span>
+               <span className="text-xs md:text-sm tracking-wide">@maris_handmade25</span>
+             </a>
           </div>
         </div>
         
