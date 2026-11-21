@@ -54,7 +54,7 @@ export const LightCursor = () => {
   return (
     <div className="pointer-events-none fixed inset-0 z-[9999] hidden md:block">
       <div
-        className="absolute rounded-full bg-[#ffedc2]/40 backdrop-blur-[1px] shadow-[0_0_35px_rgba(255,199,90,0.45)] transition-transform duration-150 ease-out mix-blend-screen"
+        className="absolute rounded-full bg-[#ffedc2]/40 shadow-[0_0_35px_rgba(255,199,90,0.45)] transition-transform duration-150 ease-out mix-blend-screen"
         style={{
           width: 48,
           height: 48,

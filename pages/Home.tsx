@@ -6,6 +6,8 @@ import { useAdminStore, useCartStore } from '../store';
 import { Section } from '../components/Section/Section';
 import { ProductImage } from '../components/ProductImage';
 import { FramedPicture } from '../components/FramedPicture';
+import { LazyVideo } from '../components/LazyVideo';
+import { CandleGlow } from '../components/CandleGlow';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ArrowRight, ShoppingBag, TreePine, Heart, Egg, Cake, Gift, Leaf } from 'lucide-react';
@@ -230,14 +232,8 @@ export const Home = () => {
       <main className="relative z-10 bg-transparent">
         {/* 2. STORY SECTION - Showing background photo */}
         <Section id="story" variant="transparent" className="overflow-hidden" paddingClass="pt-16 pb-8 md:pt-[100px] md:pb-12">
-          {/* On phones the heading sits above the picture so it fits on one line */}
-          <div className="md:hidden mb-6 text-left">
-            <h2 className="text-[10px] font-bold tracking-[0.35em] text-mari-gold uppercase mb-2">The Craft</h2>
-            <h3 className="text-[2rem] font-display font-normal text-mari-ink leading-tight whitespace-nowrap">
-              Sculptures <span className="italic font-light text-mari-gold">of</span> Light.
-            </h3>
-          </div>
-          <div ref={storyRef} className="grid grid-cols-2 gap-5 sm:gap-12 md:gap-24 items-center">
+          {/* Photo and text share the width like the hero: a little more room for the text */}
+          <div ref={storyRef} className="grid grid-cols-[46fr_54fr] md:grid-cols-2 gap-4 sm:gap-12 md:gap-24 items-center">
             <div className="relative flex justify-center md:justify-start">
               <FramedPicture frame="ornate" className="w-full sm:max-w-sm md:max-w-md aspect-[3/4]" pictureClassName="bg-[#F6EEEA]">
                 <img
@@ -249,11 +245,11 @@ export const Home = () => {
               </FramedPicture>
             </div>
             <div className="flex flex-col items-start gap-3 sm:gap-6 pt-6">
-              <h2 className="hidden md:block text-[10px] font-bold tracking-[0.4em] text-mari-gold uppercase">The Craft</h2>
-              <h3 className="hidden md:block md:text-5xl lg:text-6xl font-display font-normal text-mari-ink leading-tight whitespace-nowrap">
+              <h2 className="text-[9px] sm:text-[10px] font-bold tracking-[0.3em] sm:tracking-[0.4em] text-mari-gold uppercase">The Craft</h2>
+              <h3 className="text-[1.9rem] sm:text-5xl lg:text-6xl font-display font-normal text-mari-ink leading-[1.05] md:whitespace-nowrap">
                 Sculptures <span className="italic font-light text-mari-gold">of</span> Light.
               </h3>
-              <p className="text-gray-500 leading-relaxed font-sans text-[15px] sm:text-lg md:text-2xl font-light italic">
+              <p className="text-gray-500 leading-relaxed font-sans text-[13px] sm:text-lg md:text-2xl font-light italic">
                 Every piece at <strong>Mari's Handmade</strong> is a labor of love. We create sculptural wax art that defies the ordinary.
               </p>
             </div>
@@ -383,30 +379,21 @@ export const Home = () => {
                   </p>
               </div>
               <div className="relative flex justify-center md:justify-end">
-                  <FramedPicture frame="video" className="w-full max-w-xl md:max-w-2xl aspect-video" pictureClassName="bg-[#EFE4DE]">
-                          <video
+                  <div className="relative p-[3px] md:p-[4px] rounded-2xl" style={{ background: 'linear-gradient(135deg, rgba(74,144,164,0.4), rgba(74,144,164,0.2), rgba(74,144,164,0.3))' }}>
+                      <div className="aspect-video w-full max-w-xl md:max-w-2xl overflow-hidden rounded-2xl shadow-xl bg-[#EFE4DE]">
+                          <LazyVideo
                             src={`${basePath}video/candle-video.mp4`}
-                            autoPlay
-                            loop
-                            muted
-                            playsInline
-                            preload="metadata"
                             poster={`${basePath}video/candle-poster.webp`}
-                            disablePictureInPicture
                             className="w-full h-full object-cover pointer-events-none"
-                            ref={(el) => {
-                              if (el) {
-                                el.play().catch(() => {});
-                              }
-                            }}
                           />
-                  </FramedPicture>
+                      </div>
+                  </div>
               </div>
           </div>
         </Section>
 
         {/* 5. REVIEWS, laid out like "Behind the Flame" */}
-        <Section variant="transparent" className="overflow-hidden">
+        <Section variant="transparent" className="overflow-hidden" backgroundElement={<CandleGlow />}>
           <div className="grid md:grid-cols-2 gap-10 md:gap-16 items-center">
             <div className="space-y-6 md:space-y-8 text-center md:text-left">
               <span className="text-mari-gold font-bold tracking-[0.4em] text-[10px] uppercase">Kind Words</span>

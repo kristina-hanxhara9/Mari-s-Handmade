@@ -59,7 +59,7 @@ export const Navbar = () => {
               alt=""
               className="w-full h-full object-cover opacity-30"
             />
-            <div className="absolute inset-0 bg-[#FCFBF9]/95 backdrop-blur-xl" />
+            <div className="absolute inset-0 bg-[#FCFBF9]/95" />
           </div>
         </div>
         <svg className="absolute bottom-0 left-0 w-full h-[var(--nav-wave-h)] md:hidden" viewBox="0 0 400 40" preserveAspectRatio="none">

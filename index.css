@@ -16,10 +16,20 @@ body {
   width: 100%;
   z-index: 0;
   background-color: #FCFBF9;
+}
+
+/* Background photo pinned behind the page. A fixed layer scrolls smoothly,
+   unlike background-attachment: fixed, which repaints on every scroll. */
+.bg-layout-photo {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
   background-size: cover;
   background-position: center;
-  background-attachment: fixed;
   background-repeat: no-repeat;
+  transform: translateZ(0);
+  will-change: transform;
+  pointer-events: none;
 }
 
 /* Soft Overlay to ensure text readability over photo */
@@ -37,6 +47,8 @@ body {
   inset: 0;
   z-index: 100;
   pointer-events: none;
+  transform: translateZ(0);
+  will-change: transform;
   opacity: 0.06;
   background-image:
     repeating-linear-gradient(45deg, #000 0 1px, transparent 1px 2px),
@@ -134,4 +146,58 @@ body {
 .logo-glow { animation: logo-glow 2.8s ease-in-out infinite; }
 @media (prefers-reduced-motion: reduce) {
   .logo-flame, .logo-glow { animation: none; }
+}
+
+/* ---------- Light candle flame behind the reviews (no 3D library) ---------- */
+.cg-halo {
+  background: radial-gradient(circle at 50% 58%, rgba(255, 207, 112, 0.28), rgba(244, 194, 194, 0.18) 35%, transparent 65%);
+  animation: cg-pulse 4s ease-in-out infinite;
+}
+.cg-flame {
+  border-radius: 50% 50% 50% 50% / 62% 62% 38% 38%;
+  transform-origin: 50% 100%;
+  will-change: transform, opacity;
+}
+.cg-outer {
+  background: radial-gradient(ellipse at 50% 70%, rgba(244, 194, 194, 0.55), rgba(74, 144, 164, 0.28) 55%, transparent 75%);
+  filter: blur(22px);
+  animation: cg-sway 5s ease-in-out infinite;
+}
+.cg-mid {
+  background: radial-gradient(ellipse at 50% 72%, rgba(255, 214, 140, 0.75), rgba(255, 158, 128, 0.35) 55%, transparent 78%);
+  filter: blur(14px);
+  animation: cg-flicker 2.6s ease-in-out infinite;
+}
+.cg-core {
+  background: radial-gradient(ellipse at 50% 70%, rgba(255, 255, 245, 0.95), rgba(255, 228, 170, 0.6) 50%, transparent 80%);
+  filter: blur(8px);
+  animation: cg-flicker 1.8s ease-in-out infinite reverse;
+}
+.cg-spark {
+  background: radial-gradient(circle, #FFF6DA, rgba(255, 199, 90, 0.6) 60%, transparent 70%);
+  opacity: 0;
+  animation: cg-rise 6s ease-out infinite;
+  will-change: transform, opacity;
+}
+@keyframes cg-pulse {
+  0%, 100% { opacity: 0.75; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.06); }
+}
+@keyframes cg-sway {
+  0%, 100% { transform: rotate(-2deg) scaleY(1); }
+  50% { transform: rotate(2deg) scaleY(1.04); }
+}
+@keyframes cg-flicker {
+  0%, 100% { transform: scale(1, 1); opacity: 0.9; }
+  30% { transform: scale(0.95, 1.06); opacity: 1; }
+  60% { transform: scale(1.04, 0.97); opacity: 0.85; }
+}
+@keyframes cg-rise {
+  0% { transform: translate(0, 0) scale(1); opacity: 0; }
+  15% { opacity: 0.9; }
+  100% { transform: translate(14px, -220px) scale(0.3); opacity: 0; }
+}
+.candle-glow.is-paused * { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) {
+  .candle-glow * { animation: none !important; }
 }
