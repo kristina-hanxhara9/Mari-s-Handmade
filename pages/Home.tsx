@@ -163,7 +163,7 @@ export const Home = () => {
       {/* 1. HERO SECTION - Now with transparent background to show the global photo */}
       <header className="relative md:min-h-screen flex items-center overflow-hidden z-20 pt-24 pb-10 md:pt-32 md:pb-0">
         <div className="max-w-7xl mx-auto px-6 w-full flex flex-row items-center gap-4 md:gap-10">
-        <div className="relative flex-[54] md:flex-[55] min-w-0 h-full flex flex-col justify-center z-10">
+        <div className="relative flex-[54] md:flex-1 min-w-0 h-full flex flex-col justify-center z-10">
           <div className="relative space-y-4 sm:space-y-6 lg:space-y-10 max-w-xl">
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
@@ -173,7 +173,7 @@ export const Home = () => {
             />
             <h1
               ref={titleRef}
-              className="text-[2.6rem] sm:text-6xl md:text-7xl xl:text-[8rem] font-serif text-mari-dark leading-[0.9] tracking-tight"
+              className="text-[2.4rem] sm:text-6xl md:text-7xl lg:text-[6.25rem] font-serif text-mari-dark leading-[0.9] tracking-tight"
             >
               Light.<br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-mari-teal to-mari-gold italic pr-1 md:pr-4">Art.</span><br />
@@ -211,13 +211,13 @@ export const Home = () => {
           </div>
         </div>
         
-        <div className="flex-[46] md:flex-[45] min-w-0 relative z-10 flex justify-center md:justify-start">
-          <div className="marble-halo w-full md:max-w-[300px] lg:max-w-[350px] xl:max-w-[370px]">
+        <div className="flex-[46] md:flex-1 min-w-0 relative z-10 flex justify-center">
+          <div className="marble-halo w-full md:max-w-[340px] lg:max-w-[450px]">
             <motion.div 
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 1.5, ease: "easeOut" }}
-              className="w-full max-w-2xl aspect-[3/4] arch-top overflow-hidden shadow-2xl md:shadow-[0_25px_60px_-20px_rgba(0,0,0,0.2)] relative bg-white"
+              className="w-full max-w-2xl aspect-[3/5] sm:aspect-[3/4] arch-top overflow-hidden shadow-2xl md:shadow-[0_25px_60px_-20px_rgba(0,0,0,0.2)] relative bg-white"
             >
               <img
                 src={siteConfig.heroForeground}
