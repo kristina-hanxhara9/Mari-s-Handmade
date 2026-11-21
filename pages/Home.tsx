@@ -311,6 +311,15 @@ export const Home = () => {
                 </article>
               ))}
             </div>
+            <div className="mt-12 md:mt-16 flex justify-center">
+              <Link
+                to="/shop"
+                className="group inline-flex items-center gap-3 rounded-full border border-mari-ink/30 bg-white/40 px-7 py-3 md:px-9 md:py-3.5 text-[10px] md:text-xs font-bold uppercase tracking-[0.25em] text-mari-ink shadow-sm transition-all duration-500 hover:bg-mari-ink hover:text-white hover:border-mari-ink"
+              >
+                View the full collection
+                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" aria-hidden="true" />
+              </Link>
+            </div>
           </div>
         </Section>
 
@@ -380,7 +389,7 @@ export const Home = () => {
               </div>
               <div className="relative flex justify-center md:justify-end">
                   <div className="relative p-[3px] md:p-[4px] rounded-2xl" style={{ background: 'linear-gradient(135deg, rgba(74,144,164,0.4), rgba(74,144,164,0.2), rgba(74,144,164,0.3))' }}>
-                      <div className="aspect-video w-full max-w-xl md:max-w-2xl overflow-hidden rounded-2xl shadow-xl bg-[#EFE4DE]">
+                      <div className="relative aspect-video w-full max-w-xl md:max-w-2xl overflow-hidden rounded-2xl shadow-xl bg-[#EFE4DE]">
                           <LazyVideo
                             src={`${basePath}video/candle-video.mp4`}
                             poster={`${basePath}video/candle-poster.webp`}
